@@ -1,7 +1,7 @@
 package com.example.bookshop.books.repositories;
 
 import com.example.bookshop.books.models.BookEntity;
-import com.example.bookshop.books.models.CategoryEntity;
+import com.example.bookshop.categories.models.CategoryEntity;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;

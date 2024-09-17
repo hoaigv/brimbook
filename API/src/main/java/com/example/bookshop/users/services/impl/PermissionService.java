@@ -3,7 +3,7 @@ package com.example.bookshop.users.services.impl;
 import com.example.bookshop.users.controllers.dto.permissions.PermissionRequest;
 import com.example.bookshop.users.controllers.dto.permissions.PermissionResponse;
 import com.example.bookshop.users.models.PermissionEntity;
-import com.example.bookshop.users.mapper.PermissionMapper;
+import com.example.bookshop.users.mappers.PermissionMapper;
 import com.example.bookshop.users.repositories.PermissionRepository;
 import com.example.bookshop.users.services.IPermissionService;
 import lombok.AccessLevel;

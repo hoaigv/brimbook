@@ -1,6 +1,6 @@
 package com.example.bookshop.security;
 
-import com.example.bookshop.utils.constant.PredefinedRole;
+import com.example.bookshop.utils.constants.PredefinedRole;
 import com.example.bookshop.users.models.RoleEntity;
 import com.example.bookshop.users.models.UserEntity;
 import com.example.bookshop.users.repositories.RoleRepository;

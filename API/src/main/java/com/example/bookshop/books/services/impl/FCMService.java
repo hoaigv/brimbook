@@ -1,8 +1,8 @@
 package com.example.bookshop.books.services.impl;
 
 import com.example.bookshop.books.controllers.dto.notifications.PushNotificationRequest;
-import com.example.bookshop.exceptionHandler.CustomRunTimeException;
-import com.example.bookshop.exceptionHandler.ErrorCode;
+import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
+import com.example.bookshop.exceptionHandlers.ErrorCode;
 import com.google.firebase.messaging.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

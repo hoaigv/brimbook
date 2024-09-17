@@ -1,6 +1,6 @@
 package com.example.bookshop.users.controllers.dto.users;
 
-import com.example.bookshop.utils.validator.DobConstraint;
+import com.example.bookshop.utils.validators.DobConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

@@ -1,14 +1,14 @@
 package com.example.bookshop.users.services.impl;
 
-import com.example.bookshop.utils.constant.PredefinedRole;
+import com.example.bookshop.utils.constants.PredefinedRole;
 import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
 import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
 import com.example.bookshop.users.models.RoleEntity;
 import com.example.bookshop.users.models.UserEntity;
-import com.example.bookshop.exceptionHandler.CustomRunTimeException;
-import com.example.bookshop.exceptionHandler.ErrorCode;
-import com.example.bookshop.users.mapper.UserMapper;
+import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
+import com.example.bookshop.exceptionHandlers.ErrorCode;
+import com.example.bookshop.users.mappers.UserMapper;
 import com.example.bookshop.books.repositories.BookRepository;
 import com.example.bookshop.books.repositories.ChapterRepository;
 import com.example.bookshop.users.repositories.RoleRepository;

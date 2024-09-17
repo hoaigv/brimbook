@@ -2,9 +2,9 @@ package com.example.bookshop.users.services.impl;
 
 import com.example.bookshop.users.controllers.dto.roles.RoleRequest;
 import com.example.bookshop.users.controllers.dto.roles.RoleResponse;
-import com.example.bookshop.exceptionHandler.CustomRunTimeException;
-import com.example.bookshop.exceptionHandler.ErrorCode;
-import com.example.bookshop.users.mapper.RoleMapper;
+import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
+import com.example.bookshop.exceptionHandlers.ErrorCode;
+import com.example.bookshop.users.mappers.RoleMapper;
 import com.example.bookshop.users.repositories.PermissionRepository;
 import com.example.bookshop.users.repositories.RoleRepository;
 import com.example.bookshop.users.services.IRoleService;

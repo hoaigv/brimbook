@@ -1,9 +1,9 @@
 package com.example.bookshop.books.services.impl;
 
 import com.example.bookshop.utils.baseEntities.BaseEntity;
-import com.example.bookshop.books.models.CommentEntity;
+import com.example.bookshop.comments.models.CommentEntity;
 import com.example.bookshop.books.repositories.BookRepository;
-import com.example.bookshop.books.repositories.CommentRepository;
+import com.example.bookshop.comments.repositories.CommentRepository;
 import com.example.bookshop.books.services.IAsyncService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

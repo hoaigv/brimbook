@@ -2,8 +2,8 @@ package com.example.bookshop.utils;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.example.bookshop.exceptionHandler.CustomRunTimeException;
-import com.example.bookshop.exceptionHandler.ErrorCode;
+import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
+import com.example.bookshop.exceptionHandlers.ErrorCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;

@@ -2,7 +2,7 @@ package com.example.bookshop.users.models;
 
 import com.example.bookshop.books.models.BookEntity;
 import com.example.bookshop.books.models.ChapterEntity;
-import com.example.bookshop.books.models.CommentEntity;
+import com.example.bookshop.comments.models.CommentEntity;
 import com.example.bookshop.utils.baseEntities.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;

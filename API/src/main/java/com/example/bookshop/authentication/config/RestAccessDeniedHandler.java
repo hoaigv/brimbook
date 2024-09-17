@@ -1,7 +1,7 @@
 package com.example.bookshop.authentication.config;
 
 import com.example.bookshop.utils.ApiResponse;
-import com.example.bookshop.exceptionHandler.ErrorCode;
+import com.example.bookshop.exceptionHandlers.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

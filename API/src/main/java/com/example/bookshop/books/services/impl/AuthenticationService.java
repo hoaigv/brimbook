@@ -8,8 +8,8 @@ import com.example.bookshop.authentication.controllers.dto.token.AuthenticationR
 import com.example.bookshop.authentication.controllers.dto.token.IntrospectResponse;
 import com.example.bookshop.authentication.models.InvalidatedToken;
 import com.example.bookshop.users.models.UserEntity;
-import com.example.bookshop.exceptionHandler.CustomRunTimeException;
-import com.example.bookshop.exceptionHandler.ErrorCode;
+import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
+import com.example.bookshop.exceptionHandlers.ErrorCode;
 import com.example.bookshop.authentication.repositories.InvalidatedTokenRepository;
 import com.example.bookshop.users.repositories.UserRepository;
 import com.example.bookshop.books.services.IAuthenticationService;

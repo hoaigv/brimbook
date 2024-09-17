@@ -1,5 +1,7 @@
 package com.example.bookshop.books.models;
 
+import com.example.bookshop.categories.models.CategoryEntity;
+import com.example.bookshop.comments.models.CommentEntity;
 import com.example.bookshop.users.models.UserEntity;
 import com.example.bookshop.utils.baseEntities.BaseWithCreatedByEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
