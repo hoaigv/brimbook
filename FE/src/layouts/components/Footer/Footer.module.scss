@@ -1,0 +1,117 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.inner {
+    width: 1390px;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -0.54px;
+}
+
+.name-wrapper {
+    margin-bottom: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    color: var(--g0);
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.48px;
+}
+.copyright {
+    color: #53638b;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.48px;
+}
+
+//content
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .logo {
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--primary-purple);
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            .logo-text-1 {
+                color: var(--primary-purple);
+                font-size: 2.6rem;
+                font-weight: 700;
+                line-height: 2.6rem;
+            }
+            .logo-text-2 {
+                color: var(--g0);
+                font-size: 1.3rem;
+                font-weight: 400;
+                line-height: 1.3rem;
+            }
+        }
+    }
+}
+
+//link
+.link {
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.list {
+    height: 270px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    column-gap: 50px;
+    row-gap: 10px;
+}
+.container {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+
+    .icon {
+        color: var(--primary-purple);
+    }
+
+    .text {
+        width: 250px;
+        font-size: 1.6rem;
+        font-weight: 600;
+        letter-spacing: -0.48px;
+    }
+}
+.map {
+    border: none;
+    border-radius: 10px;
+}

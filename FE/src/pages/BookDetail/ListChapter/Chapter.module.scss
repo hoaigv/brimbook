@@ -1,0 +1,43 @@
+.chapter-list {
+    font-size: 2.6rem;
+    font-weight: 700;
+    border-collapse: collapse;
+    border: 2px solid var(--g1);
+
+    thead > tr > th {
+        padding: 8px;
+    }
+
+    .chapter {
+        width: 200px;
+    }
+}
+
+tbody {
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 0.8px;
+
+    .list {
+        width: 100%;
+        border-top: 1px solid var(--g1);
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            background-color: var(--nerual-purple);
+        }
+
+        .chapter {
+            padding: 8px;
+            text-align: center;
+        }
+
+        .title {
+            padding: 8px 8px 8px 50px;
+
+            a {
+                color: var(--black);
+            }
+        }
+    }
+}

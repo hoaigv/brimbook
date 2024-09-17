@@ -1,0 +1,14 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inner {
+    width: 1390px;
+    height: 700px;
+    margin: 30px;
+    background-color: var(--white);
+    border: 1px solid var(--g1);
+    border-radius: 25px;
+}
