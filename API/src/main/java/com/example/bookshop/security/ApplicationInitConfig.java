@@ -1,10 +1,10 @@
 package com.example.bookshop.security;
 
-import com.example.bookshop.constant.PredefinedRole;
-import com.example.bookshop.entity.RoleEntity;
-import com.example.bookshop.entity.UserEntity;
-import com.example.bookshop.repository.RoleRepository;
-import com.example.bookshop.repository.UserRepository;
+import com.example.bookshop.utils.constant.PredefinedRole;
+import com.example.bookshop.users.models.RoleEntity;
+import com.example.bookshop.users.models.UserEntity;
+import com.example.bookshop.users.repositories.RoleRepository;
+import com.example.bookshop.users.repositories.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
