@@ -1,4 +1,3 @@
-import { config } from "~/config";
 import { NavLink } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./Actions.module.scss";
@@ -28,7 +27,7 @@ function Actions({ isLoggedIn }) {
                             className={(nav) =>
                                 cx("action-btn", { active: nav.isActive })
                             }
-                            to={config.routes.notification}
+                            to={"/notification"}
                         >
                             <BellIcon width="18px" height="18px" />
                         </NavLink>
@@ -38,7 +37,7 @@ function Actions({ isLoggedIn }) {
                             className={(nav) =>
                                 cx("user-btn", { active: nav.isActive })
                             }
-                            to={config.routes.profile}
+                            to={"/profile"}
                         >
                             Bakku Hoàng
                             <ArrowDown />
@@ -55,7 +54,7 @@ function Actions({ isLoggedIn }) {
                 </>
             ) : (
                 <div className={cx("actions-inner")}>
-                    <Button type2 to={config.routes.login}>
+                    <Button type2 to={"/login"}>
                         Log In
                     </Button>
                     <Button type1>

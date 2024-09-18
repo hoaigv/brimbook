@@ -2,7 +2,7 @@
 import classNames from "classnames/bind";
 import styles from "./Filter.module.scss";
 
-import FilterOption from "~/pages/components/FilterOption";
+import FilterOption from "~/components/FilterOption";
 import Checkbox from "~/components/Checkbox";
 // import RangeSlider from "~/components/RangeSlider";
 import Button from "~/components/Button";

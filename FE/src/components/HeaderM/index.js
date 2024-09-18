@@ -1,8 +1,8 @@
 import classNames from "classnames/bind";
 import styles from "./HeaderM.module.scss";
 
-import Search from "~/layouts/components/Search";
-import Actions from "~/layouts/components/Actions";
+import Search from "~/components/Search";
+import Actions from "~/components/Actions";
 
 const cx = classNames.bind(styles);
 

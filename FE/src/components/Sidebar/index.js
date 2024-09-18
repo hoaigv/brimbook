@@ -1,9 +1,8 @@
 import classNames from "classnames/bind";
 import style from "./Sidebar.module.scss";
 
-import { config } from "~/config";
 import Button from "~/components/Button";
-import Logo from "~/layouts/components/Logo";
+import Logo from "~/components/Logo";
 
 import {
     HomeIcon,
@@ -26,14 +25,10 @@ function Sidebar({ isLoggedIn, onLogout }) {
                 <div className={cx("menu-inner")}>
                     <Menu>
                         <div className={cx("menu-title")}>Menu</div>
-                        <MenuItem
-                            title="Home"
-                            to={config.routes.home}
-                            icon={<HomeIcon />}
-                        />
+                        <MenuItem title="Home" to={"/"} icon={<HomeIcon />} />
                         <MenuItem
                             title="Search"
-                            to={config.routes.search}
+                            to={"/search"}
                             icon={<SearchIcon />}
                         />
                     </Menu>
@@ -41,17 +36,17 @@ function Sidebar({ isLoggedIn, onLogout }) {
             <div className={cx("menu-title")}>Library</div>
             <MenuItem
               title="Recent"
-              to={config.routes.recent}
+              to={"/recent"}
               icon={<RecentIcon />}
             />
             <MenuItem
               title="Top Rated"
-              to={config.routes.topRated}
+              to={"/top-rated"}
               icon={<StarIcon />}
             />
             <MenuItem
               title="Favorite"
-              to={config.routes.favorite}
+              to={"/favorite"}
               icon={<HeartIcon />}
             />
           </Menu> */}
@@ -61,7 +56,7 @@ function Sidebar({ isLoggedIn, onLogout }) {
                         <div className={cx("menu-title")}>General</div>
                         <MenuItem
                             title="Setting"
-                            to={config.routes.setting}
+                            to={"/setting"}
                             icon={<SettingIcon />}
                         />
                         <Button LogOut onClick={onLogout}>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+
 import classNames from "classnames/bind";
 import styles from "./Home.module.scss";
-import BookItem1, { BookItem2 } from "../components/BookItem";
+
 import {
     ThunderIcon,
     ShieldIcon,
@@ -12,7 +13,8 @@ import {
     ShopIcon,
     PenIcon,
 } from "~/components/Icons";
-import SlideAds from "../components/SildeShow";
+import BookItem1, { BookItem2 } from "~/components/BookItem";
+import SlideAds from "~/components/SildeShow";
 
 const cx = classNames.bind(styles);
 
@@ -28,6 +30,7 @@ function Home() {
 
     return (
         <div className={cx("wrapper")}>
+            <title>Home Page | BrimBook</title>
             <div className={cx("inner")}>
                 <SlideAds />
                 <div className={cx("commit-items")}>

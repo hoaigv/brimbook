@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { config } from "~/config";
 
 import classNames from "classnames/bind";
 import styles from "./Chapter.module.scss";
@@ -20,7 +19,7 @@ function ListChapter() {
                     <td className={cx("chapter")}>171</td>
                     <td className={cx("title")}>
                         <Link
-                            to={config.routes.chapter}
+                            to={"/books/:isbn13/:chapter"}
                             title="Chapter 171: Lorem ipsum dolor"
                         >
                             Chapter 171: Lorem ipsum dolor
@@ -31,7 +30,7 @@ function ListChapter() {
                     <td className={cx("chapter")}>170</td>
                     <td className={cx("title")}>
                         <Link
-                            to={config.routes.chapter}
+                            to={"/books/:isbn13/:chapter"}
                             title="Chapter 171: Lorem ipsum dolor"
                         >
                             Chapter 170: Lorem ipsum dolor
@@ -42,7 +41,7 @@ function ListChapter() {
                     <td className={cx("chapter")}>169</td>
                     <td className={cx("title")}>
                         <Link
-                            to={config.routes.chapter}
+                            to={"/books/:isbn13/:chapter"}
                             title="Chapter 171: Lorem ipsum dolor"
                         >
                             Chapter 169: Lorem ipsum dolor
@@ -53,7 +52,7 @@ function ListChapter() {
                     <td className={cx("chapter")}>168</td>
                     <td className={cx("title")}>
                         <Link
-                            to={config.routes.chapter}
+                            to={"/books/:isbn13/:chapter"}
                             title="Chapter 171: Lorem ipsum dolor"
                         >
                             Chapter 168: Lorem ipsum dolor
@@ -64,7 +63,7 @@ function ListChapter() {
                     <td className={cx("chapter")}>167</td>
                     <td className={cx("title")}>
                         <Link
-                            to={config.routes.chapter}
+                            to={"/books/:isbn13/:chapter"}
                             title="Chapter 171: Lorem ipsum dolor"
                         >
                             Chapter 167: Lorem ipsum dolor

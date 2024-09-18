@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import styles from "./CustomerReviews.module.scss";
-import Rating from "~/pages/components/Rating";
+import Rating from "~/components/Rating";
 
 const cx = classNames.bind(styles);
 

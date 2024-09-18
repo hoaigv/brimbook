@@ -4,7 +4,7 @@ import styles from "./SearchBookItem.module.scss";
 
 import Image from "~/components/Image";
 import { HeartIcon } from "~/components/Icons";
-import Rating from "~/pages/components/Rating";
+import Rating from "~/components/Rating";
 
 const cx = classNames.bind(styles);
 

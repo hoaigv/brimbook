@@ -4,11 +4,12 @@ import { useSearchParams } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./SearchPage.module.scss";
 
-import SearchBookItem from "../components/SearchBookItem";
-import Filter from "./Filter";
-import Button from "~/components/Button";
 import { ArrowLeft, ArrowRight } from "~/components/Icons";
-import * as BookAPI from "~/APIs/book";
+import Button from "~/components/Button";
+import SearchBookItem from "~/components/SearchBookItem";
+import Filter from "./Filter";
+
+import * as BookAPI from "~/api/apiBook";
 
 const cx = classNames.bind(styles);
 
@@ -48,6 +49,7 @@ function Search() {
 
     return (
         <div className={cx("wrapper")}>
+            <title>Search Page | BrimBook</title>
             <div className={cx("inner")}>
                 <Filter />
                 <div className={cx("books")}>

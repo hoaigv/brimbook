@@ -1,16 +1,16 @@
 import { NavLink } from "react-router-dom";
-import { config } from "~/config";
-import { LogoIcon } from "~/components/Icons";
 
 import classNames from "classnames/bind";
 import styles from "./Logo.module.scss";
+
+import { LogoIcon } from "~/components/Icons";
 
 const cx = classNames.bind(styles);
 
 function Logo() {
     return (
         <div>
-            <NavLink to={config.routes.home} className={cx("logo")}>
+            <NavLink to={"/"} className={cx("logo")}>
                 <LogoIcon className={cx("logo-icon")} />
                 <div className={cx("logo-text")}>
                     <span className={cx("logo-text-1")}>Brimbook</span>

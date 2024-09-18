@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+
 import classNames from "classnames/bind";
 import styles from "./BookDetail.module.scss";
 
 import Image from "~/components/Image";
+import Button from "~/components/Button";
 import { HeartIcon, MessageIcon, LikeIcon } from "~/components/Icons";
 import ListChapter from "./ListChapter";
-import CustomerReviews from "../components/CustomerReviews";
-import Rating from "~/pages/components/Rating";
-import Comment from "~/pages/components/Comment";
-import Button from "~/components/Button";
-import { config } from "~/config";
+import CustomerReviews from "../../components/CustomerReviews";
+import Rating from "~/components/Rating";
+import Comment from "~/components/Comment";
 
 const cx = classNames.bind(styles);
 
@@ -32,6 +32,7 @@ function BookDetail() {
 
     return (
         <div className={cx("wrapper")}>
+            <title>{book.title} | BrimBook</title>
             <div className={cx("inner")}>
                 <div className={cx("book-detail")}>
                     <div className={cx("image")}>
@@ -98,10 +99,10 @@ function BookDetail() {
                         </div>
                         <div className={cx("button")}>
                             <div className={cx("first-last-chapter")}>
-                                <Button type1 to={config.routes.chapter}>
+                                <Button type1 to={"/books/:isbn13/:chapter"}>
                                     First Chapter
                                 </Button>
-                                <Button type2 to={config.routes.chapter}>
+                                <Button type2 to={"/books/:isbn13/:chapter"}>
                                     Last Chapter
                                 </Button>
                             </div>

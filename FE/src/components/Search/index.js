@@ -5,7 +5,7 @@ import styles from "./Search.module.scss";
 
 import { useDebounce } from "~/hooks";
 import { XmarkIcon, SearchIcon } from "~/components/Icons";
-import SearchBookItem from "~/layouts/components/SearchResult";
+import SearchBookItem from "~/components/SearchResult";
 
 const cx = classNames.bind(styles);
 

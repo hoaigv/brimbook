@@ -1,5 +1,5 @@
-import Search from "~/layouts/components/Search";
-import Actions from "~/layouts/components/Actions";
+import Search from "~/components/Search";
+import Actions from "~/components/Actions";
 import Logo from "../Logo";
 
 import classNames from "classnames/bind";
