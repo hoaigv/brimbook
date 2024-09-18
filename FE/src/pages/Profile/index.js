@@ -44,6 +44,7 @@ function Profile() {
 
     return (
         <div className={cx("wrapper")}>
+            <title>Profile Page | BrimBook</title>
             <div className={cx("inner")}>
                 <Image className={cx("color-box")} />
                 <Image

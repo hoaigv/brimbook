@@ -1,7 +1,9 @@
-import classNames from "classnames/bind";
 import { useState, forwardRef } from "react";
-import images from "~/assets/Image";
+
+import classNames from "classnames/bind";
 import styles from "./Image.module.scss";
+
+import images from "~/assets/Image";
 
 const Image = (
     {
