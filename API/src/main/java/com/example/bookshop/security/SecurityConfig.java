@@ -1,6 +1,9 @@
 package com.example.bookshop.security;
 
-import com.example.bookshop.enums.Role;
+import com.example.bookshop.authentication.config.CustomJwtDecoder;
+import com.example.bookshop.authentication.config.JwtAuthenticationEntryPoint;
+import com.example.bookshop.authentication.config.RestAccessDeniedHandler;
+import com.example.bookshop.utils.enums.Role;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
