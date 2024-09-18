@@ -1,6 +1,8 @@
 import { useState } from "react";
+
 import classNames from "classnames/bind";
 import styles from "./FilterOption.module.scss";
+
 import { ArrowDown, ArrowUp } from "~/components/Icons";
 
 const cx = classNames.bind(styles);

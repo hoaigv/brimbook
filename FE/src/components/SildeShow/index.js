@@ -1,7 +1,8 @@
-import "react-slideshow-image/dist/styles.css";
-import { Slide } from "react-slideshow-image";
 import classNames from "classnames/bind";
 import styles from "./SlideAds.module.scss";
+
+import "react-slideshow-image/dist/styles.css";
+import { Slide } from "react-slideshow-image";
 
 const cx = classNames.bind(styles);
 

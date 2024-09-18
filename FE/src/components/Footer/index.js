@@ -1,9 +1,14 @@
-import { ArrowRight, LogoIcon } from "~/components/Icons";
-
 import classNames from "classnames/bind";
 import styles from "./Footer.module.scss";
+
+import {
+    ArrowRight,
+    LogoIcon,
+    MapPinIcon,
+    MailIcon,
+    PhoneIcon,
+} from "~/components/Icons";
 import Button from "~/components/Button";
-import { MapPinIcon, PhoneIcon, MailIcon } from "~/components/Icons";
 
 const cx = classNames.bind(styles);
 

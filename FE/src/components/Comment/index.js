@@ -3,7 +3,7 @@ import styles from "./Comment.module.scss";
 
 import images from "~/assets/Image";
 import Image from "~/components/Image";
-import Rating from "../Rating";
+import Rating from "~/components/Rating";
 
 const cx = classNames.bind(styles);
 

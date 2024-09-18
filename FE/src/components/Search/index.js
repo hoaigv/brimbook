@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import classNames from "classnames/bind";
 import styles from "./Search.module.scss";
 
-import { useDebounce } from "~/hooks";
 import { XmarkIcon, SearchIcon } from "~/components/Icons";
 import SearchBookItem from "~/components/SearchResult";
+import { useDebounce } from "~/hooks";
 
 const cx = classNames.bind(styles);
 

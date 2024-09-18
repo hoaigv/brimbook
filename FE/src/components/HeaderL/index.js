@@ -1,9 +1,9 @@
-import Search from "~/components/Search";
-import Actions from "~/components/Actions";
-import Logo from "../Logo";
-
 import classNames from "classnames/bind";
 import styles from "./HeaderL.module.scss";
+
+import Search from "~/components/Search";
+import Actions from "~/components/Actions";
+import Logo from "~/components/Logo";
 
 const cx = classNames.bind(styles);
 
