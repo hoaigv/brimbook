@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
 import classNames from "classnames/bind";
 import styles from "./Login.module.scss";
 
+import { config } from "~/config";
 import Image from "~/components/Image";
 import images from "~/assets/Image";
 import {
@@ -25,7 +25,6 @@ function Login() {
 
     return (
         <div className={cx("container")}>
-            <title>Login Page | BrimBook</title>
             <div className={cx("login-form")}>
                 <Image src={images.universe} alt="picture" />
                 <form className={cx("form")}>
@@ -69,7 +68,7 @@ function Login() {
                     <div className={cx("checkbox-wrapper")}>
                         <Checkbox type1>Remember me</Checkbox>
                         <Link
-                            // to={}
+                            to={config.routes.forgotPassword}
                             className={cx("forgot-password-btn")}
                         >
                             Forgot password?
@@ -78,7 +77,7 @@ function Login() {
                     <h5>
                         Do you have any account? |
                         <Link
-                            // to={}
+                            to={config.routes.register}
                             className={cx("register-btn")}
                         >
                             Sign in

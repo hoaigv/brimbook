@@ -1,15 +1,14 @@
 import { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-import routers from "~/routes/routers";
-import { DefaultLayout } from "~/layouts/DefaultLayout";
+import { publicRouter } from "~/routes";
+import { DefaultLayout } from "~/layouts";
 
 function App() {
     return (
         <Router>
             <div className="App">
                 <Routes>
-                    {routers.map((route, index) => {
+                    {publicRouter.map((route, index) => {
                         const Page = route.component;
 
                         let Layout = DefaultLayout;

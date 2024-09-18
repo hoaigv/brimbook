@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 function ChapterNav() {
     return (
         <div className={cx("chapter-nav")}>
-            <Button loadpage>
+            <Button loadpage1>
                 <ArrowLeft />
                 Previous Chapter
             </Button>
@@ -18,7 +18,7 @@ function ChapterNav() {
                 <option>Chapter 2</option>
                 <option>Chapter 3</option>
             </select>
-            <Button loadpage>
+            <Button loadpage1>
                 Next Chapter
                 <ArrowRight />
             </Button>

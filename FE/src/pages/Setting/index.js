@@ -1,9 +1,5 @@
 function Setting() {
-    return (
-        <div>
-            <title>Setting Page | BrimBook</title>
-        </div>
-    );
+  return <h2>Setting Page</h2>;
 }
 
 export default Setting;
