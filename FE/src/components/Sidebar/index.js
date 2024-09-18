@@ -5,34 +5,32 @@ import Button from "~/components/Button";
 import Logo from "~/components/Logo";
 
 import {
-    HomeIcon,
-    SearchIcon,
-    // RecentIcon,
-    // StarIcon,
-    // HeartIcon,
-    SettingIcon,
-    LogoutIcon,
+  HomeIcon,
+  SearchIcon,
+  // RecentIcon,
+  // StarIcon,
+  // HeartIcon,
+  SettingIcon,
+  LogoutIcon,
 } from "~/components/Icons";
 import Menu, { MenuItem } from "../Menu";
 
+import { login } from "~/_mock/userLogin";
+
 const cx = classNames.bind(style);
 
-function Sidebar({ isLoggedIn, onLogout }) {
-    return (
-        <aside className={cx("wrapper")}>
-            <Logo />
-            <div className={cx("menu-wrapper")}>
-                <div className={cx("menu-inner")}>
-                    <Menu>
-                        <div className={cx("menu-title")}>Menu</div>
-                        <MenuItem title="Home" to={"/"} icon={<HomeIcon />} />
-                        <MenuItem
-                            title="Search"
-                            to={"/search"}
-                            icon={<SearchIcon />}
-                        />
-                    </Menu>
-                    {/* <Menu>
+function Sidebar() {
+  return (
+    <aside className={cx("wrapper")}>
+      <Logo />
+      <div className={cx("menu-wrapper")}>
+        <div className={cx("menu-inner")}>
+          <Menu>
+            <div className={cx("menu-title")}>Menu</div>
+            <MenuItem title="Home" to={"/"} icon={<HomeIcon />} />
+            <MenuItem title="Search" to={"/search"} icon={<SearchIcon />} />
+          </Menu>
+          {/* <Menu>
             <div className={cx("menu-title")}>Library</div>
             <MenuItem
               title="Recent"
@@ -50,24 +48,20 @@ function Sidebar({ isLoggedIn, onLogout }) {
               icon={<HeartIcon />}
             />
           </Menu> */}
-                </div>
-                {isLoggedIn && (
-                    <Menu>
-                        <div className={cx("menu-title")}>General</div>
-                        <MenuItem
-                            title="Setting"
-                            to={"/setting"}
-                            icon={<SettingIcon />}
-                        />
-                        <Button LogOut onClick={onLogout}>
-                            <LogoutIcon width="18px" height="18px" />
-                            <span>Log Out</span>
-                        </Button>
-                    </Menu>
-                )}
-            </div>
-        </aside>
-    );
+        </div>
+        {login && (
+          <Menu>
+            <div className={cx("menu-title")}>General</div>
+            <MenuItem title="Setting" to={"/setting"} icon={<SettingIcon />} />
+            <Button LogOut>
+              <LogoutIcon width="18px" height="18px" />
+              <span>Log Out</span>
+            </Button>
+          </Menu>
+        )}
+      </div>
+    </aside>
+  );
 }
 
 export default Sidebar;

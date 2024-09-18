@@ -1,22 +1,22 @@
 .filter-option {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .checkbox-list {
-    margin: 25px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 20px;
-    row-gap: 15px;
+  margin: 25px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 20px;
+  row-gap: 15px;
 }
 
 .checkbox-list2 {
-    margin: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  margin: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 // .btn {

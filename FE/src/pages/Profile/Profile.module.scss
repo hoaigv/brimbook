@@ -1,133 +1,133 @@
 .wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .inner {
-    width: 1390px;
-    // height: 700px;
-    margin: 30px;
-    background-color: var(--white);
-    border: 1px solid var(--g1);
-    border-radius: 25px;
-    position: relative;
+  width: 1390px;
+  // height: 700px;
+  margin: 30px;
+  background-color: var(--white);
+  border: 1px solid var(--g1);
+  border-radius: 25px;
+  position: relative;
 }
 
 .color-box {
-    width: 100%;
-    height: 180px;
-    flex-shrink: 0;
-    background-color: var(--primary-purple);
-    border-radius: 25px 25px 0px 0px;
+  width: 100%;
+  height: 180px;
+  flex-shrink: 0;
+  background-color: var(--primary-purple);
+  border-radius: 25px 25px 0px 0px;
 }
 
 .avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    border: 10px solid var(--white);
-    position: absolute;
-    top: 140px;
-    left: 100px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border: 10px solid var(--white);
+  position: absolute;
+  top: 140px;
+  left: 100px;
 }
 
 .profile-info {
-    width: 500px;
-    height: 80px;
-    position: relative;
-    left: 250px;
+  width: 500px;
+  height: 80px;
+  position: relative;
+  left: 250px;
 
-    .name {
-        height: 3.4rem;
-        color: var(--primary-purple);
-        font-size: 3.4rem;
-        line-height: 3.4rem;
-    }
+  .name {
+    height: 3.4rem;
+    color: var(--primary-purple);
+    font-size: 3.4rem;
+    line-height: 3.4rem;
+  }
 
-    .usename {
-        color: var(--black);
-        font-size: 2.4rem;
-        line-height: 2.4rem;
-    }
+  .usename {
+    color: var(--black);
+    font-size: 2.4rem;
+    line-height: 2.4rem;
+  }
 }
 
 .form {
-    margin: 30px 120px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 50px;
-    row-gap: 25px;
-    // background-color: aqua;
+  margin: 30px 120px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 50px;
+  row-gap: 25px;
+  // background-color: aqua;
 
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        position: relative;
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: relative;
 
-        .label {
-            font-size: 2rem;
-            font-weight: 500;
-        }
-
-        .input {
-            padding: 10px 17px;
-            font-size: 1.6rem;
-            border: 1px solid var(--g1);
-            border-radius: 10px;
-
-            &:focus {
-                outline: none;
-                border: 1px solid var(--primary-purple);
-            }
-        }
+    .label {
+      font-size: 2rem;
+      font-weight: 500;
     }
+
+    .input {
+      padding: 10px 17px;
+      font-size: 1.6rem;
+      border: 1px solid var(--g1);
+      border-radius: 10px;
+
+      &:focus {
+        outline: none;
+        border: 1px solid var(--primary-purple);
+      }
+    }
+  }
 }
 
 //select
 .select {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 17px;
-    font-size: 1.6rem;
-    border: 1px solid var(--g1);
-    border-radius: 10px;
-    cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 17px;
+  font-size: 1.6rem;
+  border: 1px solid var(--g1);
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .select-list {
-    list-style: none;
-    width: 100%;
-    display: none;
-    background-color: var(--white);
-    border: 1px solid var(--g1);
-    border-radius: 10px;
-    position: absolute;
-    top: 85px;
+  list-style: none;
+  width: 100%;
+  display: none;
+  background-color: var(--white);
+  border: 1px solid var(--g1);
+  border-radius: 10px;
+  position: absolute;
+  top: 85px;
 
-    .item {
-        padding: 10px 17px;
-        transition: all 0.1s ease-in-out;
+  .item {
+    padding: 10px 17px;
+    transition: all 0.1s ease-in-out;
 
-        &:hover {
-            background-color: var(--nerual-purple);
-            border-radius: 9px;
-            cursor: pointer;
-        }
+    &:hover {
+      background-color: var(--nerual-purple);
+      border-radius: 9px;
+      cursor: pointer;
     }
+  }
 }
 
 .active {
-    display: block;
+  display: block;
 }
 
 .btn {
-    grid-column: 1 / 3;
-    margin: 20px 0;
-    display: flex;
-    justify-content: center;
+  grid-column: 1 / 3;
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
 }
