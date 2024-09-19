@@ -1,0 +1,126 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.inner {
+  width: 1612px;
+  margin: 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.chapter-detail {
+  width: 1490px;
+  padding: 20px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  border: 1px solid var(--g1);
+  border-radius: 25px;
+
+  .chapter-info {
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px dashed var(--g1);
+
+    .content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .title {
+        font-size: 4.8rem;
+        font-weight: 700;
+      }
+
+      .chapter-number {
+        color: var(--primary-purple);
+        font-size: 4rem;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.chapter-wrapper {
+  max-width: 1140px;
+  margin: 20px 0;
+  padding: 60px 60px;
+  background: var(--white);
+  border: 1px solid var(--g1);
+  border-radius: 25px;
+
+  .content {
+    font-size: 2.3rem;
+    text-align: justify;
+    white-space: pre-line;
+
+    p {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.comment-wrapper {
+  width: 100%;
+  padding: 20px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid var(--g1);
+  border-radius: 25px;
+
+  .comment {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top: 2px dashed var(--g1);
+  }
+}
+
+.comment-input {
+  width: 1019px;
+  margin-bottom: 20px;
+
+  .comment-user-info {
+    padding: 36px 57px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid var(--g1);
+    border-radius: 10px;
+
+    .user-img {
+      border-radius: 10px;
+    }
+
+    .user-id {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      .name-user {
+        font-size: 2rem;
+        font-weight: 700;
+      }
+    }
+
+    .comment-text {
+      width: calc(100% - 32px);
+      padding: 15px;
+      resize: none;
+      font-size: 1.6rem;
+      font-weight: 400;
+      border: 1px solid var(--g1);
+      border-radius: 10px;
+      outline-color: var(--primary-purple);
+    }
+  }
+}
