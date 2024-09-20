@@ -28,59 +28,73 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<ApiResponse<UserResponse>> createUser(
-            @RequestBody @Valid  UserCreationRequest userCreationRequest) {
-        var createUser  = userService.createUser(userCreationRequest);
+            @RequestBody @Valid UserCreationRequest userCreationRequest) {
+        var createUser = userService.createUser(userCreationRequest);
         var resp = ApiResponse.<UserResponse>builder()
                 .result(createUser)
                 .message("Successfully created user")
                 .code(HttpStatus.CREATED.value())
                 .build();
-
-
         return ResponseEntity.status(HttpStatus.CREATED).body(resp);
     }
 
     @PutMapping("/update")
-   public ResponseEntity<ApiResponse<Void>> updateUser(@RequestBody @Valid UserUpdateRequest request) {
+    public ResponseEntity<ApiResponse<Void>> updateUser(@RequestBody @Valid UserUpdateRequest request) {
         userService.updateUser(request);
         var resp = ApiResponse.<Void>builder()
                 .result(null)
                 .message("Successfully updated user")
                 .code(HttpStatus.OK.value())
                 .build();
-
-        return  ResponseEntity.status(HttpStatus.OK).body(resp);
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
+
     @PutMapping("update/image")
-    public ResponseEntity<ApiResponse<Void>> updateImageUser(@RequestPart ("image") MultipartFile image) {
+    public ResponseEntity<ApiResponse<Void>> updateImageUser(@RequestPart("image") MultipartFile image) {
         String fileName = image.getOriginalFilename();
         if (image.isEmpty() || !Objects.requireNonNull(fileName).endsWith(".jpg") && !fileName.endsWith(".png")) {
-          var resp = ApiResponse.<Void>builder()
-                  .code(400)
-                  .message("you need choose file img (.jsp or .png) ")
-            .build();
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+            var resp = ApiResponse.<Void>builder()
+                    .code(400)
+                    .message("you need choose file img (.jsp or .png) ")
+                    .build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
         }
-        userService.updateUserImage(image);
-        return  ResponseEntity.ok().build();
+        var resp = ApiResponse.<Void>builder()
+                .result(null)
+                .message("Successfully updated user")
+                .code(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
+
     @GetMapping("/me")
-   public ResponseEntity< ApiResponse<UserResponse>> getMyInfo() {
+    public ResponseEntity<ApiResponse<UserResponse>> getMyInfo() {
         var resp = ApiResponse.<UserResponse>builder()
                 .result(userService.getMyInfo())
                 .build();
-        return ResponseEntity.ok(resp);
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
+
     @PutMapping("/favorite/{bookId}")
-    public ResponseEntity<ApiResponse<Void>> addFavorite(@PathVariable int bookId , @RequestBody String token) {
-       userService.addFavouriteBook(bookId,token);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ApiResponse<Void>> addFavorite(@PathVariable int bookId, @RequestBody String token) {
+        userService.addFavouriteBook(bookId, token);
+        var resp = ApiResponse.<Void>builder()
+                .result(null)
+                .message("Successfully updated user")
+                .code(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 
     @PutMapping("/read-chapter/{chapterId}")
     public ResponseEntity<ApiResponse<Void>> addReadChapter(@PathVariable int chapterId) {
-         userService.addReadChapter(chapterId);
-        return ResponseEntity.ok().build();
+        userService.addReadChapter(chapterId);
+        var resp = ApiResponse.<Void>builder()
+                .result(null)
+                .message("Successfully updated user")
+                .code(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 
 

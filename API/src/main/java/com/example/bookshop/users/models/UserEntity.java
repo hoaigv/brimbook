@@ -53,17 +53,13 @@ public class UserEntity extends BaseEntity {
     @NotNull(message = "image url not null ")
     String image_url;
 
-
     String firstName;
-
 
     String lastName;
 
     Date birthDate;
 
     Boolean gender;
-
-
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))

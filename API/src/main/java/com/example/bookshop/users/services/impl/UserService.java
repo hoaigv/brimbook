@@ -82,7 +82,7 @@ public class UserService implements IUserService {
         user.setRoles(roles);
         user.setImage_url("https://res.cloudinary.com/dh4tdxre1/image/upload/v1726540809/cchxb6qoz2y89gvr9iol.jpg");
         try {
-             userRepository.save(user);
+            userRepository.save(user);
 
         } catch (DataIntegrityViolationException exception) {
             throw new DataIntegrityViolationException(exception.getMessage());
@@ -153,7 +153,7 @@ public class UserService implements IUserService {
         List<RoleEntity> roleSet = roleRepository.findAllById(roles);
         var user = userRepository.findById(userId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
         user.setRoles(new HashSet<>(roleSet));
-       var newUser = userRepository.save(user);
+        var newUser = userRepository.save(user);
         return userMapper.userToUserResponse(newUser);
     }
 }
