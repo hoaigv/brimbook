@@ -7,7 +7,7 @@ import com.example.bookshop.authentication.controllers.dto.token.LogoutRequest;
 import com.example.bookshop.authentication.controllers.dto.token.RefreshRequest;
 import com.example.bookshop.authentication.controllers.dto.token.AuthenticationResponse;
 import com.example.bookshop.authentication.controllers.dto.token.IntrospectResponse;
-import com.example.bookshop.books.services.impl.AuthenticationService;
+import com.example.bookshop.authentication.services.impl.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class AuthenticationController {
 
     AuthenticationService authenticationService;
 
-    @PostMapping("/token")
+    @PostMapping("/login")
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
         var resp = authenticationService.authenticate(authenticationRequest);
         return ApiResponse.<AuthenticationResponse>builder()

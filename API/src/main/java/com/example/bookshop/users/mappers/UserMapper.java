@@ -10,14 +10,15 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
+
    UserResponse userToUserResponse(UserEntity userEntity);
+
 
    @Mapping(target = "image_url", ignore = true)
    UserEntity userToUserEntity(UserCreationRequest userCreationRequest);
 
 
-   @Mapping(target = "roles" , ignore = true)
-   @Mapping(target = "image_url", ignore = true)
+   @Mapping(target = "password", ignore = true)
    UserEntity updateUserEntity(@MappingTarget UserEntity userEntity, UserUpdateRequest userUpdateRequest);
 
 }

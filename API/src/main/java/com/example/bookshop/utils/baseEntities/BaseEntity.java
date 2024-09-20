@@ -30,13 +30,11 @@ public class BaseEntity {
 
     @Column
     @LastModifiedDate
-    @NotNull(message = "updatedDate must not be null")
     LocalDateTime updatedDate;
 
 
 
     @Column
     @LastModifiedBy
-    @NotNull(message = "updatedBy must not be null")
     String updatedBy;
 }

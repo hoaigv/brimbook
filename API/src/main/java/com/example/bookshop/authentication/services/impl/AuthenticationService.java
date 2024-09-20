@@ -1,4 +1,4 @@
-package com.example.bookshop.books.services.impl;
+package com.example.bookshop.authentication.services.impl;
 
 import com.example.bookshop.authentication.controllers.dto.token.AuthenticationRequest;
 import com.example.bookshop.authentication.controllers.dto.token.IntrospectRequest;
@@ -63,7 +63,7 @@ public class AuthenticationService implements IAuthenticationService {
 
         boolean authenticated = passwordEncoder.matches(authenticationRequest.getPassword(), user.getPassword());
         if (!authenticated) {
-            throw new CustomRunTimeException(ErrorCode.UNCATEGORIZED_EXCEPTION);
+            throw new CustomRunTimeException(ErrorCode.PASSWORD_INCORRECT);
         }
 
         var token = generateToken(user);

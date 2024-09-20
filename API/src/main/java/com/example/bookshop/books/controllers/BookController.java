@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,33 +34,34 @@ public class BookController {
     private final static Sort DEFAULT_FILTER_SORT = Sort.by(Sort.Direction.ASC, "createDate");
 
     @GetMapping("/{bookId}")
-    public ApiResponse<BookResponse> getBookById(@PathVariable int bookId) {
-        return ApiResponse.<BookResponse>builder()
-                .result(bookService.getBook(bookId))
-                .build();
+    public ResponseEntity<ApiResponse<BookResponse>> getBookById(@PathVariable int bookId) {
+       var resp =   ApiResponse.<BookResponse>builder()
+               .result(bookService.getBook(bookId))
+               .build();
+        return ResponseEntity.ok(resp);
     }
     @PostMapping
-    public ApiResponse<BookCreateResponse> createBook(
+    public ResponseEntity<ApiResponse<BookCreateResponse>> createBook(
             @RequestPart BookCreateRequest request,
             @RequestPart MultipartFile file
     ) {
-        var resp = bookService.createBook(request,file);
-        return ApiResponse.<BookCreateResponse>builder()
-                .result(resp)
+        var resp = ApiResponse.<BookCreateResponse>builder()
+                .result( bookService.createBook(request,file))
                 .build();
+
+        return  ResponseEntity.ok(resp);
     }
     @PutMapping("/{bookId}")
-    public ApiResponse<BookCreateResponse> updateBook(
+    public ResponseEntity<ApiResponse<Void>> updateBook(
 
     ) {
 
-        return ApiResponse.<BookCreateResponse>builder()
-                .build();
+        return ResponseEntity.ok().build();
     }
 
 
     @GetMapping("/search")
-    public ApiResponse<List<BookResponse>> getListBook(
+    public ResponseEntity<ApiResponse<List<BookResponse>>> getListBook(
             BookSpecification filter,
             @RequestParam(required = false, defaultValue = DEFAULT_FILTER_SIZE) int size,
             @RequestParam(required = false, defaultValue = DEFAULT_FILTER_PAGE) int page,
@@ -76,10 +78,11 @@ public class BookController {
             sort = SortUtils.parseSortParam(sortParam, sortList);
         }
         Pageable pageable = PageRequest.of(page, size, sort);
-        var result = bookService.getAllBooks(pageable, filter);
-        return ApiResponse.<List<BookResponse>>builder()
-                .result(result)
+        var result = ApiResponse.<List<BookResponse>>builder()
+                .result( bookService.getAllBooks(pageable, filter))
                 .build();
+
+        return ResponseEntity.ok(result);
     }
 
 

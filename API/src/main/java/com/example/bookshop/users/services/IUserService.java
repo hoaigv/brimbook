@@ -14,8 +14,9 @@ public interface IUserService {
     List<UserResponse> getAllUsers(Pageable pageable);
     UserResponse getMyInfo();
 
-    UserResponse createUser(UserCreationRequest request, MultipartFile file);
+    UserResponse createUser(UserCreationRequest request);
     UserResponse updateUser(UserUpdateRequest request);
+    void updateUserImage(MultipartFile  image);
     UserResponse updateRoleUser(List<String> roles ,Integer userId);
 
     void delete(Set<Integer> ids);

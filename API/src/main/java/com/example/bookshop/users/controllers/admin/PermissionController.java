@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,19 +21,21 @@ import java.util.List;
 public class PermissionController {
     IPermissionService permissionService;
     @PostMapping
-    ApiResponse<PermissionResponse> create(@RequestBody PermissionRequest permissionRequest) {
-        return ApiResponse.<PermissionResponse>builder()
-                .result(permissionService.create(permissionRequest))
-                .build();
+    public ResponseEntity< ApiResponse<PermissionResponse>> create(@RequestBody PermissionRequest permissionRequest) {
+       var resp =  ApiResponse.<PermissionResponse>builder()
+               .result(permissionService.create(permissionRequest))
+               .build();
+        return ResponseEntity.ok(resp);
     }
     @GetMapping
-    ApiResponse<List<PermissionResponse>> getAll() {
-        return ApiResponse.<List<PermissionResponse>>builder()
+   public ResponseEntity<ApiResponse<List<PermissionResponse>>> getAll() {
+        var resp = ApiResponse.<List<PermissionResponse>>builder()
                 .result(permissionService.getAllPermissions())
                 .build();
+        return ResponseEntity.ok(resp);
     }
     @DeleteMapping("/{permission}")
-    ApiResponse<Void> delete(@PathVariable String permission) {
+    public ApiResponse<Void> delete(@PathVariable String permission) {
         permissionService.delete(permission);
         return ApiResponse.<Void>builder().build();
     }
