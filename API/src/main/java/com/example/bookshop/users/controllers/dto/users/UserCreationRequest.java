@@ -22,15 +22,12 @@ public class UserCreationRequest {
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Username must not contain special characters or accented characters")
     String username;
 
-    @Size(min = 6 ,message = "password length  must be 6" )
+    @Size(min = 6 ,message = "password length must be 6")
     @NotNull(message = "password not null")
     String password;
 
-    @Email(message = "email  invalid")
     @NotNull(message = "email not null")
-    @Pattern(regexp = "^[^\\d].*", message = "Email not start with numbers")
+    @Pattern(regexp="^[a-zA-Z][a-zA-Z0-9._-]*@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Invalid email format. Please enter a valid email (e.g., example@domain.com)")
     String email;
-
-
 
 }

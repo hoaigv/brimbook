@@ -59,8 +59,6 @@ public class UserEntity extends BaseEntity {
 
     String lastName;
 
-    Integer age;
-
     Date birthDate;
 
     Boolean gender;

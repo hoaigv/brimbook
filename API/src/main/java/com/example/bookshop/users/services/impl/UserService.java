@@ -95,11 +95,6 @@ public class UserService implements IUserService {
     public UserResponse updateUser(UserUpdateRequest request) {
         UserEntity oldUser = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
         var user = userMapper.updateUserEntity(oldUser, request);
-        if(request.getAge() == null){
-            user.setAge(null);
-        }else {
-            user.setAge(Integer.valueOf(request.getAge()));
-        }
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         return userMapper.userToUserResponse(userRepository.save(user));
     }

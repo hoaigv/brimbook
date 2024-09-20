@@ -29,7 +29,9 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
     String[] PUBLIC_POST_ENDPOINT = {"/api/users/sign-up","/auth/login", "/auth/introspect", "/auth/logout", "/auth/refresh"};
     String[] PRIVATE_PUT_ENDPOINT = {"/api/users/update","/api/users/update/image"};
+    String[] PRIVATE_PUT_ENDPOINT_ADMIN = {"/api/admin/users/**"};
     String[] PUBLIC_GET_ENDPOINT = {"/api/users/me"};
+    String[] PRIVATE_GET_ENDPOINT = {"/api/admin/users/**"};
     CustomJwtDecoder jwtDecoder;
     RestAccessDeniedHandler restAccessDeniedHandler;
      static  String[] SWAGGER_WHITELIST = {
@@ -54,6 +56,8 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(HttpMethod.GET,PUBLIC_GET_ENDPOINT)
                         .hasAuthority(Role.ROLE_USER.name())
+                        .requestMatchers(HttpMethod.PUT,PRIVATE_PUT_ENDPOINT_ADMIN)
+                        .hasAuthority(Role.ROLE_ADMIN.name())
                         .requestMatchers(HttpMethod.PUT,PRIVATE_PUT_ENDPOINT)
                         .hasAuthority(Role.ROLE_USER.name())
                         .requestMatchers(SWAGGER_WHITELIST)

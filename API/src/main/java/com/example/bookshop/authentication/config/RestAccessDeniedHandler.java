@@ -15,7 +15,7 @@ import java.io.IOException;
 public class RestAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
-        ErrorCode errorCode = ErrorCode.ACCESS_DENIED;
+        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
         response.setStatus(errorCode.getStatusCode().value());
         // set date response
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

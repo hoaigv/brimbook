@@ -17,7 +17,7 @@ public interface UserMapper {
    @Mapping(target = "image_url", ignore = true)
    UserEntity userToUserEntity(UserCreationRequest userCreationRequest);
 
-   @Mapping(target = "age", ignore = true)
+
    @Mapping(target = "password", ignore = true)
    UserEntity updateUserEntity(@MappingTarget UserEntity userEntity, UserUpdateRequest userUpdateRequest);
 

@@ -1,4 +1,4 @@
-package com.example.bookshop.books.services.impl;
+package com.example.bookshop.authentication.services.impl;
 
 import com.example.bookshop.authentication.controllers.dto.token.AuthenticationRequest;
 import com.example.bookshop.authentication.controllers.dto.token.IntrospectRequest;

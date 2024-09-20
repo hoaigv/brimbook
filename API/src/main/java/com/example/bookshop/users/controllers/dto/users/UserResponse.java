@@ -26,7 +26,6 @@ public class UserResponse {
 
     String lastName;
 
-    Integer age;
 
     Date birthDate;
 

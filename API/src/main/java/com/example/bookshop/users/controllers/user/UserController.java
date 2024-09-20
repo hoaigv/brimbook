@@ -29,16 +29,27 @@ public class UserController {
     @PostMapping("/sign-up")
     public ResponseEntity<ApiResponse<UserResponse>> createUser(
             @RequestBody @Valid  UserCreationRequest userCreationRequest) {
+        var createUser  = userService.createUser(userCreationRequest);
+        var resp = ApiResponse.<UserResponse>builder()
+                .result(createUser)
+                .message("Successfully created user")
+                .code(HttpStatus.CREATED.value())
+                .build();
 
-                userService.createUser(userCreationRequest);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(resp);
     }
 
     @PutMapping("/update")
    public ResponseEntity<ApiResponse<Void>> updateUser(@RequestBody @Valid UserUpdateRequest request) {
         userService.updateUser(request);
-        return  ResponseEntity.ok().build();
+        var resp = ApiResponse.<Void>builder()
+                .result(null)
+                .message("Successfully updated user")
+                .code(HttpStatus.OK.value())
+                .build();
+
+        return  ResponseEntity.status(HttpStatus.OK).body(resp);
     }
     @PutMapping("update/image")
     public ResponseEntity<ApiResponse<Void>> updateImageUser(@RequestPart ("image") MultipartFile image) {

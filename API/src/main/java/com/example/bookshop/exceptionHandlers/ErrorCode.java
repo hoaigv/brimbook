@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatusCode;
 @Getter
 public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized exception", HttpStatus.INTERNAL_SERVER_ERROR),
+    UNAUTHORIZED(401, "Unauthorized , you need have role Role ADMIN for this link", HttpStatus.UNAUTHORIZED),
     INVALID_KEY(1001, "Invalidd request ", HttpStatus.BAD_REQUEST),
     USER_EXISTED(400, "user already existed", HttpStatus.BAD_REQUEST),
     USER_NOT_FOUND(1003, "user not found", HttpStatus.NOT_FOUND),
@@ -14,7 +15,6 @@ public enum ErrorCode {
     INVALID_PASSWORD(1005, "password is invalid", HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(1006, "Unauthenticated user", HttpStatus.UNAUTHORIZED),
     ROLE_NOT_FOUND(1010, "role not found", HttpStatus.NOT_FOUND),
-    ACCESS_DENIED(1012, "You do not have permission to access any links.", HttpStatus.FORBIDDEN),
     INVALID_DOB(1011, "Your age must be at least {min} ", HttpStatus.BAD_REQUEST),
     BOOK_NOT_FOUND(1013, "Book not found", HttpStatus.NOT_FOUND),
     CATEGORY_NOT_FOUND(1014, "Category not found", HttpStatus.NOT_FOUND),
@@ -26,8 +26,8 @@ public enum ErrorCode {
     ADD_FAV_NOT_SUCCESS(1018, " ADD_FAV_NOT_SUCCESS", HttpStatus.BAD_REQUEST),
     ADD_TOPIC_NOT_SUCCESS(1019, " ADD_TOPIC_NOT_SUCCESS", HttpStatus.BAD_REQUEST),
     DELETE_FILE_NOT_SUCCESS(1020, " DELETE_FILE_NOT_SUCCESS", HttpStatus.BAD_REQUEST),
-    PASSWORD_INCORRECT(400, "password incorrect, enter another password  ", HttpStatus.BAD_REQUEST)
-
+    PASSWORD_INCORRECT(400, "password incorrect, enter another password  ", HttpStatus.BAD_REQUEST),
+    URL_NOT_EXIST(404,"The requested URL does not exist." , HttpStatus.NOT_FOUND)
 
 
 
