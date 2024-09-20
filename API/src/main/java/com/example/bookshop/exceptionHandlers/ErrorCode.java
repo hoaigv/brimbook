@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatusCode;
 public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized exception", HttpStatus.INTERNAL_SERVER_ERROR),
     INVALID_KEY(1001, "Invalidd request ", HttpStatus.BAD_REQUEST),
-    USER_EXISTED(1002, "user already existed", HttpStatus.BAD_REQUEST),
+    USER_EXISTED(400, "user already existed", HttpStatus.BAD_REQUEST),
     USER_NOT_FOUND(1003, "user not found", HttpStatus.NOT_FOUND),
     USERNAME_INVALID(1004, "username is invalid", HttpStatus.BAD_REQUEST),
     INVALID_PASSWORD(1005, "password is invalid", HttpStatus.BAD_REQUEST),
@@ -25,7 +25,8 @@ public enum ErrorCode {
     NOTIFICATION_NOT_SUCCESS(1017, " NOTIFICATION_NOT_SUCCESS", HttpStatus.NOT_FOUND),
     ADD_FAV_NOT_SUCCESS(1018, " ADD_FAV_NOT_SUCCESS", HttpStatus.BAD_REQUEST),
     ADD_TOPIC_NOT_SUCCESS(1019, " ADD_TOPIC_NOT_SUCCESS", HttpStatus.BAD_REQUEST),
-    DELETE_FILE_NOT_SUCCESS(1020, " DELETE_FILE_NOT_SUCCESS", HttpStatus.BAD_REQUEST)
+    DELETE_FILE_NOT_SUCCESS(1020, " DELETE_FILE_NOT_SUCCESS", HttpStatus.BAD_REQUEST),
+    PASSWORD_INCORRECT(400, "password incorrect, enter another password  ", HttpStatus.BAD_REQUEST)
 
 
 

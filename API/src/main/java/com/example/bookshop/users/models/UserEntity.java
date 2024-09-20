@@ -43,6 +43,8 @@ public class UserEntity extends BaseEntity {
     @Column(unique = true)
     String email;
 
+
+    @Pattern(regexp = "^[0-9]{10,15}$", message = "Invalid phone number")
     String phone;
 
     @Lob
@@ -51,21 +53,19 @@ public class UserEntity extends BaseEntity {
     @NotNull(message = "image url not null ")
     String image_url;
 
-    @NotNull(message = "firstName  must not be null")
+
     String firstName;
 
-    @NotNull(message = "lastName  must not be null")
+
     String lastName;
 
     Integer age;
 
     Date birthDate;
 
-    boolean gender;
+    Boolean gender;
 
 
-    @NotNull(message = "status  must not be null")
-    boolean status;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))

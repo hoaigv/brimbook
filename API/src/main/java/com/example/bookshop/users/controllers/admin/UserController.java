@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,30 +27,33 @@ public class UserController {
     private  final  static   String DEFAULT_FILTER_OFFSET = "0";
     private  final  static Sort DEFAULT_FILTER_SORT = Sort.by(Sort.Direction.DESC , "createDate");
     @GetMapping
-    public ApiResponse<List<UserResponse>> getUsers(
+    public ResponseEntity<ApiResponse<List<UserResponse>>> getUsers(
             @RequestParam(required = false, defaultValue = DEFAULT_FILTER_LIMIT  ) int limit,
             @RequestParam(required = false, defaultValue = DEFAULT_FILTER_OFFSET) int offset
     ) {
         Pageable pageable = PageRequest.of(offset, limit, DEFAULT_FILTER_SORT);
-        var resp = userService.getAllUsers(pageable);
-        return ApiResponse.<List<UserResponse>>builder()
-                .result(resp)
+        var resp = ApiResponse.<List<UserResponse>>builder()
+                .result(userService.getAllUsers(pageable))
                 .build();
+
+        return ResponseEntity.ok(resp);
     }
     @PostMapping
-    public ApiResponse<Void> createUser(){
-        return ApiResponse.<Void>builder().build();
+    public ResponseEntity<ApiResponse<Void>> createUser(){
+        return ResponseEntity.ok().build();
     }
     @PutMapping("/{userId}")
-    public ApiResponse<UserResponse> update(@RequestBody  List<String> roles , @RequestBody Integer userId){
-      var resp = userService.updateRoleUser(roles,userId);
-      return ApiResponse.<UserResponse>builder().result(resp).build();
+    public ResponseEntity<ApiResponse<UserResponse>> update(@RequestBody  List<String> roles , @RequestBody Integer userId){
+      var resp =  ApiResponse.<UserResponse>builder().result( userService.updateRoleUser(roles,userId)).build();
+
+      return ResponseEntity.ok(resp);
     }
     @GetMapping("/{userId}")
-    ApiResponse<UserResponse> getUser(@PathVariable("userId") int userId) {
-        return ApiResponse.<UserResponse>builder()
-                .result(userService.getUserById(userId))
-                .build();
+    public ResponseEntity<ApiResponse<UserResponse>> getUser(@PathVariable("userId") int userId) {
+       var resp = ApiResponse.<UserResponse>builder()
+               .result(userService.getUserById(userId))
+               .build();
+        return ResponseEntity.ok(resp);
     }
 
 

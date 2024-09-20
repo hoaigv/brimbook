@@ -30,12 +30,10 @@ public class UserResponse {
 
     Date birthDate;
 
-    boolean gender;
+    Boolean gender;
 
-    boolean status;
+    String image_url;;
 
-    @Lob
-    String image;
 
     Set<RoleResponse> roles ;
 }

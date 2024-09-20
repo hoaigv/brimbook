@@ -71,40 +71,48 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public UserResponse createUser(UserCreationRequest request, MultipartFile image) {
+    public UserResponse createUser(UserCreationRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new CustomRunTimeException(ErrorCode.USER_EXISTED);
         }
         UserEntity user = userMapper.userToUserEntity(request);
-        user.setStatus(true);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         HashSet<RoleEntity> roles = new HashSet<>();
         roleRepository.findById(PredefinedRole.USER).ifPresent(roles::add);
         user.setRoles(roles);
-        if (image.isEmpty()) {
-            throw new IllegalArgumentException("File have not data");
-        }
-        var link = cloudinary.uploadFile(image);
-
-        user.setImage_url(link);
-        var resp = new UserResponse();
+        user.setImage_url("https://res.cloudinary.com/dh4tdxre1/image/upload/v1726540809/cchxb6qoz2y89gvr9iol.jpg");
         try {
-            resp = userMapper.userToUserResponse(userRepository.save(user));
+             userRepository.save(user);
+
         } catch (DataIntegrityViolationException exception) {
             throw new DataIntegrityViolationException(exception.getMessage());
         }
-        return resp;
+        return userMapper.userToUserResponse(user);
     }
 
     @Override
     @Transactional
     public UserResponse updateUser(UserUpdateRequest request) {
         UserEntity oldUser = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
-        var roles = roleRepository.findAllById(request.getRoles());
-        oldUser.setRoles(new HashSet<>(roles));
-        oldUser.setPassword(passwordEncoder.encode(request.getPassword()));
         var user = userMapper.updateUserEntity(oldUser, request);
+        if(request.getAge() == null){
+            user.setAge(null);
+        }else {
+            user.setAge(Integer.valueOf(request.getAge()));
+        }
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         return userMapper.userToUserResponse(userRepository.save(user));
+    }
+
+    @Override
+    public void updateUserImage(MultipartFile image) {
+        if (image.isEmpty()) {
+            throw new IllegalArgumentException("File have not data");
+        }
+        UserEntity oldUser = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+        var link = cloudinary.uploadFile(image);
+        oldUser.setImage_url(link);
+        userRepository.save(oldUser);
     }
 
     @Override
@@ -112,7 +120,7 @@ public class UserService implements IUserService {
     public void delete(Set<Integer> ids) {
         log.info("In method delete");
         var oldUsers = userRepository.findAllById(ids);
-        oldUsers.forEach(user -> user.setStatus(false));
+        userRepository.deleteAll(oldUsers);
     }
 
     @Override

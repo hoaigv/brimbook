@@ -27,10 +27,9 @@ import org.springframework.web.filter.CorsFilter;
 @EnableMethodSecurity
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SecurityConfig {
-    String[] PUBLIC_ENDPOINT = {"/auth/token", "/auth/introspect", "/auth/logout", "/auth/refresh","/api/books/create","/api/chapter/create/*","/api/admin/category/create","/api/comment/**","/notification/token","/api/users/create","/api/admin/books/create"};
-    String[] PUBLIC_ENDPOINT_GET = {"/api/books/filter/**","/api/chapter/**","/api/admin/category","/api/admin/users"};
-    String [] PUBLIC_ENDPOINT_PUT = {"/api/books/**","/api/chapter/**","/api/admin/category"};
-    String [] PRIVATE_ENDPOINT_POST = {"/api/comment/**"};
+    String[] PUBLIC_POST_ENDPOINT = {"/api/users/sign-up","/auth/login", "/auth/introspect", "/auth/logout", "/auth/refresh"};
+    String[] PRIVATE_PUT_ENDPOINT = {"/api/users/update","/api/users/update/image"};
+    String[] PUBLIC_GET_ENDPOINT = {"/api/users/me"};
     CustomJwtDecoder jwtDecoder;
     RestAccessDeniedHandler restAccessDeniedHandler;
      static  String[] SWAGGER_WHITELIST = {
@@ -51,13 +50,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request ->
                 request
-                        .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT)
+                        .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINT)
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET,PUBLIC_ENDPOINT_GET)
-                        .permitAll()
-                        .requestMatchers(HttpMethod.PUT,PUBLIC_ENDPOINT_PUT)
-                        .permitAll()
-                        .requestMatchers(HttpMethod.POST,PRIVATE_ENDPOINT_POST )
+                        .requestMatchers(HttpMethod.GET,PUBLIC_GET_ENDPOINT)
+                        .hasAuthority(Role.ROLE_USER.name())
+                        .requestMatchers(HttpMethod.PUT,PRIVATE_PUT_ENDPOINT)
                         .hasAuthority(Role.ROLE_USER.name())
                         .requestMatchers(SWAGGER_WHITELIST)
                 .permitAll()
@@ -80,7 +77,7 @@ public class SecurityConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("*");
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();

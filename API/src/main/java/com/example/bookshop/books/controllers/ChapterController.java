@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController("AdminChapterController")
@@ -20,26 +21,27 @@ import org.springframework.web.bind.annotation.*;
 public class ChapterController {
     IChapterService chapterService;
     @PostMapping
-    public ApiResponse<ChapterCreateResponse> createChapter(@PathVariable int bookId , @RequestBody ChapterCreateRequest request) {
-       var result = chapterService.createChapter(bookId,request);
-        return ApiResponse.<ChapterCreateResponse>builder()
-                .result(result)
-                .build();
+    public ResponseEntity<ApiResponse<ChapterCreateResponse>> createChapter(@PathVariable int bookId , @RequestBody ChapterCreateRequest request) {
+       var result =ApiResponse.<ChapterCreateResponse>builder()
+               .result(chapterService.createChapter(bookId,request))
+               .build();
+
+        return ResponseEntity.ok(result);
     }
     @PutMapping("/{chapterId}")
-    public ApiResponse<ChapterUpdateResponse> updateChapter(@PathVariable int bookId , @RequestBody ChapterUpdateRequest request) {
-        var result = chapterService.updateChapter(bookId,request);
-        return ApiResponse.<ChapterUpdateResponse>builder()
-                .result(result)
-                .build();
+    public ResponseEntity<ApiResponse<ChapterUpdateResponse>> updateChapter(@PathVariable int bookId , @RequestBody ChapterUpdateRequest request) {
+               chapterService.updateChapter(bookId,request);
+        return ResponseEntity.ok().build();
     }
     @GetMapping("/{chapterId}")
-    public ApiResponse<Void> getChapters(@PathVariable int chapterId) {
-        return ApiResponse.<Void>builder().build();
+    public ResponseEntity<ApiResponse<Void>> getChapters(@PathVariable int chapterId) {
+        var resp = ApiResponse.<Void>builder().build();
+        return ResponseEntity.ok(resp);
     }
     @GetMapping
-    public ApiResponse<Void> getAllChapters(@PathVariable int bookId) {
-        return ApiResponse.<Void>builder().build();
+    public ResponseEntity<ApiResponse<Void>> getAllChapters(@PathVariable int bookId) {
+        var resp = ApiResponse.<Void>builder().build();
+        return ResponseEntity.ok(resp);
     }
 
 

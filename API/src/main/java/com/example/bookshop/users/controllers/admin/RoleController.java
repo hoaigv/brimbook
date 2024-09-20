@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,27 +21,27 @@ import java.util.List;
 public class RoleController {
     IRoleService roleService;
     @PostMapping
-    ApiResponse<RoleResponse> create(@RequestBody RoleRequest roleRequest) {
-        return ApiResponse.<RoleResponse>builder()
-                .result(roleService.create(roleRequest))
-                .build();
+   public ResponseEntity<ApiResponse<RoleResponse>> create(@RequestBody RoleRequest roleRequest) {
+      var resp = ApiResponse.<RoleResponse>builder()
+              .result(roleService.create(roleRequest))
+              .build();
+        return  ResponseEntity.ok(resp);
     }
     @GetMapping
-    ApiResponse<List<RoleResponse>> getAll() {
-        return ApiResponse.<List<RoleResponse>>builder()
+   public  ResponseEntity<ApiResponse<List<RoleResponse>>> getAll() {
+        var resp = ApiResponse.<List<RoleResponse>>builder()
                 .result(roleService.getAllRoles())
                 .build();
+        return ResponseEntity.ok(resp);
     }
     @DeleteMapping("/{role}")
-    ApiResponse<Void> delete(@PathVariable String role) {
+   public ResponseEntity< ApiResponse<Void> > delete(@PathVariable String role) {
         roleService.deleteRole(role);
-        return ApiResponse.<Void>builder().build();
+        return ResponseEntity.ok().build();
     }
     @PutMapping("/update")
-    ApiResponse<RoleResponse> update(@RequestBody RoleRequest roleRequest) {
-        var resp = roleService.update(roleRequest);
-        return ApiResponse.<RoleResponse>builder()
-                .result(resp)
-                .build();
+   public  ResponseEntity<ApiResponse<Void>> update(@RequestBody RoleRequest roleRequest) {
+        roleService.update(roleRequest);
+        return ResponseEntity.ok().build();
     }
 }
