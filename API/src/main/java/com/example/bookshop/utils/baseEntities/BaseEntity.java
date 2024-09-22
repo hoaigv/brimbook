@@ -26,12 +26,12 @@ public class BaseEntity {
 
     @Column
     @CreatedDate
-    @NotNull(message = "createdDate must not be null")
-    LocalDateTime createdDate;
+    @NotNull(message = "created at must not be null")
+    LocalDateTime createdAt;
 
     @Column
     @LastModifiedDate
-    LocalDateTime updatedDate;
+    LocalDateTime updatedAt;
 
 
 }

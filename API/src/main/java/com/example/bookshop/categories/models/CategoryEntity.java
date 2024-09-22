@@ -1,6 +1,7 @@
 package com.example.bookshop.categories.models;
 
 import com.example.bookshop.books.models.BookEntity;
+import com.example.bookshop.utils.baseEntities.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -18,16 +19,13 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryEntity {
+public class CategoryEntity extends BaseEntity {
     @Id
     @NotNull(message = "code must not be null")
     Integer id;
 
     @NotNull(message = "category name  must not be null")
-    String categoryName;
-
-    @NotNull(message = "description must not be null")
-    String categoryDescription;
+    String name;
 
     @OneToMany(mappedBy = "category" , fetch = FetchType.LAZY)
     @JsonManagedReference

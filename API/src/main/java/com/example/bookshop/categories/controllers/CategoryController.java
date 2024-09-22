@@ -1,9 +1,9 @@
-package com.example.bookshop.categories.controlers;
+package com.example.bookshop.categories.controllers;
 
 import com.example.bookshop.utils.ApiResponse;
-import com.example.bookshop.categories.controlers.dto.CategoryCreateRequest;
-import com.example.bookshop.categories.controlers.dto.CategoryCreateResponse;
-import com.example.bookshop.categories.controlers.dto.CategoryResponse;
+import com.example.bookshop.categories.controllers.dto.CategoryCreateRequest;
+import com.example.bookshop.categories.controllers.dto.CategoryCreateResponse;
+import com.example.bookshop.categories.controllers.dto.CategoryResponse;
 import com.example.bookshop.categories.services.ICategoryService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

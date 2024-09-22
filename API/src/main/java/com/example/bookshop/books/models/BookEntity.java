@@ -3,9 +3,10 @@ package com.example.bookshop.books.models;
 import com.example.bookshop.categories.models.CategoryEntity;
 import com.example.bookshop.comments.models.CommentEntity;
 import com.example.bookshop.comments.models.RateEntity;
-import com.example.bookshop.users.models.BookRelationshipEntity;
+import com.example.bookshop.users.models.LikeEntity;
+import com.example.bookshop.users.models.ReadBooksEntity;
 import com.example.bookshop.users.models.UserEntity;
-import com.example.bookshop.utils.baseEntities.BaseWithUpdatedByEntity;
+import com.example.bookshop.utils.baseEntities.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -25,7 +26,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BookEntity extends BaseWithUpdatedByEntity {
+public class BookEntity extends BaseEntity {
 
     @NotNull(message = "title must not be null")
     String title;
@@ -44,8 +45,11 @@ public class BookEntity extends BaseWithUpdatedByEntity {
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     @JsonManagedReference
-    Set<BookRelationshipEntity> bookRelationships = new HashSet<>();
+    Set<LikeEntity> likes = new HashSet<>();
 
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    Set<ReadBooksEntity> read = new HashSet<>();
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     @JsonBackReference

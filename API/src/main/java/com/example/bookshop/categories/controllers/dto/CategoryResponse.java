@@ -1,4 +1,5 @@
-package com.example.bookshop.users.controllers.dto.roles;
+package com.example.bookshop.categories.controllers.dto;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,8 +10,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class RoleRequest {
-    String roleName;
-    String roleDescription;
-    Set<String> permissions ;
+public class CategoryResponse {
+    Set<String> categories;
 }

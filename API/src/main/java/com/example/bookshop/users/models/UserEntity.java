@@ -4,7 +4,8 @@ import com.example.bookshop.books.models.BookEntity;
 import com.example.bookshop.comments.models.CommentEntity;
 import com.example.bookshop.comments.models.RateEntity;
 import com.example.bookshop.utils.baseEntities.BaseWithUpdatedByEntity;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.example.bookshop.utils.enums.Gender;
+import com.example.bookshop.utils.enums.Role;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -49,17 +50,20 @@ public class UserEntity extends BaseWithUpdatedByEntity {
 
     Date birthDate;
 
-    Boolean gender;
+    @Enumerated(EnumType.STRING)
+    Gender gender;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn
-    @JsonBackReference
-    @NotNull
-    RoleEntity role;
+    @NotNull(message = "user role must be not null")
+    @Enumerated(EnumType.STRING)
+    Role role;
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
     @JsonManagedReference
-    Set<BookRelationshipEntity> bookRelationships = new HashSet<>();
+    Set<LikeEntity> likes = new HashSet<>();
+
+    @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
+    @JsonManagedReference
+    Set<ReadBooksEntity> read = new HashSet<>();
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
     @JsonManagedReference

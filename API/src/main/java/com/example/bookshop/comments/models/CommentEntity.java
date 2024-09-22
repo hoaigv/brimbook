@@ -23,10 +23,10 @@ public class CommentEntity extends BaseEntity {
     @Lob
     @Column(columnDefinition = "TEXT")
     @NotNull(message = "name must not be null")
-    String contentComment;
+    String commentText;
 
     @NotNull(message = "visible of comment must not be null")
-    Boolean is_visible;
+    Boolean isVisible;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn

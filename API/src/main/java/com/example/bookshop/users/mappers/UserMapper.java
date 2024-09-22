@@ -11,13 +11,17 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
+   @Mapping(target = "gender" , ignore = true)
+   @Mapping(target = "role" , ignore = true)
    UserResponse userToUserResponse(UserEntity userEntity);
 
-
+   @Mapping(target = "gender" , ignore = true)
+   @Mapping(target = "role" , ignore = true)
    @Mapping(target = "image_url", ignore = true)
    UserEntity userToUserEntity(UserCreationRequest userCreationRequest);
 
-
+   @Mapping(target = "gender" , ignore = true)
+   @Mapping(target = "role" , ignore = true)
    @Mapping(target = "password", ignore = true)
    UserEntity updateUserEntity(@MappingTarget UserEntity userEntity, UserUpdateRequest userUpdateRequest);
 

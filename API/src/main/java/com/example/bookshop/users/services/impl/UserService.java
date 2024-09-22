@@ -1,7 +1,6 @@
 package com.example.bookshop.users.services.impl;
 
 import com.example.bookshop.users.controllers.dto.users.UserUpdateRoleRequest;
-import com.example.bookshop.utils.constants.PredefinedRole;
 import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
 import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
@@ -9,11 +8,11 @@ import com.example.bookshop.users.models.UserEntity;
 import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
 import com.example.bookshop.exceptionHandlers.ErrorCode;
 import com.example.bookshop.users.mappers.UserMapper;
-import com.example.bookshop.users.repositories.RoleRepository;
 import com.example.bookshop.users.repositories.UserRepository;
 import com.example.bookshop.users.services.IUserService;
 import com.example.bookshop.utils.AuthUtils;
 import com.example.bookshop.utils.CloudUtils;
+import com.example.bookshop.utils.enums.Role;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -34,7 +33,6 @@ import java.util.*;
 public class UserService implements IUserService {
 
     UserRepository userRepository;
-    RoleRepository roleRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     CloudUtils cloudinary;
@@ -71,9 +69,7 @@ public class UserService implements IUserService {
         }
         UserEntity user = userMapper.userToUserEntity(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        var roleEntity = roleRepository.findByRoleName(PredefinedRole.USER)
-                .orElseThrow(()->  new CustomRunTimeException(ErrorCode.ROLE_NOT_FOUND));
-        user.setRole(roleEntity);
+        user.setRole(Role.USER);
         user.setImage_url("https://res.cloudinary.com/dh4tdxre1/image/upload/v1726540809/cchxb6qoz2y89gvr9iol.jpg");
         try {
             userRepository.save(user);

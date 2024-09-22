@@ -11,26 +11,23 @@ import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
 
 @Table
-@Entity(name = "relationships")
+@Entity(name = "likes")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BookRelationshipEntity {
+public class LikeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @Column
     @CreatedDate
-    @NotNull(message = "createdDate must not be null")
-    LocalDateTime createdDate;
+    @NotNull(message = "created at must not be null")
+    LocalDateTime createdAt;
 
-    @Column
-    @NotNull(message = "relationship with boot mus not be null")
-    String relationship;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn

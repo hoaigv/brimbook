@@ -1,4 +1,4 @@
-package com.example.bookshop.categories.controlers.dto;
+package com.example.bookshop.categories.controllers.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

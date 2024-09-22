@@ -1,8 +1,8 @@
 package com.example.bookshop.categories.services.impl;
 
-import com.example.bookshop.categories.controlers.dto.CategoryCreateRequest;
-import com.example.bookshop.categories.controlers.dto.CategoryCreateResponse;
-import com.example.bookshop.categories.controlers.dto.CategoryResponse;
+import com.example.bookshop.categories.controllers.dto.CategoryCreateRequest;
+import com.example.bookshop.categories.controllers.dto.CategoryCreateResponse;
+import com.example.bookshop.categories.controllers.dto.CategoryResponse;
 import com.example.bookshop.categories.models.CategoryEntity;
 import com.example.bookshop.categories.mappers.CategoryMapper;
 import com.example.bookshop.categories.repositories.CategoryRepository;
@@ -28,7 +28,7 @@ public class CategoryService implements ICategoryService {
     public CategoryCreateResponse createCategory(CategoryCreateRequest request) {
         var newCategory = categoryRepository.save(categoryMapper.requestToEntity(request));
         return CategoryCreateResponse.builder()
-                .categoryName(newCategory.getCategoryName())
+                .categoryName(newCategory.getName())
                 .build();
     }
 
@@ -36,7 +36,7 @@ public class CategoryService implements ICategoryService {
     public CategoryResponse getAllCategories() {
         var result = categoryRepository.findAll();
         var resp = result.stream().map(
-                CategoryEntity::getCategoryName
+                CategoryEntity::getName
         ).collect(Collectors.toSet());
         return CategoryResponse.builder()
                 .categories(resp)
