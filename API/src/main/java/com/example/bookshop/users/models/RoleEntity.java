@@ -1,10 +1,16 @@
 package com.example.bookshop.users.models;
 
+import com.example.bookshop.comments.models.CommentEntity;
+import com.example.bookshop.utils.baseEntities.BaseAllEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -15,18 +21,13 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "roles")
 @Table
-public class RoleEntity {
-    @Id
-    @Column(unique = true, nullable = false)
+public class RoleEntity extends BaseAllEntity {
+
+    @NotNull
+    @Column(unique = true)
     String roleName;
 
-    String roleDescription;
-
-    @ManyToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "role")
+    @JsonBackReference
     Set<UserEntity> users = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.LAZY)
-     @JoinTable(name = "roles_permissions",joinColumns = @JoinColumn(name = "role_id") ,inverseJoinColumns = @JoinColumn(name = "permission_id"))
-    Set<PermissionEntity> permissions = new HashSet<>();
-
 }

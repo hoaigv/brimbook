@@ -16,17 +16,5 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Component
 public class CategoriesConverter {
-    CategoryRepository categoryRepository;
 
-    @Named("CategoriesCodeToCategories")
-    public Set<CategoryEntity> CategoriesCodeToCategories(Set<String> categories) {
-        return categories.stream().map(
-                categoryRepository::findByCategoryCode
-        ).collect(Collectors.toSet());
-    }
-
-    @Named("CategoriesToCategoriesCode")
-    public Set<String> CategoriesToCategoriesCode(Set<CategoryEntity> categories) {
-        return categories.stream().map(CategoryEntity::getCategoryCode).collect(Collectors.toSet());
-    }
 }

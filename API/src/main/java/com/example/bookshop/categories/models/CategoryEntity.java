@@ -1,11 +1,8 @@
 package com.example.bookshop.categories.models;
 
 import com.example.bookshop.books.models.BookEntity;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -24,7 +21,7 @@ import java.util.Set;
 public class CategoryEntity {
     @Id
     @NotNull(message = "code must not be null")
-    String categoryCode;
+    Integer id;
 
     @NotNull(message = "category name  must not be null")
     String categoryName;
@@ -32,8 +29,8 @@ public class CategoryEntity {
     @NotNull(message = "description must not be null")
     String categoryDescription;
 
-    @ManyToMany(mappedBy = "categories")
-    @JsonBackReference
+    @OneToMany(mappedBy = "category" , fetch = FetchType.LAZY)
+    @JsonManagedReference
     Set<BookEntity> books = new HashSet<>();
 
 }

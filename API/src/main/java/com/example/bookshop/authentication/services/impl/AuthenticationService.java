@@ -7,12 +7,12 @@ import com.example.bookshop.authentication.controllers.dto.token.RefreshRequest;
 import com.example.bookshop.authentication.controllers.dto.token.AuthenticationResponse;
 import com.example.bookshop.authentication.controllers.dto.token.IntrospectResponse;
 import com.example.bookshop.authentication.models.InvalidatedToken;
+import com.example.bookshop.authentication.services.IAuthenticationService;
 import com.example.bookshop.users.models.UserEntity;
 import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
 import com.example.bookshop.exceptionHandlers.ErrorCode;
 import com.example.bookshop.authentication.repositories.InvalidatedTokenRepository;
 import com.example.bookshop.users.repositories.UserRepository;
-import com.example.bookshop.books.services.IAuthenticationService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.time.Instant;
@@ -185,16 +184,8 @@ public class AuthenticationService implements IAuthenticationService {
 
     private String buildScope(UserEntity user) {
         StringJoiner scopeJoiner = new StringJoiner(" ");
-        if (!CollectionUtils.isEmpty(user.getRoles())) {
-            user.getRoles().forEach(role -> {
-                scopeJoiner.add("ROLE_" + role.getRoleName());
-                if (!CollectionUtils.isEmpty(role.getPermissions())) {
-                    role.getPermissions().forEach(permission ->
-                            scopeJoiner.add(permission.getPermissionName())
-                    );
-                }
-            });
-
+        if (!user.getRole().getRoleName().isEmpty()) {
+                scopeJoiner.add("ROLE_" + user.getRole().getRoleName());
         }
         return scopeJoiner.toString();
     }

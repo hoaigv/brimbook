@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @MappedSuperclass
@@ -16,9 +17,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
-public class BaseWithCreatedByEntity extends BaseEntity {
+public class BaseAllEntity extends BaseEntity {
     @Column
     @CreatedBy
     @NotNull(message = "createdBy must not be null")
     String createdBy;
+
+    @Column
+    @LastModifiedBy
+    @NotNull(message = "createdBy must not be null")
+    String updatedBy;
 }

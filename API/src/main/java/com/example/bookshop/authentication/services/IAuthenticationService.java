@@ -1,4 +1,4 @@
-package com.example.bookshop.books.services;
+package com.example.bookshop.authentication.services;
 
 import com.example.bookshop.authentication.controllers.dto.token.AuthenticationRequest;
 import com.example.bookshop.authentication.controllers.dto.token.IntrospectRequest;
@@ -14,5 +14,5 @@ public interface IAuthenticationService {
     AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest);
     IntrospectResponse introspect(IntrospectRequest introspectRequest) throws JOSEException, ParseException;
     void logout(LogoutRequest logout) throws ParseException, JOSEException;
-     AuthenticationResponse refreshToken(RefreshRequest request) throws JOSEException, ParseException;
+    AuthenticationResponse refreshToken(RefreshRequest request) throws JOSEException, ParseException;
 }

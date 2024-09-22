@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Set;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<CategoryEntity, String> {
-    CategoryEntity findByCategoryCode(String code);
-    Set<CategoryEntity> findAllByCategoryCodeIn(Set<String> codes);
+public interface CategoryRepository extends JpaRepository<CategoryEntity, Integer> {
+
 }

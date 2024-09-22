@@ -16,9 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
-@Configuration
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+
 @Slf4j
 public class ApplicationInitConfig {
 
@@ -37,12 +35,11 @@ public class ApplicationInitConfig {
             if (userRepository.findByUsername(ADMIN_USER_NAME).isEmpty()) {
                 roleRepository.save(RoleEntity.builder()
                         .roleName(PredefinedRole.USER)
-                        .roleDescription("User role")
+
                         .build());
 
                 RoleEntity adminRole = roleRepository.save(RoleEntity.builder()
                         .roleName(PredefinedRole.ADMIN)
-                        .roleDescription("Admin role")
                         .build());
 
                 var roles = new HashSet<RoleEntity>();
@@ -51,7 +48,6 @@ public class ApplicationInitConfig {
                 UserEntity user = UserEntity.builder()
                         .username(ADMIN_USER_NAME)
                         .password(passwordEncoder.encode(ADMIN_PASSWORD))
-                        .roles(roles)
                         .image_url("https://stcv4.hnammobile.com/downloads/a/cach-chup-anh-selfie-dep-an-tuong-ban-nhat-dinh-phai-biet-81675319567.jpg")
                         .firstName("Admin")
                         .lastName("Admin")

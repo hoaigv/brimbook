@@ -1,23 +1,19 @@
 package com.example.bookshop.users.services.impl;
 
+import com.example.bookshop.users.controllers.dto.users.UserUpdateRoleRequest;
 import com.example.bookshop.utils.constants.PredefinedRole;
 import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
 import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
-import com.example.bookshop.users.models.RoleEntity;
 import com.example.bookshop.users.models.UserEntity;
 import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
 import com.example.bookshop.exceptionHandlers.ErrorCode;
 import com.example.bookshop.users.mappers.UserMapper;
-import com.example.bookshop.books.repositories.BookRepository;
-import com.example.bookshop.books.repositories.ChapterRepository;
 import com.example.bookshop.users.repositories.RoleRepository;
 import com.example.bookshop.users.repositories.UserRepository;
 import com.example.bookshop.users.services.IUserService;
 import com.example.bookshop.utils.AuthUtils;
 import com.example.bookshop.utils.CloudUtils;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -41,8 +37,6 @@ public class UserService implements IUserService {
     RoleRepository roleRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
-    BookRepository bookRepository;
-    ChapterRepository chapterRepository;
     CloudUtils cloudinary;
 
     @Override
@@ -77,9 +71,9 @@ public class UserService implements IUserService {
         }
         UserEntity user = userMapper.userToUserEntity(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        HashSet<RoleEntity> roles = new HashSet<>();
-        roleRepository.findById(PredefinedRole.USER).ifPresent(roles::add);
-        user.setRoles(roles);
+        var roleEntity = roleRepository.findByRoleName(PredefinedRole.USER)
+                .orElseThrow(()->  new CustomRunTimeException(ErrorCode.ROLE_NOT_FOUND));
+        user.setRole(roleEntity);
         user.setImage_url("https://res.cloudinary.com/dh4tdxre1/image/upload/v1726540809/cchxb6qoz2y89gvr9iol.jpg");
         try {
             userRepository.save(user);
@@ -117,43 +111,45 @@ public class UserService implements IUserService {
         var oldUsers = userRepository.findAllById(ids);
         userRepository.deleteAll(oldUsers);
     }
+//    @Override
+//    @Transactional
+//    public String addFavouriteBook(Integer id, String token) {
+//        var bookEntity = bookRepository.findById(id).orElseThrow(
+//                () -> new CustomRunTimeException(ErrorCode.BOOK_NOT_FOUND)
+//        );
+//        try {
+//            FirebaseMessaging.getInstance().subscribeToTopic(Collections.singletonList(token), String.valueOf(bookEntity.getId()));
+//        } catch (FirebaseMessagingException e) {
+//            throw new CustomRunTimeException(ErrorCode.ADD_FAV_NOT_SUCCESS);
+//        }
+//        var user = userRepository.findByUsername(AuthUtils.getUserCurrent())
+//                .orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+//        user.getBooks().add(bookEntity);
+//        userRepository.save(user);
+//        return bookEntity.getTitle();
+//    }
+//
+//
+//    @Override
+//    @Transactional
+//    public void addReadChapter(Integer id) {
+//        var chapter = chapterRepository.findById(id).orElseThrow(
+//                () -> new CustomRunTimeException(ErrorCode.CHAPTER_NOT_FOUND)
+//        );
+//        var user = userRepository.findByUsername(AuthUtils.getUserCurrent())
+//                .orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+//        user.getChapters().add(chapter);
+//        userRepository.save(user);
+//    }
 
     @Override
     @Transactional
-    public String addFavouriteBook(Integer id, String token) {
-        var bookEntity = bookRepository.findById(id).orElseThrow(
-                () -> new CustomRunTimeException(ErrorCode.BOOK_NOT_FOUND)
-        );
-        try {
-            FirebaseMessaging.getInstance().subscribeToTopic(Collections.singletonList(token), String.valueOf(bookEntity.getId()));
-        } catch (FirebaseMessagingException e) {
-            throw new CustomRunTimeException(ErrorCode.ADD_FAV_NOT_SUCCESS);
-        }
-        var user = userRepository.findByUsername(AuthUtils.getUserCurrent())
-                .orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
-        user.getBooks().add(bookEntity);
-        userRepository.save(user);
-        return bookEntity.getTitle();
-    }
-
-    @Override
-    @Transactional
-    public void addReadChapter(Integer id) {
-        var chapter = chapterRepository.findById(id).orElseThrow(
-                () -> new CustomRunTimeException(ErrorCode.CHAPTER_NOT_FOUND)
-        );
-        var user = userRepository.findByUsername(AuthUtils.getUserCurrent())
-                .orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
-        user.getChapters().add(chapter);
-        userRepository.save(user);
-    }
-
-    @Override
-    public UserResponse updateRoleUser(List<String> roles, Integer userId) {
-        List<RoleEntity> roleSet = roleRepository.findAllById(roles);
-        var user = userRepository.findById(userId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
-        user.setRoles(new HashSet<>(roleSet));
-        var newUser = userRepository.save(user);
-        return userMapper.userToUserResponse(newUser);
+    public void updateRoleUser(UserUpdateRoleRequest request) {
+//        var roleSet = roleRepository.findByRoleName(role.getRole()).orElseThrow(
+//                () -> new CustomRunTimeException(ErrorCode.ROLE_NOT_FOUND)
+//        );
+//        var user = userRepository.findById(userId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+//        user.setRole(roleSet);
+//        userRepository.save(user);
     }
 }

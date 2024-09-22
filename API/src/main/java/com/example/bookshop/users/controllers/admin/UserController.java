@@ -1,8 +1,10 @@
 package com.example.bookshop.users.controllers.admin;
 
+import com.example.bookshop.users.controllers.dto.users.UserUpdateRoleRequest;
 import com.example.bookshop.utils.ApiResponse;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
 import com.example.bookshop.users.services.IUserService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -10,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,11 +45,16 @@ public class UserController {
     public ResponseEntity<ApiResponse<Void>> createUser(){
         return ResponseEntity.ok().build();
     }
-    @PutMapping("/{userId}")
-    public ResponseEntity<ApiResponse<UserResponse>> update(@RequestBody  List<String> roles , @RequestBody Integer userId){
-      var resp =  ApiResponse.<UserResponse>builder().result( userService.updateRoleUser(roles,userId)).build();
 
-      return ResponseEntity.ok(resp);
+    @PutMapping("/{userId}")
+    public ResponseEntity<ApiResponse<Void>> updateuserRole(@PathVariable Integer userId, @RequestBody @Valid UserUpdateRoleRequest userUpdateRoleRequest) {
+//        userService.updateRoleUser(userUpdateRoleRequest, userId);
+        var resp = ApiResponse.<Void>builder()
+                .result(null)
+                .message("Successfully updated user role")
+                .code(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<UserResponse>> getUser(@PathVariable("userId") int userId) {
@@ -55,6 +63,4 @@ public class UserController {
                .build();
         return ResponseEntity.ok(resp);
     }
-
-
 }

@@ -5,7 +5,6 @@ import com.example.bookshop.users.controllers.dto.roles.RoleResponse;
 import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
 import com.example.bookshop.exceptionHandlers.ErrorCode;
 import com.example.bookshop.users.mappers.RoleMapper;
-import com.example.bookshop.users.repositories.PermissionRepository;
 import com.example.bookshop.users.repositories.RoleRepository;
 import com.example.bookshop.users.services.IRoleService;
 import jakarta.transaction.Transactional;
@@ -24,7 +23,6 @@ import java.util.List;
 @Slf4j
 public class RoleService implements IRoleService {
     RoleRepository roleRepository;
-    PermissionRepository permissionRepository;
     RoleMapper roleMapper;
 
     @Override
@@ -36,8 +34,6 @@ public class RoleService implements IRoleService {
     @Override
     public RoleResponse create(RoleRequest request) {
        var role =  roleMapper.roleToRoleEntity(request);
-       var permissions = permissionRepository.findAllById(request.getPermissions());
-       role.setPermissions(new HashSet<>(permissions));
        roleRepository.save(role);
        return roleMapper.roleToRoleResponse(role);
     }
@@ -52,8 +48,6 @@ public class RoleService implements IRoleService {
     public RoleResponse update(RoleRequest request) {
         var oldRole =  roleRepository.findById(request.getRoleName())
                 .orElseThrow(()-> new CustomRunTimeException(ErrorCode.ROLE_NOT_FOUND));
-        var permissions = permissionRepository.findAllById(request.getPermissions());
-        oldRole.setPermissions(new HashSet<>(permissions));
         var role = roleMapper.roleRequestToRoleEntity(request ,oldRole);
         var resp = roleRepository.save(role);
         return roleMapper.roleToRoleResponse(resp);
