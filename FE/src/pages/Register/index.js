@@ -2,45 +2,46 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import classNames from "classnames/bind";
-import styles from "./Login.module.scss";
+import styles from "./Register.module.scss";
 
 import { EyeIcon, EyeOffIcon, LogoImage } from "~/components/Icons";
 import Button from "~/components/Button";
-import Checkbox from "~/components/Checkbox";
-import * as User from "~/apis/user";
 import Input from "~/components/Input";
+import * as User from "~/apis/user";
 
 const cx = classNames.bind(styles);
 
-function Login() {
+function Register() {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
-  const [visible, setVisible] = useState("");
+  const [formData, setFormData] = useState([]);
+  const [visible, setVisible] = useState(false);
 
-  const handleChage = (e) => {
-    setFormData((curr) => ({ ...curr, username: e.target.value }));
-  };
+  // const handleInputName = (e) => {
+  //   setFormData((curr) => ({ ...curr, username: e.target.value }));
+  // };
+
+  // const handleInputEmail = (e) => {
+  //   setFormData((curr) => ({ ...curr, email: e.target.value }));
+  // };
 
   const handleInputPassword = (e) => {
     setFormData((curr) => ({ ...curr, password: e.target.value }));
   };
 
   const handleClick = () => {
-    User.loginUser(formData, navigate);
+    User.registerUser(formData, navigate);
   };
 
   return (
     <>
-      <title>Login Page | BrimBook</title>
+      <title>Register Page | BrimBook</title>
 
       <div className={cx("wrapper")}>
         <div className={cx("form")}>
           <LogoImage width="250px" height="60px" className={cx("logo")} />
-          <Input type={"text"} handleChage={handleChage} defaultValue={"Enter email"} mb={20} />
+          <Input type={"text"} defaultValue={"Enter Name"} mb={20} />
+          <Input type={"text"} defaultValue={"Enter email"} mb={20} />
           <div className={cx("password-wrapper")}>
             <div className={cx("password-inner")}>
               <input
@@ -63,25 +64,14 @@ function Login() {
               </div>
             </div>
           </div>
-          <div className={cx("checkbox-wrapper")}>
-            <Checkbox type1>Remember me</Checkbox>
-            <Button
-              noline
-              // to={}
-              width="123px"
-              color={"var(--primary-purple)"}
-            >
-              Forgot password?
-            </Button>
-          </div>
-          <div className={cx("register-btn")}>
-            <h5>Do you have any account? |</h5>
-            <Button noline to={"/register"} width="60px" color={"var(--primary-purple)"}>
-              Sign up
+          <div className={cx("login-btn")}>
+            <h5>Already have an account? |</h5>
+            <Button noline to={"/login"} width="60px" color={"var(--primary-purple)"}>
+              Sign in
             </Button>
           </div>
           <Button type1 onClick={handleClick}>
-            Login
+            Sign up
           </Button>
         </div>
       </div>
@@ -89,4 +79,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

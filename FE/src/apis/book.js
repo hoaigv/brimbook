@@ -7,14 +7,14 @@ export const getAll = async (query, currentButton, setSearchResult) => {
     .then((res) => {
       setSearchResult(res.data.books);
     })
-    .catch((err) => alert(err));
+    .catch((err) => console.log(err));
 };
 
-export const getOne = async (id, setBook) => {
+export const getOne = async (param, setBook) => {
   await axios
-    .get(`${BASE_URL}/books/${id}`)
+    .get(`https://api.itbook.store/1.0/books/${param}`)
     .then((res) => {
       setBook(res.data);
     })
-    .catch((err) => alert(err));
+    .catch((err) => console.log(err));
 };

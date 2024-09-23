@@ -1,0 +1,124 @@
+.container {
+  width: 100%;
+  max-width: 700px;
+  position: relative;
+}
+
+@media screen and (max-width: 739px) {
+  .container {
+    display: none;
+  }
+}
+
+/* ----- Search-input ----- */
+.search {
+  height: 50px;
+  padding-left: 30px;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border-radius: 10px;
+  border: 1px solid var(--g1);
+
+  &:hover,
+  &:focus-within {
+    border: 2px solid var(--primary-purple);
+    transform: scale(1.01);
+    transition: all 0.1s ease 0s;
+  }
+
+  input {
+    flex: 1;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary-purple);
+    background-color: transparent;
+  }
+
+  .clear {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-purple);
+    background-color: transparent;
+  }
+
+  .search-btn {
+    width: 70px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-purple);
+    background-color: transparent;
+    border-left: 1px solid var(--g1);
+
+    &:hover {
+      background-color: var(--nerual-purple);
+      border-radius: 0 10px 10px 0;
+    }
+  }
+}
+
+/* ----- Book-result ----- */
+.book-result {
+  width: 100%;
+  max-width: 700px;
+  padding: 10px 0;
+  background: var(--white);
+  border: 1px solid var(--g1);
+  border-radius: 10px;
+  position: absolute;
+  top: 55px;
+  z-index: 99;
+}
+
+.book-item {
+  display: flex;
+  justify-content: flex-start;
+
+  .container {
+    width: 100%;
+    padding: 5px 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--g3);
+      transition: all 0.1s ease 0s;
+    }
+
+    .book-img {
+      width: 50px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+
+      .title {
+        color: var(--black);
+        font-size: 1.8rem;
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .author {
+        color: var(--primary-purple);
+        font-size: 1.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
