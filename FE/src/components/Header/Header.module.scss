@@ -1,0 +1,29 @@
+.container {
+  height: 100px;
+  margin: 0 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 50px;
+}
+
+.logo-icon {
+  display: none;
+}
+
+@media screen and (max-width: 1023px) {
+  .logo-image {
+    display: none;
+  }
+
+  .logo-icon {
+    display: block;
+    color: var(--primary-purple);
+  }
+}
+
+@media screen and (max-width: 739px) {
+  .logo {
+    display: none;
+  }
+}
