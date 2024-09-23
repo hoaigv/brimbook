@@ -32,3 +32,4 @@ export { ArrowLeft } from "./ArrowLeft.js";
 export { MapPinIcon } from "./MapPinIcon.js";
 export { PhoneIcon } from "./PhoneIcon.js";
 export { MailIcon } from "./MailIcon.js";
+export { LogoImage } from "./LogoImage.js";

@@ -5,6 +5,7 @@ import { ArrowRight, LogoIcon, MapPinIcon, MailIcon, PhoneIcon } from "~/compone
 import Button from "~/components/Button";
 import { category } from "~/_mock/category";
 import { name } from "~/_mock/user";
+import { Link } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
@@ -34,11 +35,11 @@ function Footer() {
           <span className={cx("text")}>Category</span>
           <div className={cx("list")}>
             {category.slice(0, 12).map((item) => (
-              <Button key={item} noline className={cx("name-wrapper")} color={"var(--g0)"}>
+              <Link key={item} className={cx("name-wrapper")} color={"var(--g0)"}>
                 {item}
-              </Button>
+              </Link>
             ))}
-            <Button noline color={"var(--primary-purple)"}>
+            <Button noline maxWidth={90} color={"var(--primary-purple)"}>
               View All
               <ArrowRight />
             </Button>
@@ -47,41 +48,29 @@ function Footer() {
         <div className={cx("link")}>
           <span className={cx("text")}>Quick Links</span>
           <div className={cx("list")}>
-            <Button noline color={"var(--g0)"}>
-              About us
-            </Button>
-            <Button noline color={"var(--g0)"}>
-              Contact us
-            </Button>
-            <Button noline color={"var(--g0)"}>
-              Products
-            </Button>
-            <Button noline color={"var(--g0)"}>
-              Login
-            </Button>
-            <Button noline color={"var(--g0)"}>
-              Sign Up
-            </Button>
-            <Button noline color={"var(--g0)"}>
-              FAQ
-            </Button>
-            <Button noline color={"var(--g0)"}>
-              Shipment
-            </Button>
+            <Link className={cx("name-wrapper")}>About us</Link>
+            <Link className={cx("name-wrapper")}>Contact us</Link>
+            <Link className={cx("name-wrapper")}>Products</Link>
+            <Link className={cx("name-wrapper")}>Login</Link>
+            <Link className={cx("name-wrapper")}>Sign Up</Link>
+            <Link className={cx("name-wrapper")}>FAQ</Link>
+            <Link className={cx("name-wrapper")}>Shipment</Link>
           </div>
         </div>
-        <div className={cx("link")}>
+        <div className={cx("content")}>
           <span className={cx("text")}>Our Store</span>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3833.9796497737916!2d108.22705397586284!3d16.066545784612543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142198021ee4d69%3A0x46476db0aa96889f!2sNAPA%20Global%20-%20Software%20Outsourcing%20%26%20Offshore%20Development!5e0!3m2!1sen!2s!4v1726541559334!5m2!1sen!2s"
-            width="320"
-            height="200"
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="map"
-            className={cx("map")}
-          ></iframe>
+          <div className={cx("map")}>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3833.9796497737916!2d108.22705397586284!3d16.066545784612543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142198021ee4d69%3A0x46476db0aa96889f!2sNAPA%20Global%20-%20Software%20Outsourcing%20%26%20Offshore%20Development!5e0!3m2!1sen!2s!4v1726541559334!5m2!1sen!2s"
+              width="320"
+              height="200"
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="map"
+              className={cx("map")}
+            ></iframe>
+          </div>
 
           <div className={cx("container")}>
             <MapPinIcon className={cx("icon")} />

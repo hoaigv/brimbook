@@ -1,51 +1,51 @@
 .checkbox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
-    label {
-        position: relative;
+  label {
+    position: relative;
 
-        .check {
-            pointer-events: none;
-            position: absolute;
-            top: 2px;
-            left: -29px;
-            color: transparent;
-        }
+    .check {
+      pointer-events: none;
+      position: absolute;
+      top: 2px;
+      left: -29px;
+      color: transparent;
+    }
+  }
+
+  input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-purple);
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:checked {
+      background-color: var(--primary-purple);
+      transition: 0.1s ease;
     }
 
-    input[type="checkbox"] {
-        appearance: none;
-        width: 20px;
-        height: 20px;
-        border: 2px solid var(--primary-purple);
-        border-radius: 5px;
-        cursor: pointer;
-
-        &:checked {
-            background-color: var(--primary-purple);
-            transition: 0.1s ease;
-        }
-
-        &:checked + label {
-            .check {
-                color: var(--white);
-                transition: 0.1s ease;
-            }
-        }
+    &:checked + label {
+      .check {
+        color: var(--white);
+        transition: 0.1s ease;
+      }
     }
+  }
 }
 
 .type1 {
-    color: var(--g0);
-    font-size: 1.5rem;
-    font-weight: 600;
+  color: var(--g0);
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .type2 {
-    color: var(--black);
-    font-size: 1.6rem;
-    font-weight: 600;
-    letter-spacing: 0.64px;
+  color: var(--black);
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.64px;
 }

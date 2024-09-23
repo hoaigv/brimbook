@@ -4,10 +4,10 @@
 
 ## Quick start
 
--   Download from Github or clone the repo : git clone https://github.com/hoaigv/brimbook.git
--   Install: `npm install`
--   Start: `npm start`
--   Build: `npm run build`
+- Download from Github or clone the repo : git clone https://github.com/hoaigv/brimbook.git
+- Install: `npm install`
+- Start: `npm start`
+- Build: `npm run build`
 
 ## Contact us
 

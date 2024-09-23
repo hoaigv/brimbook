@@ -7,8 +7,8 @@ import styles from "./SearchPage.module.scss";
 import { ArrowLeft, ArrowRight } from "~/components/Icons";
 import Button from "~/components/Button";
 import SearchBookItem from "~/components/SearchBookItem";
-import Filter from "./Filter";
-import * as BookAPI from "~/apis/apiBook";
+import Filter from "../../components/Filter";
+import * as BookAPI from "~/apis/book";
 import { page } from "~/_mock/page";
 
 const cx = classNames.bind(styles);
@@ -50,13 +50,22 @@ function Search() {
           <div className={cx("books")}>
             <h1>Books</h1>
             <div className={cx("bloc-tabs")}>
-              <div className={cx("tabs", toggleState === 1 && "active-tabs")} onClick={() => setToggleState(1)}>
+              <div
+                className={cx("tabs", toggleState === 1 && "active-tabs")}
+                onClick={() => setToggleState(1)}
+              >
                 Today
               </div>
-              <div className={cx("tabs", toggleState === 2 && "active-tabs")} onClick={() => setToggleState(2)}>
+              <div
+                className={cx("tabs", toggleState === 2 && "active-tabs")}
+                onClick={() => setToggleState(2)}
+              >
                 This Week
               </div>
-              <div className={cx("tabs", toggleState === 3 && "active-tabs")} onClick={() => setToggleState(3)}>
+              <div
+                className={cx("tabs", toggleState === 3 && "active-tabs")}
+                onClick={() => setToggleState(3)}
+              >
                 This Month
               </div>
             </div>
@@ -69,7 +78,11 @@ function Search() {
             </div>
             <div className={cx("pagination")}>
               {currentButton !== 1 && (
-                <Button loadpage onClick={() => setCurrentButton((prev) => (prev === 1 ? prev : prev - 1))}>
+                <Button
+                  loadpage
+                  maxWidth={150}
+                  onClick={() => setCurrentButton((prev) => (prev === 1 ? prev : prev - 1))}
+                >
                   <ArrowLeft />
                   Previous
                 </Button>
@@ -88,7 +101,10 @@ function Search() {
               {currentButton !== numberOfPages.length && (
                 <Button
                   loadpage
-                  onClick={() => setCurrentButton((prev) => (prev === numberOfPages.length ? prev : prev + 1))}
+                  maxWidth={150}
+                  onClick={() =>
+                    setCurrentButton((prev) => (prev === numberOfPages.length ? prev : prev + 1))
+                  }
                 >
                   Next
                   <ArrowRight />

@@ -1,10 +1,13 @@
-import { Fragment } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Fragment } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import routers from '~/routes/routers';
-import { DefaultLayout } from '~/layouts/DefaultLayout';
+//Router
+import routers from "~/routes/routers";
 
-function App() {
+//Layout
+import { HeaderOnly } from "./layouts/HeaderOnly";
+
+export default function App() {
   return (
     <Router>
       <div className="App">
@@ -12,7 +15,7 @@ function App() {
           {routers.map((route, index) => {
             const Page = route.component;
 
-            let Layout = DefaultLayout;
+            let Layout = HeaderOnly;
             if (route.layout) {
               Layout = route.layout;
             } else if (route.layout === null) {
@@ -36,5 +39,3 @@ function App() {
     </Router>
   );
 }
-
-export default App;

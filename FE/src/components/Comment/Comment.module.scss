@@ -1,56 +1,56 @@
 .comment {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 
-    .comment-inner {
+  .comment-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+    padding: 36px 57px;
+    border-radius: 10px;
+    border: 1px solid var(--g1);
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+
+      .user-id {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        gap: 50px;
-        padding: 36px 57px;
-        border-radius: 10px;
-        border: 1px solid var(--g1);
+        gap: 20px;
+        margin-bottom: 20px;
 
-        .user-info {
-            display: flex;
-            flex-direction: column;
-
-            .user-id {
-                display: flex;
-                align-items: center;
-                gap: 20px;
-                margin-bottom: 20px;
-
-                .user-img {
-                    border-radius: 10px;
-                }
-
-                .name-user {
-                    font-size: 2rem;
-                    font-weight: 700;
-
-                    span {
-                        color: var(--g0);
-                        font-size: 1.6rem;
-                        font-weight: 700;
-                    }
-                }
-            }
+        .user-img {
+          border-radius: 10px;
         }
+
+        .name-user {
+          font-size: 2rem;
+          font-weight: 700;
+
+          span {
+            color: var(--g0);
+            font-size: 1.6rem;
+            font-weight: 700;
+          }
+        }
+      }
     }
+  }
 }
 
 .comment-text {
-    font-size: 1.6rem;
-    font-weight: 400;
+  font-size: 1.6rem;
+  font-weight: 400;
 }
 
 .rating {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    color: var(--orange);
-    font-size: 4rem;
-    font-weight: 700;
-    letter-spacing: -1.6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--orange);
+  font-size: 4rem;
+  font-weight: 700;
+  letter-spacing: -1.6px;
 }

@@ -1,12 +1,12 @@
 .wrapper {
-  width: 100%;
+  margin-top: 30px;
   display: flex;
   justify-content: center;
 }
 
 .inner {
-  width: 1390px;
-  margin-top: 30px;
+  width: 100%;
+  max-width: 1600px;
   display: flex;
   flex-direction: column;
   gap: 100px;
@@ -14,8 +14,8 @@
 
 .commit-items {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  justify-content: space-between;
+  grid-template-columns: repeat(4, 333px);
 }
 
 .commit-item {
@@ -75,9 +75,8 @@
   }
 
   .books-list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    justify-content: space-between;
+    display: flex;
+    justify-content: space-evenly;
   }
 }
 

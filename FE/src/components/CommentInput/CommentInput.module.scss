@@ -1,0 +1,39 @@
+.comment-input {
+  margin-bottom: 20px;
+
+  .comment-user-info {
+    padding: 36px 57px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid var(--g1);
+    border-radius: 10px;
+
+    /* ----- User info ----- */
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      .user-img {
+        border-radius: 10px;
+      }
+
+      .name-user {
+        font-size: 2rem;
+        font-weight: 700;
+      }
+    }
+
+    /* ----- Comment Input ----- */
+    .comment-text {
+      padding: 15px;
+      resize: none;
+      font-size: 1.6rem;
+      font-weight: 400;
+      border: 1px solid var(--g1);
+      border-radius: 10px;
+      outline-color: var(--primary-purple);
+    }
+  }
+}

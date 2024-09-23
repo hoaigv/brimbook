@@ -4,11 +4,11 @@
 }
 
 .inner {
-  width: 1390px;
-  height: auto;
+  width: 100%;
+  max-width: 1600px;
+  padding: 50px 0;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 .content-wrapper {
@@ -87,6 +87,7 @@
 }
 
 .list {
+  width: auto;
   height: 270px;
   display: flex;
   flex-direction: column;
@@ -112,6 +113,7 @@
   }
 }
 .map {
+  height: 150px;
   border: none;
   border-radius: 10px;
 }
