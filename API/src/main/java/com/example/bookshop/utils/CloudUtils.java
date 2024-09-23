@@ -2,8 +2,8 @@ package com.example.bookshop.utils;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.example.bookshop.exception.CustomRunTimeException;
-import com.example.bookshop.exception.ErrorCode;
+import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
+import com.example.bookshop.exceptionHandlers.ErrorCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,9 +30,12 @@ public class CloudUtils {
           }
      }
 
-     public String deleteFile(String publicId) {
+     public String deleteFile(String imgUrl) {
+          int lastSlashIndex = imgUrl.lastIndexOf("/");
+          int lastDocIndex = imgUrl.lastIndexOf(".");
+          String publicID = imgUrl.substring(lastSlashIndex+1,lastDocIndex);
           try {
-               var result = cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+               var result = cloudinary.uploader().destroy(publicID, ObjectUtils.emptyMap());
                if ("ok".equals(result.get("result"))) {
                     return "Image deleted successfully";
                } else {

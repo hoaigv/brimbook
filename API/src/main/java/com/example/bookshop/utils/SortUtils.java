@@ -30,15 +30,7 @@ public class SortUtils {
             if(!listSearch.contains(sortPair[0])) {
                 return Sort.unsorted();
             }
-            else {
-                Sort.Direction direction =Sort.Direction.ASC;
-                String property = sortPair[0];
-                if(sortPair.length > 1) {
-                    direction = Sort.Direction.fromString(sortPair[1]);
-                }
-                orders.add(new Sort.Order(direction, property).nullsLast());
-            }
-
         return Sort.by(orders);
+
     }
 }

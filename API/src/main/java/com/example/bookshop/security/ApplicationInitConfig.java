@@ -1,10 +1,8 @@
 package com.example.bookshop.security;
 
-import com.example.bookshop.constant.PredefinedRole;
-import com.example.bookshop.entity.RoleEntity;
-import com.example.bookshop.entity.UserEntity;
-import com.example.bookshop.repository.RoleRepository;
-import com.example.bookshop.repository.UserRepository;
+import com.example.bookshop.users.models.UserEntity;
+import com.example.bookshop.users.repositories.UserRepository;
+import com.example.bookshop.utils.enums.Role;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,7 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.HashSet;
+import java.time.LocalDateTime;
+
 @Configuration
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -31,33 +30,22 @@ public class ApplicationInitConfig {
     static final String ADMIN_PASSWORD = "admin123";
 
     @Bean
-    ApplicationRunner applicationRunner(UserRepository userRepository, RoleRepository roleRepository) {
+    ApplicationRunner applicationRunner(UserRepository userRepository) {
         log.info("Initializing application.....");
         return args -> {
-            if (userRepository.findByUsername(ADMIN_USER_NAME).isEmpty()) {
-                roleRepository.save(RoleEntity.builder()
-                        .roleName(PredefinedRole.USER)
-                        .roleDescription("User role")
-                        .build());
 
-                RoleEntity adminRole = roleRepository.save(RoleEntity.builder()
-                        .roleName(PredefinedRole.ADMIN)
-                        .roleDescription("Admin role")
-                        .build());
 
-                var roles = new HashSet<RoleEntity>();
-                roles.add(adminRole);
-
+            if(!userRepository.existsByUsername(ADMIN_USER_NAME)) {
                 UserEntity user = UserEntity.builder()
                         .username(ADMIN_USER_NAME)
                         .password(passwordEncoder.encode(ADMIN_PASSWORD))
-                        .roles(roles)
-                        .gender(true)
-                        .status(true)
+                        .role(Role.ADMIN)
                         .image_url("https://stcv4.hnammobile.com/downloads/a/cach-chup-anh-selfie-dep-an-tuong-ban-nhat-dinh-phai-biet-81675319567.jpg")
-                        .firstName("Admin")
-                        .lastName("Admin")
+                        .email("admin@gmail.com")
                         .build();
+
+                user.setCreatedAt(LocalDateTime.now());
+
 
                 userRepository.save(user);
                 log.warn("admin user has been created with default password: admin, please change it");
