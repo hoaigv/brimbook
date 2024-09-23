@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -28,6 +29,18 @@ public class CloudUtils {
           } catch (IOException e) {
                throw new CustomRunTimeException(ErrorCode.FILE_NOT_FOUND);
           }
+     }
+
+     public CompletableFuture<String> uploadFileAsync(MultipartFile image) {
+          return CompletableFuture.supplyAsync(() -> {
+               try {
+                    var uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+                    log.info(uploadResult.toString());
+                    return uploadResult.get("secure_url").toString();
+               } catch (IOException e) {
+                    throw new CustomRunTimeException(ErrorCode.FILE_NOT_FOUND);
+               }
+          });
      }
 
      public String deleteFile(String imgUrl) {

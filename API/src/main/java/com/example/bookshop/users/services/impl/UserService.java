@@ -95,7 +95,6 @@ public class UserService implements IUserService {
         userRepository.save(user);
     }
 
-
     @Override
     @Transactional
     public void updateUserImage(MultipartFile image) {
@@ -104,9 +103,13 @@ public class UserService implements IUserService {
         }
         UserEntity oldUser = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
         cloudinary.deleteFile(oldUser.getImage_url());
-        var link = cloudinary.uploadFile(image);
-        oldUser.setImage_url(link);
-        userRepository.save(oldUser);
+        cloudinary.uploadFileAsync(image).thenAccept(link -> {
+            oldUser.setImage_url(link);
+            userRepository.save(oldUser);
+        }).exceptionally(ex -> {
+            log.error("Failed to upload image", ex);
+            throw new CustomRunTimeException(ErrorCode.FILE_NOT_FOUND);
+        });
     }
 
     @Override

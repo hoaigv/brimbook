@@ -55,10 +55,10 @@ public class UserController {
         if (image.isEmpty() || !Objects.requireNonNull(fileName).endsWith(".jpg") && !fileName.endsWith(".png")) {
             var resp = ApiResponse.<Void>builder()
                     .code(400)
-                    .message("you need choose file img (.jsp or .png) ")
+                    .message("you need choose file img (.jpg or .png) ")
                     .build();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
-        }else {
+        } else {
             userService.updateUserImage(image);
         }
         var resp = ApiResponse.<Void>builder()
