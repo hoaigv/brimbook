@@ -3,7 +3,6 @@ package com.example.bookshop.utils.baseEntities;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +18,5 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class BaseWithUpdatedByEntity extends BaseEntity {
     @Column
     @LastModifiedBy
-    @NotNull(message = "createdBy must not be null")
     String updatedBy;
 }

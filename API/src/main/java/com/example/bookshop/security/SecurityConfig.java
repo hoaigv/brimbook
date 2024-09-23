@@ -3,7 +3,7 @@ package com.example.bookshop.security;
 import com.example.bookshop.authentication.config.CustomJwtDecoder;
 import com.example.bookshop.authentication.config.JwtAuthenticationEntryPoint;
 import com.example.bookshop.authentication.config.RestAccessDeniedHandler;
-import com.example.bookshop.utils.enums.Role;
+import com.example.bookshop.utils.enums.Authentication;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
@@ -29,8 +29,8 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
     String[] PUBLIC_POST_ENDPOINT = {"/api/users/sign-up","/auth/login", "/auth/introspect", "/auth/logout", "/auth/refresh"};
     String[] PRIVATE_PUT_ENDPOINT = {"/api/users/update","/api/users/update/image"};
-    String[] PRIVATE_PUT_ENDPOINT_ADMIN = {"/api/admin/users/**"};
-    String[] PUBLIC_GET_ENDPOINT = {"/api/users/me"};
+    String[] PRIVATE_ENDPOINT= {"/api/admin/**"};
+    String[] PRIVATE_GET_ENDPOINT = {"/api/users/me"};
     CustomJwtDecoder jwtDecoder;
     RestAccessDeniedHandler restAccessDeniedHandler;
      static  String[] SWAGGER_WHITELIST = {
@@ -53,12 +53,12 @@ public class SecurityConfig {
                 request
                         .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINT)
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET,PUBLIC_GET_ENDPOINT)
-                        .hasAuthority(Role.USER.name())
-                        .requestMatchers(HttpMethod.PUT,PRIVATE_PUT_ENDPOINT_ADMIN)
-                        .hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET,PRIVATE_GET_ENDPOINT)
+                        .hasAnyAuthority(Authentication.ROLE_USER.name(),Authentication.ROLE_ADMIN.name())
                         .requestMatchers(HttpMethod.PUT,PRIVATE_PUT_ENDPOINT)
-                        .hasAuthority(Role.USER.name())
+                        .hasAnyAuthority(Authentication.ROLE_USER.name(),Authentication.ROLE_ADMIN.name())
+                        .requestMatchers(PRIVATE_ENDPOINT)
+                        .hasAuthority(Authentication.ROLE_ADMIN.name())
                         .requestMatchers(SWAGGER_WHITELIST)
                 .permitAll()
                         .anyRequest()

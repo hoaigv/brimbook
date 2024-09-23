@@ -185,7 +185,7 @@ public class AuthenticationService implements IAuthenticationService {
     private String buildScope(UserEntity user) {
         StringJoiner scopeJoiner = new StringJoiner(" ");
         if (!user.getRole().toString().isEmpty()) {
-                scopeJoiner.add("ROLE_" + user.getRole().toString().isEmpty());
+                scopeJoiner.add("ROLE_" + user.getRole().toString());
         }
         return scopeJoiner.toString();
     }

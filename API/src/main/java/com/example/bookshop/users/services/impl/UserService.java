@@ -1,6 +1,6 @@
 package com.example.bookshop.users.services.impl;
 
-import com.example.bookshop.users.controllers.dto.users.UserUpdateRoleRequest;
+import com.example.bookshop.users.controllers.dto.users.AdminUpdateUserRequest;
 import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
 import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
@@ -12,12 +12,14 @@ import com.example.bookshop.users.repositories.UserRepository;
 import com.example.bookshop.users.services.IUserService;
 import com.example.bookshop.utils.AuthUtils;
 import com.example.bookshop.utils.CloudUtils;
+import com.example.bookshop.utils.componentUtils.spec.UsersSpecification;
 import com.example.bookshop.utils.enums.Role;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,11 +48,15 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserResponse> getAllUsers(Pageable pageable) {
+    public Page<UserEntity> getAllUsers(Pageable pageable, UsersSpecification usersSpecification) {
         log.info("In method getAllUsers");
-        var users = userRepository.findAll(pageable).getContent();
-
-        return users.stream().map(userMapper::userToUserResponse).toList();
+        Page<UserEntity> result;
+        if (usersSpecification != null) {
+            result = userRepository.findAll(usersSpecification, pageable);
+        } else {
+            result = userRepository.findAll(pageable);
+        }
+        return result;
     }
 
     @Override
@@ -82,22 +88,34 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public UserResponse updateUser(UserUpdateRequest request) {
+    public void updateUser(UserUpdateRequest request) {
         UserEntity oldUser = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
         var user = userMapper.updateUserEntity(oldUser, request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        return userMapper.userToUserResponse(userRepository.save(user));
+        userRepository.save(user);
     }
 
+
     @Override
+    @Transactional
     public void updateUserImage(MultipartFile image) {
         if (image.isEmpty()) {
             throw new IllegalArgumentException("File have not data");
         }
         UserEntity oldUser = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+        cloudinary.deleteFile(oldUser.getImage_url());
         var link = cloudinary.uploadFile(image);
         oldUser.setImage_url(link);
         userRepository.save(oldUser);
+    }
+
+    @Override
+    @Transactional
+    public void adminUpdateUser(AdminUpdateUserRequest request, Integer userId) {
+        var oldUser = userRepository.findById(userId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+        var updateUser = userMapper.updateUserEntityByAdmin(oldUser, request);
+        updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        userRepository.save(updateUser);
     }
 
     @Override
@@ -138,14 +156,5 @@ public class UserService implements IUserService {
 //        userRepository.save(user);
 //    }
 
-    @Override
-    @Transactional
-    public void updateRoleUser(UserUpdateRoleRequest request) {
-//        var roleSet = roleRepository.findByRoleName(role.getRole()).orElseThrow(
-//                () -> new CustomRunTimeException(ErrorCode.ROLE_NOT_FOUND)
-//        );
-//        var user = userRepository.findById(userId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
-//        user.setRole(roleSet);
-//        userRepository.save(user);
-    }
+
 }

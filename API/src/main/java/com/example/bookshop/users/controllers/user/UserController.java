@@ -58,6 +58,8 @@ public class UserController {
                     .message("you need choose file img (.jsp or .png) ")
                     .build();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+        }else {
+            userService.updateUserImage(image);
         }
         var resp = ApiResponse.<Void>builder()
                 .result(null)

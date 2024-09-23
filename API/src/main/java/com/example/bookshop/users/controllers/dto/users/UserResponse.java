@@ -1,5 +1,7 @@
 package com.example.bookshop.users.controllers.dto.users;
 
+import com.example.bookshop.utils.enums.Gender;
+import com.example.bookshop.utils.enums.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,6 +13,8 @@ import java.sql.Date;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
+    Integer id;
+
     String username;
 
     String password;
@@ -26,10 +30,9 @@ public class UserResponse {
 
     Date birthDate;
 
-    Boolean gender;
+    Gender gender;
 
-    String image_url;;
+    String image_url;
 
-
-    String role;
+    Role role;
 }

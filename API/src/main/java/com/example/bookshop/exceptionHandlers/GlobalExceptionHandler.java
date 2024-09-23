@@ -71,7 +71,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<?>> handleIllegalArgumentException(IllegalArgumentException e) {
         ApiResponse<?> apiResponse = new ApiResponse<>();
         apiResponse.setMessage(e.getMessage());
-        apiResponse.setCode(1501);
+        apiResponse.setCode(400);
         return ResponseEntity.badRequest().body(apiResponse);
     }
 

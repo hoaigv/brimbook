@@ -1,5 +1,6 @@
 package com.example.bookshop.users.mappers;
 
+import com.example.bookshop.users.controllers.dto.users.AdminUpdateUserRequest;
 import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
 import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
@@ -11,18 +12,21 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-   @Mapping(target = "gender" , ignore = true)
-   @Mapping(target = "role" , ignore = true)
+
    UserResponse userToUserResponse(UserEntity userEntity);
 
-   @Mapping(target = "gender" , ignore = true)
-   @Mapping(target = "role" , ignore = true)
+
    @Mapping(target = "image_url", ignore = true)
+   @Mapping(target = "role", ignore = true)
    UserEntity userToUserEntity(UserCreationRequest userCreationRequest);
 
-   @Mapping(target = "gender" , ignore = true)
-   @Mapping(target = "role" , ignore = true)
+
    @Mapping(target = "password", ignore = true)
    UserEntity updateUserEntity(@MappingTarget UserEntity userEntity, UserUpdateRequest userUpdateRequest);
+
+   @Mapping(target = "password", ignore = true)
+   UserEntity updateUserEntityByAdmin(@MappingTarget UserEntity userEntity, AdminUpdateUserRequest request);
+
+
 
 }
