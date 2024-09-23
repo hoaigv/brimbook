@@ -40,6 +40,7 @@ public class UserUpdateRequest {
     LocalDate birthDate;
 
 
+    @Pattern(regexp = "MALE|FEMALE", message = "Gender must be either MALE or FEMALE")
     String gender;
 
 }

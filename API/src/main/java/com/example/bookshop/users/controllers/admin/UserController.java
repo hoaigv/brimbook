@@ -1,9 +1,14 @@
 package com.example.bookshop.users.controllers.admin;
 
-import com.example.bookshop.users.controllers.dto.users.UserUpdateRoleRequest;
+import com.example.bookshop.users.controllers.dto.users.AdminUpdateUserRequest;
+import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
+import com.example.bookshop.users.models.UserEntity;
 import com.example.bookshop.utils.ApiResponse;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
 import com.example.bookshop.users.services.IUserService;
+import com.example.bookshop.utils.SortUtils;
+import com.example.bookshop.utils.componentUtils.spec.UsersSpecification;
+import com.example.bookshop.utils.validators.SortList;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +21,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 @RestController("AdminUserController")
 @RequestMapping("/api/admin/users")
@@ -26,41 +34,73 @@ import java.util.List;
 public class UserController {
     IUserService userService;
 
-    private  final  static String DEFAULT_FILTER_LIMIT = "20";
-    private  final  static   String DEFAULT_FILTER_OFFSET = "0";
-    private  final  static Sort DEFAULT_FILTER_SORT = Sort.by(Sort.Direction.DESC , "createDate");
-    @GetMapping
-    public ResponseEntity<ApiResponse<List<UserResponse>>> getUsers(
-            @RequestParam(required = false, defaultValue = DEFAULT_FILTER_LIMIT  ) int limit,
-            @RequestParam(required = false, defaultValue = DEFAULT_FILTER_OFFSET) int offset
-    ) {
-        Pageable pageable = PageRequest.of(offset, limit, DEFAULT_FILTER_SORT);
-        var resp = ApiResponse.<List<UserResponse>>builder()
-                .result(userService.getAllUsers(pageable))
-                .build();
+    private final static String DEFAULT_FILTER_PAGE = "0";
+    private final static String DEFAULT_FILTER_SiZE = "10";
+    private final static Sort DEFAULT_FILTER_SORT = Sort.by(Sort.Direction.DESC, "createdAt");
 
-        return ResponseEntity.ok(resp);
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<UserEntity>>> getUsers(
+            UsersSpecification userSpecification,
+            @RequestParam(required = false, defaultValue = DEFAULT_FILTER_PAGE) String page,
+            @RequestParam(required = false, defaultValue = DEFAULT_FILTER_SiZE) String size,
+            @RequestParam(required = false) String sortParam
+    ) {
+        if (!isNumeric(page) || !isNumeric(size)) {
+            var resp = ApiResponse.<List<UserEntity>>builder()
+                    .result(null)
+                    .message("Page and size must be numeric")
+                    .code(400)
+                    .build();
+            return ResponseEntity.badRequest().body(resp);
+        }
+        Sort sort = DEFAULT_FILTER_SORT;
+        if (sortParam != null) {
+            sort = SortUtils.parseSortParam(sortParam, Arrays.stream(SortList.USER_SORT_LIST).toList());
+        }
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), Integer.parseInt(size), sort);
+        var result = userService.getAllUsers(pageable, userSpecification);
+        var resp = ApiResponse.<List<UserEntity>>builder()
+                .result(result.getContent())
+                .totalResults(result.getTotalElements())
+                .page(result.getNumber() + 1)
+                .pageSize(result.getSize())
+                .totalPages(result.getTotalPages())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
-    @PostMapping
-    public ResponseEntity<ApiResponse<Void>> createUser(){
-        return ResponseEntity.ok().build();
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<ApiResponse<UserResponse>> createUser(
+            @RequestBody @Valid UserCreationRequest userCreationRequest) {
+        var createUser = userService.createUser(userCreationRequest);
+        var resp = ApiResponse.<UserResponse>builder()
+                .result(createUser)
+                .message("Successfully created user")
+                .code(HttpStatus.CREATED.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(resp);
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<ApiResponse<Void>> updateuserRole(@PathVariable Integer userId, @RequestBody @Valid UserUpdateRoleRequest userUpdateRoleRequest) {
-//        userService.updateRoleUser(userUpdateRoleRequest, userId);
+    public ResponseEntity<ApiResponse<Void>> AdminUpdateUser(
+            @PathVariable Integer userId,
+            @RequestBody @Valid AdminUpdateUserRequest request) {
+        userService.adminUpdateUser(request, userId);
         var resp = ApiResponse.<Void>builder()
                 .result(null)
-                .message("Successfully updated user role")
+                .message("Successfully updated user")
                 .code(HttpStatus.OK.value())
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
+
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<UserResponse>> getUser(@PathVariable("userId") int userId) {
-       var resp = ApiResponse.<UserResponse>builder()
-               .result(userService.getUserById(userId))
-               .build();
-        return ResponseEntity.ok(resp);
+        var resp = ApiResponse.<UserResponse>builder()
+                .result(userService.getUserById(userId))
+                .message("Successfully get user by user_id")
+                .code(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 }

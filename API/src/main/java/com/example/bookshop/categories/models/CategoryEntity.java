@@ -20,9 +20,7 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryEntity extends BaseEntity {
-    @Id
-    @NotNull(message = "code must not be null")
-    Integer id;
+
 
     @NotNull(message = "category name  must not be null")
     String name;
