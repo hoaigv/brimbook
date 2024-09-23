@@ -31,7 +31,6 @@ public class SecurityConfig {
     String[] PRIVATE_PUT_ENDPOINT = {"/api/users/update","/api/users/update/image"};
     String[] PRIVATE_PUT_ENDPOINT_ADMIN = {"/api/admin/users/**"};
     String[] PUBLIC_GET_ENDPOINT = {"/api/users/me"};
-    String[] PRIVATE_GET_ENDPOINT = {"/api/admin/users/**"};
     CustomJwtDecoder jwtDecoder;
     RestAccessDeniedHandler restAccessDeniedHandler;
      static  String[] SWAGGER_WHITELIST = {
@@ -55,11 +54,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINT)
                         .permitAll()
                         .requestMatchers(HttpMethod.GET,PUBLIC_GET_ENDPOINT)
-                        .hasAuthority(Role.ROLE_USER.name())
+                        .hasAuthority(Role.USER.name())
                         .requestMatchers(HttpMethod.PUT,PRIVATE_PUT_ENDPOINT_ADMIN)
-                        .hasAuthority(Role.ROLE_ADMIN.name())
+                        .hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PUT,PRIVATE_PUT_ENDPOINT)
-                        .hasAuthority(Role.ROLE_USER.name())
+                        .hasAuthority(Role.USER.name())
                         .requestMatchers(SWAGGER_WHITELIST)
                 .permitAll()
                         .anyRequest()

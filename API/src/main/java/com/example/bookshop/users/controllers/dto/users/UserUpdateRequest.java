@@ -40,6 +40,6 @@ public class UserUpdateRequest {
     LocalDate birthDate;
 
 
-    Boolean gender;
+    String gender;
 
 }

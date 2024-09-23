@@ -5,12 +5,14 @@ import com.example.bookshop.users.models.UserEntity;
 import com.example.bookshop.utils.baseEntities.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Table
-@Entity(name = "comments")
+@Entity(name = "ratings")
 @Getter
 @Setter
 @Builder
@@ -18,15 +20,11 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
-public class CommentEntity extends BaseEntity {
-
-    @Lob
-    @Column(columnDefinition = "TEXT")
-    @NotNull(message = "name must not be null")
-    String commentText;
-
-    @NotNull(message = "visible of comment must not be null")
-    Boolean isVisible;
+public class RateEntity extends BaseEntity {
+    @Min(1)
+    @Max(5)
+    @NotNull(message = "rate must be not null")
+    Integer ratingValue;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn

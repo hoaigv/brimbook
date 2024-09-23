@@ -1,23 +1,19 @@
 package com.example.bookshop.users.models;
 
 import com.example.bookshop.books.models.BookEntity;
-import com.example.bookshop.books.models.ChapterEntity;
 import com.example.bookshop.comments.models.CommentEntity;
-import com.example.bookshop.utils.baseEntities.BaseEntity;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.example.bookshop.comments.models.RateEntity;
+import com.example.bookshop.utils.baseEntities.BaseWithUpdatedByEntity;
+import com.example.bookshop.utils.enums.Gender;
+import com.example.bookshop.utils.enums.Role;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.validator.constraints.Length;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Table
@@ -29,27 +25,22 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
-public class UserEntity extends BaseEntity {
+public class UserEntity extends BaseWithUpdatedByEntity {
 
     @Column(unique = true, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_unicode_ci")
     @NotNull(message = "userName must not be null")
     String username;
 
     @NotNull(message = "password  must not be null")
-    @Length(min = 5, max = 255, message = "Password length must be between 5 and 50 characters")
     String password;
 
-    @Email(message = "Email should be valid")
     @Column(unique = true)
     String email;
 
-
-    @Pattern(regexp = "^[0-9]{10,15}$", message = "Invalid phone number")
     String phone;
 
     @Lob
     @Column(columnDefinition = "TEXT")
-    @Pattern(regexp = ".*\\.(png|jpg)$", message = "Image must have a valid extension (.png or .jpg)")
     @NotNull(message = "image url not null ")
     String image_url;
 
@@ -59,25 +50,31 @@ public class UserEntity extends BaseEntity {
 
     Date birthDate;
 
-    Boolean gender;
+    @Enumerated(EnumType.STRING)
+    Gender gender;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    Set<RoleEntity> roles = new HashSet<>();
+    @NotNull(message = "user role must be not null")
+    @Enumerated(EnumType.STRING)
+    Role role;
 
-    @OneToMany(mappedBy = "user")
-    @JsonBackReference
-    List<CommentEntity> comments = new ArrayList<>();
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_chapters", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "chapter_id"))
+    @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
     @JsonManagedReference
-    Set<ChapterEntity> chapters = new HashSet<>();
+    Set<LikeEntity> likes = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_books", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
+    @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
+    @JsonManagedReference
+    Set<ReadBooksEntity> read = new HashSet<>();
+
+    @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
+    @JsonManagedReference
+    Set<CommentEntity> comments = new HashSet<>();
+
+    @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
+    @JsonManagedReference
+    Set<RateEntity> rates = new HashSet<>();
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     @JsonManagedReference
     Set<BookEntity> books = new HashSet<>();
-
 
 }

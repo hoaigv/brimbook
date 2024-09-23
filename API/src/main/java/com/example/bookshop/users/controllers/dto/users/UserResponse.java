@@ -1,12 +1,9 @@
 package com.example.bookshop.users.controllers.dto.users;
 
-import com.example.bookshop.users.controllers.dto.roles.RoleResponse;
-import jakarta.persistence.Lob;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.sql.Date;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -34,5 +31,5 @@ public class UserResponse {
     String image_url;;
 
 
-    Set<RoleResponse> roles ;
+    String role;
 }

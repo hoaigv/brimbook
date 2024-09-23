@@ -3,6 +3,7 @@ package com.example.bookshop.users.services;
 import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
 import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
+import com.example.bookshop.users.controllers.dto.users.UserUpdateRoleRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,10 +18,10 @@ public interface IUserService {
     UserResponse createUser(UserCreationRequest request);
     UserResponse updateUser(UserUpdateRequest request);
     void updateUserImage(MultipartFile  image);
-    UserResponse updateRoleUser(List<String> roles ,Integer userId);
+    void updateRoleUser(UserUpdateRoleRequest request);
 
     void delete(Set<Integer> ids);
 
-    String addFavouriteBook(Integer id , String token);
-    void  addReadChapter(Integer id);
+//    String addFavouriteBook(Integer id , String token);
+//    void  addReadChapter(Integer id);
 }

@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -25,16 +26,12 @@ public class BaseEntity {
 
     @Column
     @CreatedDate
-    @NotNull(message = "createdDate must not be null")
-    LocalDateTime createdDate;
+    @NotNull(message = "created at must not be null")
+    LocalDateTime createdAt;
 
     @Column
     @LastModifiedDate
-    LocalDateTime updatedDate;
+    LocalDateTime updatedAt;
 
 
-
-    @Column
-    @LastModifiedBy
-    String updatedBy;
 }

@@ -6,7 +6,7 @@ import java.util.Objects;
 import javax.crypto.spec.SecretKeySpec;
 
 import com.example.bookshop.authentication.controllers.dto.token.IntrospectRequest;
-import com.example.bookshop.books.services.IAuthenticationService;
+import com.example.bookshop.authentication.services.IAuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Component;
 
 @Component
+
 public class CustomJwtDecoder implements JwtDecoder {
     @Value("${jwt.signerKey}")
     private String signerKey;

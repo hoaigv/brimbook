@@ -75,27 +75,27 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 
-    @PutMapping("/favorite/{bookId}")
-    public ResponseEntity<ApiResponse<Void>> addFavorite(@PathVariable int bookId, @RequestBody String token) {
-        userService.addFavouriteBook(bookId, token);
-        var resp = ApiResponse.<Void>builder()
-                .result(null)
-                .message("Successfully updated user")
-                .code(HttpStatus.OK.value())
-                .build();
-        return ResponseEntity.status(HttpStatus.OK).body(resp);
-    }
+//    @PutMapping("/favorite/{bookId}")
+//    public ResponseEntity<ApiResponse<Void>> addFavorite(@PathVariable int bookId, @RequestBody String token) {
+//        userService.addFavouriteBook(bookId, token);
+//        var resp = ApiResponse.<Void>builder()
+//                .result(null)
+//                .message("Successfully updated user")
+//                .code(HttpStatus.OK.value())
+//                .build();
+//        return ResponseEntity.status(HttpStatus.OK).body(resp);
+//    }
 
-    @PutMapping("/read-chapter/{chapterId}")
-    public ResponseEntity<ApiResponse<Void>> addReadChapter(@PathVariable int chapterId) {
-        userService.addReadChapter(chapterId);
-        var resp = ApiResponse.<Void>builder()
-                .result(null)
-                .message("Successfully updated user")
-                .code(HttpStatus.OK.value())
-                .build();
-        return ResponseEntity.status(HttpStatus.OK).body(resp);
-    }
+//    @PutMapping("/read-chapter/{chapterId}")
+//    public ResponseEntity<ApiResponse<Void>> addReadChapter(@PathVariable int chapterId) {
+//        userService.addReadChapter(chapterId);
+//        var resp = ApiResponse.<Void>builder()
+//                .result(null)
+//                .message("Successfully updated user")
+//                .code(HttpStatus.OK.value())
+//                .build();
+//        return ResponseEntity.status(HttpStatus.OK).body(resp);
+//    }
 
 
 }
