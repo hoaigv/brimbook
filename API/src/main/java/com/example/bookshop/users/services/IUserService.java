@@ -17,10 +17,9 @@ public interface IUserService {
     Page<UserEntity> getAllUsers(Pageable pageable , UsersSpecification usersSpecification);
     UserResponse getMyInfo();
 
-    UserResponse createUser(UserCreationRequest request);
-    void updateUser(UserUpdateRequest request);
-    void updateUserImage(MultipartFile  image);
-    void adminUpdateUser(AdminUpdateUserRequest request , Integer userId);
+    UserResponse createUser(UserCreationRequest request );
+    void updateUser(UserUpdateRequest request , MultipartFile image);
+    void adminUpdateUser(MultipartFile image,AdminUpdateUserRequest request , Integer userId);
 
     void delete(Set<Integer> ids);
 

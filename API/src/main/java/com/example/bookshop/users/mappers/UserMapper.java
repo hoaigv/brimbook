@@ -20,10 +20,11 @@ public interface UserMapper {
    @Mapping(target = "role", ignore = true)
    UserEntity userToUserEntity(UserCreationRequest userCreationRequest);
 
-
+   @Mapping(target = "image_url", ignore = true)
    @Mapping(target = "password", ignore = true)
    UserEntity updateUserEntity(@MappingTarget UserEntity userEntity, UserUpdateRequest userUpdateRequest);
 
+   @Mapping(target = "image_url", ignore = true)
    @Mapping(target = "password", ignore = true)
    UserEntity updateUserEntityByAdmin(@MappingTarget UserEntity userEntity, AdminUpdateUserRequest request);
 

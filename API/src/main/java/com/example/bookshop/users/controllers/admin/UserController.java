@@ -1,7 +1,10 @@
 package com.example.bookshop.users.controllers.admin;
 
+import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
+import com.example.bookshop.exceptionHandlers.ErrorCode;
 import com.example.bookshop.users.controllers.dto.users.AdminUpdateUserRequest;
 import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
+import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;
 import com.example.bookshop.users.models.UserEntity;
 import com.example.bookshop.utils.ApiResponse;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
@@ -9,6 +12,7 @@ import com.example.bookshop.users.services.IUserService;
 import com.example.bookshop.utils.SortUtils;
 import com.example.bookshop.utils.componentUtils.spec.UsersSpecification;
 import com.example.bookshop.utils.validators.SortList;
+import com.example.bookshop.utils.validators.ValidImage;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
@@ -71,8 +76,9 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<ApiResponse<UserResponse>> createUser(
-            @RequestBody @Valid UserCreationRequest userCreationRequest) {
-        var createUser = userService.createUser(userCreationRequest);
+            @RequestBody @Valid UserCreationRequest request) {
+
+        var createUser = userService.createUser(request);
         var resp = ApiResponse.<UserResponse>builder()
                 .result(createUser)
                 .message("Successfully created user")
@@ -84,8 +90,13 @@ public class UserController {
     @PutMapping("/{userId}")
     public ResponseEntity<ApiResponse<Void>> AdminUpdateUser(
             @PathVariable Integer userId,
-            @RequestBody @Valid AdminUpdateUserRequest request) {
-        userService.adminUpdateUser(request, userId);
+            @RequestPart("user") @Valid AdminUpdateUserRequest request,
+            @RequestPart("image") @ValidImage MultipartFile image) {
+        String fileName = image.getOriginalFilename();
+        if (fileName != null && !(fileName.endsWith(".jpg") || fileName.endsWith(".png"))) {
+            return ResponseEntity.badRequest().body(ApiResponse.<Void>builder().code(400).message("Invalid file format. Only JPG or PNG are allowed.").build());
+        }
+        userService.adminUpdateUser(image,request, userId);
         var resp = ApiResponse.<Void>builder()
                 .result(null)
                 .message("Successfully updated user")

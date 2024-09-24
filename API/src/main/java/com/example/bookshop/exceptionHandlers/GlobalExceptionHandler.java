@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.View;
 
@@ -75,7 +77,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(apiResponse);
     }
 
-
     @ExceptionHandler(value = BadJwtException.class)
     public ResponseEntity<ApiResponse<?>> handleBadJwtException(BadJwtException e) {
         ApiResponse<?> apiResponse = new ApiResponse<>();
@@ -83,15 +84,27 @@ public class GlobalExceptionHandler {
         apiResponse.setCode(ErrorCode.UNAUTHENTICATED.getCode());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiResponse);
     }
-
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public ResponseEntity<ApiResponse<?>> handleMissingServletRequestPartException(MissingServletRequestPartException ex) {
+        ApiResponse<?> response = new ApiResponse<>();
+        response.setMessage("Missing request part. Please check your form!");
+        response.setCode(400);
+        return ResponseEntity.badRequest().body(response);
+    }
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        String enumKey = Objects.requireNonNull(e.getFieldError()).getDefaultMessage();
+        String errorMessage = e.getBindingResult().getFieldErrors().stream()
+                .findFirst()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .orElse("Invalid input data");
+
         ApiResponse<?> apiResponse = new ApiResponse<>();
-        apiResponse.setMessage(enumKey);
+        apiResponse.setMessage(errorMessage);
         apiResponse.setCode(400);
+
         return ResponseEntity.badRequest().body(apiResponse);
     }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> handleDuplicateEntryException(DataIntegrityViolationException ex) {
         String errorMessage = ex.getCause() != null ?  ex.getMessage() : "";
