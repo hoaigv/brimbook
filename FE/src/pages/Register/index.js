@@ -14,16 +14,20 @@ const cx = classNames.bind(styles);
 function Register() {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState([]);
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
   const [visible, setVisible] = useState(false);
 
-  // const handleInputName = (e) => {
-  //   setFormData((curr) => ({ ...curr, username: e.target.value }));
-  // };
+  const handleInputName = (e) => {
+    setFormData((curr) => ({ ...curr, username: e.target.value }));
+  };
 
-  // const handleInputEmail = (e) => {
-  //   setFormData((curr) => ({ ...curr, email: e.target.value }));
-  // };
+  const handleInputEmail = (e) => {
+    setFormData((curr) => ({ ...curr, email: e.target.value }));
+  };
 
   const handleInputPassword = (e) => {
     setFormData((curr) => ({ ...curr, password: e.target.value }));
@@ -40,8 +44,13 @@ function Register() {
       <div className={cx("wrapper")}>
         <div className={cx("form")}>
           <LogoImage width="250px" height="60px" className={cx("logo")} />
-          <Input type={"text"} defaultValue={"Enter Name"} mb={20} />
-          <Input type={"text"} defaultValue={"Enter email"} mb={20} />
+          <Input type={"text"} handleChage={handleInputName} defaultValue={"Enter Name"} mb={20} />
+          <Input
+            type={"text"}
+            handleChage={handleInputEmail}
+            defaultValue={"Enter email"}
+            mb={20}
+          />
           <div className={cx("password-wrapper")}>
             <div className={cx("password-inner")}>
               <input
@@ -66,7 +75,7 @@ function Register() {
           </div>
           <div className={cx("login-btn")}>
             <h5>Already have an account? |</h5>
-            <Button noline to={"/login"} width="60px" color={"var(--primary-purple)"}>
+            <Button noline to={"/login"} sx={{ width: "60px", color: "var(--primary-purple)" }}>
               Sign in
             </Button>
           </div>

@@ -1,0 +1,50 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.rating-information {
+    padding: 36px 57px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--g1);
+    border-radius: 10px;
+
+    .text {
+        width: 330px;
+
+        h1 {
+            margin-bottom: 5px;
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: -1.28px;
+        }
+
+        span {
+            color: var(--g0);
+            font-size: 2rem;
+        }
+    }
+
+    .rating {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        p {
+            display: flex;
+            align-items: center;
+            font-size: 4.8rem;
+            font-weight: 700;
+            letter-spacing: -1.92px;
+
+            span {
+                margin-left: 18px;
+                font-size: 1.6rem;
+                font-weight: 700;
+                letter-spacing: -0.64px;
+            }
+        }
+    }
+}

@@ -1,37 +1,20 @@
-import { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 
 import classNames from "classnames/bind";
 import styles from "./Actions.module.scss";
 
-import { BellIcon, GroupIcon, ArrowDown } from "~/components/Icons";
+import { BellIcon, GroupIcon } from "~/components/Icons";
 import images from "~/assets/Image";
 import Image from "~/components/Image";
 import Button from "~/components/Button";
+import DropDown from "../DropDown";
+import { menuItem } from "~/_mock/menu";
 
 import { login } from "~/_mock/login";
 
 const cx = classNames.bind(styles);
 
 function Actions() {
-  const resultRef = useRef(null);
-
-  const [toggle, setToggle] = useState(false);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (resultRef.current && !resultRef.current.contains(event.target)) {
-        setToggle(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   return (
     <div className={cx("wrapper")}>
       {login ? (
@@ -44,38 +27,29 @@ function Actions() {
               <BellIcon width="18px" height="18px" />
             </NavLink>
           </div>
-          <div className={cx("dropdown")} ref={resultRef}>
+          <div className={cx("dropdown")}>
             <div>
-              <div className={cx("select")} onClick={() => setToggle(!toggle)}>
-                <span className={cx("user")}>{"Bakku Hoàng"}</span>
-                <div className={cx("arrow")}>
-                  <ArrowDown />
-                </div>
-              </div>
-              {toggle && (
-                <ul className={cx("list")}>
-                  <li>
-                    <Button normal to={"/profile"} onClick={() => setToggle(!toggle)}>
-                      Profile
+              <DropDown name={"Bakku Hoàng"}>
+                {menuItem.map((item, index) => (
+                  <li key={index}>
+                    <Button normal sx={{ padding: "5px 25px" }} to={item.link}>
+                      {item.name}
                     </Button>
                   </li>
-                  <li>
-                    <Button normal to={"/create-story"}>
-                      Đăng truyện
-                    </Button>
-                  </li>
-                  <li>
-                    <Button normal to={"/setting"} onClick={() => setToggle(!toggle)}>
-                      Setting
-                    </Button>
-                  </li>
-                  <li>
-                    <Button normal onClick={null}>
-                      Log out
-                    </Button>
-                  </li>
-                </ul>
-              )}
+                ))}
+                <Button
+                  logOut
+                  sx={{
+                    padding: "5px 25px",
+                    justifyContent: "flex-start",
+                    color: "var(--red)",
+                    fontSize: "1.6rem",
+                    fontWidth: 600,
+                  }}
+                >
+                  Log Out
+                </Button>
+              </DropDown>
             </div>
           </div>
           <div className={cx("user-avatar")}>
