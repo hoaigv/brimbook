@@ -1,11 +1,12 @@
 package com.example.bookshop.users.controllers.user;
 
+import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;
 import com.example.bookshop.utils.ApiResponse;
 import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
 
-import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;
 import com.example.bookshop.users.services.IUserService;
+import com.example.bookshop.utils.validators.ValidImage;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Objects;
 
 @RestController("WebUserController")
 @RequestMapping("/api/users")
@@ -28,8 +27,9 @@ public class UserController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<ApiResponse<UserResponse>> createUser(
-            @RequestBody @Valid UserCreationRequest userCreationRequest) {
-        var createUser = userService.createUser(userCreationRequest);
+            @RequestBody @Valid UserCreationRequest user) {
+
+        var createUser = userService.createUser(user);
         var resp = ApiResponse.<UserResponse>builder()
                 .result(createUser)
                 .message("Successfully created user")
@@ -39,8 +39,14 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ApiResponse<Void>> updateUser(@RequestBody @Valid UserUpdateRequest request) {
-        userService.updateUser(request);
+    public ResponseEntity<ApiResponse<Void>> updateUser(
+            @RequestPart("user") @Valid UserUpdateRequest request,
+             @RequestPart("image")  MultipartFile image) {
+        String fileName = image.getOriginalFilename();
+        if (fileName != null && !(fileName.endsWith(".jpg") || fileName.endsWith(".png"))) {
+            return ResponseEntity.badRequest().body(ApiResponse.<Void>builder().code(400).message("Invalid file format. Only JPG or PNG are allowed.").build());
+        }
+        userService.updateUser(request , image);
         var resp = ApiResponse.<Void>builder()
                 .result(null)
                 .message("Successfully updated user")
@@ -49,25 +55,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 
-    @PutMapping("update/image")
-    public ResponseEntity<ApiResponse<Void>> updateImageUser(@RequestPart("image") MultipartFile image) {
-        String fileName = image.getOriginalFilename();
-        if (image.isEmpty() || !Objects.requireNonNull(fileName).endsWith(".jpg") && !fileName.endsWith(".png")) {
-            var resp = ApiResponse.<Void>builder()
-                    .code(400)
-                    .message("you need choose file img (.jpg or .png) ")
-                    .build();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
-        } else {
-            userService.updateUserImage(image);
-        }
-        var resp = ApiResponse.<Void>builder()
-                .result(null)
-                .message("Successfully updated user")
-                .code(HttpStatus.OK.value())
-                .build();
-        return ResponseEntity.status(HttpStatus.OK).body(resp);
-    }
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserResponse>> getMyInfo() {
