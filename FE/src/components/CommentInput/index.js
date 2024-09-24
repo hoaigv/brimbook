@@ -38,7 +38,6 @@ function CommentInput() {
           <p className={cx("name-user")}>Bakku Hoang</p>
         </div>
         <textarea
-          rows={2}
           className={cx("comment-text")}
           placeholder="Comment ..."
           value={value}

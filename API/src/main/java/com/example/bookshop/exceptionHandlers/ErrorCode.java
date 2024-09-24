@@ -27,7 +27,10 @@ public enum ErrorCode {
     ADD_TOPIC_NOT_SUCCESS(1019, " ADD_TOPIC_NOT_SUCCESS", HttpStatus.BAD_REQUEST),
     DELETE_FILE_NOT_SUCCESS(1020, " DELETE_FILE_NOT_SUCCESS", HttpStatus.BAD_REQUEST),
     PASSWORD_INCORRECT(400, "password incorrect, enter another password  ", HttpStatus.BAD_REQUEST),
-    URL_NOT_EXIST(404,"The requested URL does not exist." , HttpStatus.NOT_FOUND)
+    URL_NOT_EXIST(404,"The requested URL does not exist." , HttpStatus.NOT_FOUND),
+    SET_IMAGE_NOT_SUCCESS(400,"Create user do not success !" , HttpStatus.NOT_FOUND)
+
+
 
 
 
