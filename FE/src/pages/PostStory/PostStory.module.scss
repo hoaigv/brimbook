@@ -1,0 +1,63 @@
+.inner {
+  display: flex;
+  gap: 50px;
+}
+
+/* ----- Image input ----- */
+.image-input {
+  width: 390px;
+  height: 560px;
+
+  border: 2px dashed var(--g1);
+  border-radius: 25px;
+
+  &:active {
+    border: 2px dashed var(--primary-purple);
+  }
+
+  .image {
+    width: 390px;
+    height: 560px;
+    border-radius: 25px;
+    object-fit: cover;
+  }
+
+  .input {
+    display: none;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 20px;
+
+  .description {
+    resize: none;
+    padding: 12px 26px;
+    font-size: 2rem;
+    border: 2px solid var(--g1);
+    border-radius: 10px;
+    outline-color: var(--primary-purple);
+  }
+}
+
+/* ================== */
+/* ----- Mobile ----- */
+@media screen and (max-width: 739px) {
+  .inner {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .content {
+    width: 100%;
+    align-items: center;
+
+    .description {
+      width: calc(100% - 50px);
+    }
+  }
+}

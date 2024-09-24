@@ -46,7 +46,7 @@ function Button({
   });
 
   return (
-    <Comp className={classes} {...props} style={sx}>
+    <Comp className={classes} style={sx} {...props}>
       {startIcon && <div className={cx("icon")}>{startIcon}</div>}
       {children}
       {endIcon && <div className={cx("icon")}>{endIcon}</div>}

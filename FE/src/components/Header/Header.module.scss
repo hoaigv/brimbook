@@ -1,9 +1,9 @@
 .container {
   height: 100px;
-  margin: 0 50px;
+  margin: 0 100px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   gap: 50px;
 }
 
@@ -23,7 +23,16 @@
 }
 
 @media screen and (max-width: 739px) {
-  .logo {
+  .container {
+    margin: 0 50px;
+  }
+
+  .logo-image {
+    display: block;
+  }
+
+  .logo-icon {
     display: none;
+    color: var(--primary-purple);
   }
 }

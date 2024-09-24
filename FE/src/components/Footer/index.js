@@ -39,7 +39,7 @@ function Footer() {
                 {item}
               </Link>
             ))}
-            <Button noline maxWidth={90} color={"var(--primary-purple)"}>
+            <Button noline sx={{ maxWidth: "90px", color: "var(--primary-purple)" }}>
               View All
               <ArrowRight />
             </Button>

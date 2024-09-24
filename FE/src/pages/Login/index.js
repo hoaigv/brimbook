@@ -68,15 +68,14 @@ function Login() {
             <Button
               noline
               // to={}
-              width="123px"
-              color={"var(--primary-purple)"}
+              sx={{ width: "123px", color: "var(--primary-purple)" }}
             >
               Forgot password?
             </Button>
           </div>
           <div className={cx("register-btn")}>
             <h5>Do you have any account? |</h5>
-            <Button noline to={"/register"} width="60px" color={"var(--primary-purple)"}>
+            <Button noline to={"/register"} sx={{ width: "60px", color: "var(--primary-purple)" }}>
               Sign up
             </Button>
           </div>

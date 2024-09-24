@@ -3,9 +3,9 @@ import styles from "./Input.module.scss";
 
 const cx = classNames.bind(styles);
 
-function Input({ type, handleChage, defaultValue, startIcon, endIcon, mb }) {
+function Input({ type, handleChage, defaultValue, startIcon, endIcon, sx, ref }) {
   return (
-    <div className={cx("wrapper")} style={{ marginBottom: mb }}>
+    <div className={cx("wrapper")} style={sx} ref={ref}>
       {startIcon && <div className={cx("icon")}>{startIcon}</div>}
       <input
         type={type}

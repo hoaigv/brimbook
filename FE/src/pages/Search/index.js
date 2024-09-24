@@ -13,7 +13,7 @@ import { page } from "~/_mock/page";
 
 const cx = classNames.bind(styles);
 
-function Search() {
+export default function Search() {
   const [searchParams] = useSearchParams("");
   const [searchResult, setSearchResult] = useState([]);
 
@@ -80,7 +80,7 @@ function Search() {
               {currentButton !== 1 && (
                 <Button
                   loadpage
-                  maxWidth={150}
+                  sx={{ maxWidth: 150 }}
                   onClick={() => setCurrentButton((prev) => (prev === 1 ? prev : prev - 1))}
                 >
                   <ArrowLeft />
@@ -101,7 +101,7 @@ function Search() {
               {currentButton !== numberOfPages.length && (
                 <Button
                   loadpage
-                  maxWidth={150}
+                  sx={{ maxWidth: 150 }}
                   onClick={() =>
                     setCurrentButton((prev) => (prev === numberOfPages.length ? prev : prev + 1))
                   }
@@ -117,5 +117,3 @@ function Search() {
     </div>
   );
 }
-
-export default Search;

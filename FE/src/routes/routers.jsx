@@ -7,6 +7,7 @@ import BookDetail from "~/pages/BookDetail";
 import Setting from "~/pages/Setting";
 import Profile from "~/pages/Profile";
 import Chapter from "~/pages/Chapter";
+import PostStory from "~/pages/PostStory";
 
 const routers = [
   { path: "/login", component: Login, layout: null },
@@ -17,6 +18,7 @@ const routers = [
   { path: "/profile", component: Profile },
   { path: "/books/:isbn13", component: BookDetail },
   { path: "/books/:isbn13/:chapter", component: Chapter },
+  { path: "/post-story", component: PostStory },
 ];
 
 export default routers;
