@@ -15,14 +15,6 @@ function PostStory() {
   const [value, setValue] = useState("");
   const editorRef = useRef(null);
 
-  // Xóa useEffect này vì nó không cần thiết khi sử dụng TinyMCE
-  // useEffect(() => {
-  //   editorRef.current.style.height = "auto";
-  //   if (value !== "") {
-  //     editorRef.current.style.height = editorRef.current.scrollHeight + "px";
-  //   }
-  // }, [value]);
-
   const handleClick = () => {
     inputRef.current.click();
   };
@@ -54,7 +46,7 @@ function PostStory() {
             onInit={(evt, editor) => (editorRef.current = editor)}
             initialValue=""
             init={{
-              height: 300,
+              height: 410,
               menubar: false,
               plugins: [
                 "advlist autolink lists link image charmap print preview anchor",

@@ -6,7 +6,7 @@ import { ArrowDown } from "~/components/Icons";
 
 const cx = classNames.bind(styles);
 
-function DropDown({ children, name }) {
+function DropDown({ children, name, sx }) {
   const resultRef = useRef(null);
 
   const [toggle, setToggle] = useState(false);
@@ -27,7 +27,7 @@ function DropDown({ children, name }) {
 
   return (
     <div className={cx("dropdown")} ref={resultRef}>
-      <div className={cx("select")} onClick={() => setToggle(!toggle)}>
+      <div className={cx("select")} style={sx} onClick={() => setToggle(!toggle)}>
         <div className={cx("user")}>{name}</div>
         <div className={cx("arrow")}>
           <ArrowDown />

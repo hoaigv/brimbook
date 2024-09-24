@@ -40,7 +40,7 @@ function Login() {
       <div className={cx("wrapper")}>
         <div className={cx("form")}>
           <LogoImage width="250px" height="60px" className={cx("logo")} />
-          <Input type={"text"} handleChage={handleChage} defaultValue={"Enter email"} mb={20} />
+          <Input type={"text"} handleChage={handleChage} defaultValue={"Enter username"} mb={20} />
           <div className={cx("password-wrapper")}>
             <div className={cx("password-inner")}>
               <input
