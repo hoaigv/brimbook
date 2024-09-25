@@ -8,17 +8,19 @@ import Setting from "~/pages/Setting";
 import Profile from "~/pages/Profile";
 import Chapter from "~/pages/Chapter";
 import PostStory from "~/pages/PostStory";
+import UserManagement from "~/pages/UserManagement";
 
 const routers = [
   { path: "/login", component: Login, layout: null },
   { path: "/register", component: Register, layout: null },
   { path: "/", component: Home },
-  { path: "/search", component: Search },
-  { path: "/setting", component: Setting },
-  { path: "/profile", component: Profile },
-  { path: "/books/:isbn13", component: BookDetail },
-  { path: "/books/:isbn13/:chapter", component: Chapter },
-  { path: "/post-story", component: PostStory },
+  { path: "/search", component: Search, protected: true },
+  { path: "/setting", component: Setting, protected: true },
+  { path: "/profile", component: Profile, protected: true },
+  { path: "/books/:isbn13", component: BookDetail, protected: true },
+  { path: "/books/:isbn13/:chapter", component: Chapter, protected: true },
+  { path: "/post-story", component: PostStory, protected: true },
+  { path: "user-management", component: UserManagement, protected: true },
 ];
 
 export default routers;

@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
 
 //Router
 import routers from "~/routes/routers";
@@ -27,9 +28,17 @@ export default function App() {
                 key={index}
                 path={route.path}
                 element={
-                  <Layout>
-                    <Page />
-                  </Layout>
+                  route.protected ? (
+                    <PrivateRoute>
+                      <Layout>
+                        <Page />
+                      </Layout>
+                    </PrivateRoute>
+                  ) : (
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  )
                 }
               />
             );

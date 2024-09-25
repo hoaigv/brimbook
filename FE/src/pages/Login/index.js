@@ -15,6 +15,7 @@ const cx = classNames.bind(styles);
 function Login() {
   const navigate = useNavigate();
 
+  const [err, setErr] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -30,6 +31,9 @@ function Login() {
   };
 
   const handleClick = () => {
+    if (!formData.username || !formData.password) {
+      setErr(true);
+    }
     User.loginUser(formData, navigate);
   };
 
@@ -44,7 +48,7 @@ function Login() {
           <div className={cx("password-wrapper")}>
             <div className={cx("password-inner")}>
               <input
-                className={cx("password-input")}
+                className={cx("password-input", err && "err")}
                 type={visible ? "text" : "password"}
                 placeholder="Enter password"
                 onChange={handleInputPassword}

@@ -8,3 +8,9 @@
 .default-nav {
   width: 50px;
 }
+
+@media screen and (max-width: 739px) {
+  .slide {
+    height: 400px;
+  }
+}

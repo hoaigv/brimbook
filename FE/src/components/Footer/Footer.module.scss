@@ -8,6 +8,7 @@
   max-width: 1600px;
   margin: 50px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 
@@ -119,4 +120,14 @@
 }
 
 @media screen and (max-width: 739px) {
+  .inner {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  .footer-content {
+    display: none;
+  }
 }
