@@ -20,7 +20,7 @@ const routers = [
   { path: "/books/:isbn13", component: BookDetail },
   { path: "/books/:isbn13/:chapter", component: Chapter },
   { path: "/post-story", component: PostStory },
-  { path: "user-management", component: UserManagement },
+  { path: "/user-management", component: UserManagement },
 ];
 
 export default routers;
