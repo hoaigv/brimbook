@@ -3,10 +3,10 @@ server:
 
 spring:
   datasource:
-    url: "jdbc:mysql://localhost:3306/booklibrary?useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8"
+    url: "jdbc:mysql://10.10.23.82:3306/booklibrary?useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8"
     driverClassName: "com.mysql.cj.jdbc.Driver"
     username: root
-    password:
+    password: root
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,7 +16,7 @@ spring:
         enable_lazy_load_no_trans: true
   mvc:
     throw-exception-if-no-handler-found: true
-  web :
+  web:
     resources:
       add-mappings: false
   servlet:
@@ -34,7 +34,7 @@ spring:
 
 firebase:
   service-account-key: book-online-5ed85-firebase-adminsdk-3267z-d07e324aee.json
-  token : "cwl_DNMU8T7_zb0B7c7zEb:APA91bHHz6l3Ldxg70iVZVytPGLL8Ua1bP9qAFnt5PxhO5yiFAaAUOAaLgBXMdgsefnk8FtEFchQ0Dt2fSEp9sE7oNmM9HdpHHsk6cG1qACpXMQr7LShyTvrnwpIYQX9QBvhj7Bx7MOt"
+  token: "cwl_DNMU8T7_zb0B7c7zEb:APA91bHHz6l3Ldxg70iVZVytPGLL8Ua1bP9qAFnt5PxhO5yiFAaAUOAaLgBXMdgsefnk8FtEFchQ0Dt2fSEp9sE7oNmM9HdpHHsk6cG1qACpXMQr7LShyTvrnwpIYQX9QBvhj7Bx7MOt"
 #endpoint : /ws
 #destination:
 #  prefix: /app
@@ -44,11 +44,17 @@ firebase:
 #
 
 jwt:
-    signerKey: "4GTzbXf7UmaZduTlbkG/gm4zSP9N9T8KR9X7iUf8TXTHuTG4ByLb7skybWCngRGx"
-    valid-duration: 3600 #in second
-    refreshable-duration : 360000 #in second
+  signerKey: "4GTzbXf7UmaZduTlbkG/gm4zSP9N9T8KR9X7iUf8TXTHuTG4ByLb7skybWCngRGx"
+  valid-duration: 3600 #in second
+  refreshable-duration: 360000 #in second
 
 api:
   key: "AIzaSyABWwIW5p2Aicqf1U8UG1c5YYEbg_QHNEc"
-  url : "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+  url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
 
+logging:
+  level:
+    root: INFO
+    com.example.bookshop: DEBUG
+  file:
+    name: logs/application.log

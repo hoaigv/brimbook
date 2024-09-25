@@ -74,11 +74,19 @@ public class BookService implements IBookService {
         var bookEntity = modelMapper.map(request, BookEntity.class);
         System.out.println(request.getCategoriesID());
 
-        CategoryEntity categoryEntity = categoryRepository.findById(request.getCategoriesID()).orElseThrow(()->new CustomRunTimeException(ErrorCode.CATEGORY_NOT_FOUND));
+        if (request.getCategoriesID() == null) {
+            throw new CustomRunTimeException(ErrorCode.CATEGORY_NOT_FOUND);
+        }
+        CategoryEntity categoryEntity = categoryRepository.findById(request.getCategoriesID())
+            .orElseThrow(() -> new CustomRunTimeException(ErrorCode.CATEGORY_NOT_FOUND));
         bookEntity.setCategory(categoryEntity);
 
         var user = userRepository.findByUsername(AuthUtils.getUserCurrent())
                 .orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+
+        if (user == null || user.getId() == null) {
+            throw new CustomRunTimeException(ErrorCode.USER_NOT_FOUND);
+        }
 
         UserEntity userEntity = userRepository.findById(user.getId()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
         System.out.println("User +"+userEntity.getUsername());
@@ -98,6 +106,10 @@ public class BookService implements IBookService {
         System.out.println("User4 +"+userEntity.getUsername());
         bookEntity.setImage_url(link);
         System.out.println("User5 +"+userEntity.getUsername());
+
+        if (bookEntity.getTitle() == null || bookEntity.getDescription() == null) {
+            throw new IllegalArgumentException("Title and description are required");
+        }
 
         var result = bookRepository.save(bookEntity);
 

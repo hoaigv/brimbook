@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import jakarta.validation.constraints.NotNull;
 
 @RestController()
 @RequestMapping("/api/books")
@@ -78,34 +79,34 @@ public class BookController {
 
     }
 
-    @PostMapping()
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<BookResponse>> createBookImage(
-            @RequestPart("data") @Valid BookCreateRequest request,
+            @RequestPart("data") BookCreateRequest request,
             @RequestPart("image") MultipartFile image
     ) {
         try {
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            BookCreateRequest request = objectMapper.readValue(data, BookCreateRequest.class);
-
-            System.out.println("Hi 1");
             String fileName = image.getOriginalFilename();
-            System.out.println("Hi 2");
-
             if (image.isEmpty() || !Objects.requireNonNull(fileName).endsWith(".jpg") && !fileName.endsWith(".png")) {
                 var resp = ApiResponse.<BookResponse>builder()
                         .code(400)
-                        .message("you need choose file img (.jsp or .png) ")
+                        .message("Bạn cần chọn file ảnh (.jpg hoặc .png)")
                         .build();
-                return ResponseEntity.status(HttpStatus.OK).body(resp);
-            }else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
+            } else {
+                var result = bookService.createBookImg(request, image);
                 var resp = ApiResponse.<BookResponse>builder()
-                        .result(bookService.createBookImg(request, image))
-                        .message("Successfully created book")
+                        .result(result)
+                        .message("Tạo sách thành công")
                         .build();
-                return ResponseEntity.status(HttpStatus.OK).body(resp);
+                return ResponseEntity.status(HttpStatus.CREATED).body(resp);
             }
-        }catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            log.error("Lỗi khi tạo sách: ", e);
+            var resp = ApiResponse.<BookResponse>builder()
+                    .code(500)
+                    .message("Lỗi server: " + e.getMessage())
+                    .build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
         }
     }
 
