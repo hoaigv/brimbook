@@ -23,6 +23,7 @@ public interface IUserService {
 
     void delete(Set<Integer> ids);
 
-//    String addFavouriteBook(Integer id , String token);
+    void  likeBook(Integer bookId);
+    void  unLikeBook(Integer bookId);
 //    void  addReadChapter(Integer id);
 }

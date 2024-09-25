@@ -28,7 +28,9 @@ public enum ErrorCode {
     DELETE_FILE_NOT_SUCCESS(1020, " DELETE_FILE_NOT_SUCCESS", HttpStatus.BAD_REQUEST),
     PASSWORD_INCORRECT(400, "password incorrect, enter another password  ", HttpStatus.BAD_REQUEST),
     URL_NOT_EXIST(404,"The requested URL does not exist." , HttpStatus.NOT_FOUND),
-    SET_IMAGE_NOT_SUCCESS(400,"Create user do not success !" , HttpStatus.NOT_FOUND)
+    SET_IMAGE_NOT_SUCCESS(400,"Create user do not success !" , HttpStatus.NOT_FOUND),
+    LIKE_NOT_FOUND(404, "like not found", HttpStatus.NOT_FOUND),
+    LIKE_EXISTED(400, "like already existed", HttpStatus.NOT_FOUND)
 
 
 
