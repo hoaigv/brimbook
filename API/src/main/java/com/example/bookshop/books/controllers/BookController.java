@@ -22,12 +22,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import jakarta.validation.constraints.NotNull;
-
+import java.util.Date;
 @RestController()
 @RequestMapping("/api/books")
 @RequiredArgsConstructor
@@ -81,10 +82,18 @@ public class BookController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<BookResponse>> createBookImage(
-            @RequestPart("data") BookCreateRequest request,
-            @RequestPart("image") MultipartFile image
+            @RequestPart("title") String title,
+            @RequestPart("publishedDate") Date description,
+            @RequestPart("categoriesID") int image
+            
     ) {
         try {
+            BookCreateRequest bookCreateRequest = new BookCreateRequest(
+                title, author, description, price, quantity
+            );
+            
+            log.info("Đang tạo sách mới với tên: {}", bookCreateRequest.getTitle());
+            
             String fileName = image.getOriginalFilename();
             if (image.isEmpty() || !Objects.requireNonNull(fileName).endsWith(".jpg") && !fileName.endsWith(".png")) {
                 var resp = ApiResponse.<BookResponse>builder()
@@ -93,7 +102,7 @@ public class BookController {
                         .build();
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resp);
             } else {
-                var result = bookService.createBookImg(request, image);
+                var result = bookService.createBookImg(bookCreateRequest, image);
                 var resp = ApiResponse.<BookResponse>builder()
                         .result(result)
                         .message("Tạo sách thành công")
