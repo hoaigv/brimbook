@@ -35,14 +35,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ApiResponse<?>> handleNoHandlerFoundException(NoHandlerFoundException ex) {
         ApiResponse<?> apiResponse = new ApiResponse<>();
-
+         log.error(ex.getMessage(), ex);
         apiResponse.setMessage(ErrorCode.URL_NOT_EXIST.getMessage());
         apiResponse.setCode(ErrorCode.URL_NOT_EXIST.getCode());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
     }
 
     @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<ApiResponse<?>> handleException() {
+    public ResponseEntity<ApiResponse<?>> handleException(Exception ex) {
+        log.error(ex.getCause().getLocalizedMessage());
         ApiResponse<?> apiResponse = new ApiResponse<>();
 
         apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
@@ -84,7 +85,7 @@ public class GlobalExceptionHandler {
         apiResponse.setCode(ErrorCode.UNAUTHENTICATED.getCode());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiResponse);
     }
-    @ExceptionHandler(MissingServletRequestPartException.class)
+        @ExceptionHandler(MissingServletRequestPartException.class)
     public ResponseEntity<ApiResponse<?>> handleMissingServletRequestPartException(MissingServletRequestPartException ex) {
         ApiResponse<?> response = new ApiResponse<>();
         response.setMessage("Missing request part. Please check your form!");

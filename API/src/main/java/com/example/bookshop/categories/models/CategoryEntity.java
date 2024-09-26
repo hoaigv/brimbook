@@ -23,7 +23,7 @@ public class CategoryEntity extends BaseEntity {
 
 
     @NotNull(message = "category name  must not be null")
-    String name;
+    String categoryName;
 
     @OneToMany(mappedBy = "category" , fetch = FetchType.LAZY)
     @JsonManagedReference

@@ -48,7 +48,7 @@ public class UserController {
             UsersSpecification userSpecification,
             @RequestParam(required = false, defaultValue = DEFAULT_FILTER_PAGE) String page,
             @RequestParam(required = false, defaultValue = DEFAULT_FILTER_SiZE) String size,
-            @RequestParam(required = false) String sortParam
+            @RequestParam(required = false, defaultValue = "0") String sortParam
     ) {
         if (!isNumeric(page) || !isNumeric(size)) {
             var resp = ApiResponse.<List<UserEntity>>builder()

@@ -1,13 +1,16 @@
 package com.example.bookshop.users.services.impl;
 
+import com.example.bookshop.books.repositories.BookRepository;
 import com.example.bookshop.users.controllers.dto.users.AdminUpdateUserRequest;
 import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
 import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
+import com.example.bookshop.users.models.LikeEntity;
 import com.example.bookshop.users.models.UserEntity;
 import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
 import com.example.bookshop.exceptionHandlers.ErrorCode;
 import com.example.bookshop.users.mappers.UserMapper;
+import com.example.bookshop.users.repositories.LikeRepository;
 import com.example.bookshop.users.repositories.UserRepository;
 import com.example.bookshop.users.services.IUserService;
 import com.example.bookshop.utils.AuthUtils;
@@ -28,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +43,10 @@ public class UserService implements IUserService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     CloudUtils cloudinary;
+    BookRepository bookRepository;
+    LikeRepository likeRepository;
+
+
 
     @Override
     @Transactional(readOnly = true)
@@ -94,7 +102,7 @@ public class UserService implements IUserService {
     public void updateUser(UserUpdateRequest request, MultipartFile image) {
         UserEntity oldUser = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
         var user = userMapper.updateUserEntity(oldUser, request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(oldUser.getPassword());
         if (image.isEmpty()) {
             throw new IllegalArgumentException("File have not data");
         }
@@ -114,7 +122,7 @@ public class UserService implements IUserService {
     public void adminUpdateUser(MultipartFile image, AdminUpdateUserRequest request, Integer userId) {
         var oldUser = userRepository.findById(userId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
         var updateUser = userMapper.updateUserEntityByAdmin(oldUser, request);
-        updateUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        updateUser.setPassword(oldUser.getPassword());
         if (image.isEmpty()) {
             throw new IllegalArgumentException("File have not data");
         }
@@ -136,36 +144,29 @@ public class UserService implements IUserService {
         var oldUsers = userRepository.findAllById(ids);
         userRepository.deleteAll(oldUsers);
     }
-//    @Override
-//    @Transactional
-//    public String addFavouriteBook(Integer id, String token) {
-//        var bookEntity = bookRepository.findById(id).orElseThrow(
-//                () -> new CustomRunTimeException(ErrorCode.BOOK_NOT_FOUND)
-//        );
-//        try {
-//            FirebaseMessaging.getInstance().subscribeToTopic(Collections.singletonList(token), String.valueOf(bookEntity.getId()));
-//        } catch (FirebaseMessagingException e) {
-//            throw new CustomRunTimeException(ErrorCode.ADD_FAV_NOT_SUCCESS);
-//        }
-//        var user = userRepository.findByUsername(AuthUtils.getUserCurrent())
-//                .orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
-//        user.getBooks().add(bookEntity);
-//        userRepository.save(user);
-//        return bookEntity.getTitle();
-//    }
-//
-//
-//    @Override
-//    @Transactional
-//    public void addReadChapter(Integer id) {
-//        var chapter = chapterRepository.findById(id).orElseThrow(
-//                () -> new CustomRunTimeException(ErrorCode.CHAPTER_NOT_FOUND)
-//        );
-//        var user = userRepository.findByUsername(AuthUtils.getUserCurrent())
-//                .orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
-//        user.getChapters().add(chapter);
-//        userRepository.save(user);
-//    }
 
+    @Override
+    @Transactional
+    public void likeBook(Integer bookId) {
+        var user = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+        var book = bookRepository.findById(bookId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.BOOK_NOT_FOUND));
+        if(likeRepository.existsByBookAndUser(book,user)){
+            throw new  CustomRunTimeException(ErrorCode.LIKE_EXISTED);
+        }
+        LikeEntity likeEntity = LikeEntity.builder()
+        .book(book)
+        .user(user)
+        .createdAt(LocalDateTime.now()) // Thêm trường createdAt
+        .build();
+        likeRepository.save(likeEntity);
+    }
 
+    @Override
+    @Transactional
+    public void unLikeBook(Integer bookId){
+        var user = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+        var book = bookRepository.findById(bookId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.BOOK_NOT_FOUND));
+        var like = likeRepository.findByBookAndUser(book,user).orElseThrow(()-> new CustomRunTimeException(ErrorCode.LIKE_NOT_FOUND));
+        likeRepository.delete(like);
+    }
 }
