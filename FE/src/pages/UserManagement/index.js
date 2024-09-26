@@ -3,6 +3,7 @@ import { Table, Button, Modal, Form, Input, Space, DatePicker, Upload, message }
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import * as USERAPI from "~/apis/user";
 import Radio from "antd/es/radio/radio";
+import moment from "moment";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -62,9 +63,33 @@ const UserManagement = () => {
     setEditingUser(user);
     setIsModalVisible(true);
     if (user) {
-      form.setFieldsValue(user);
+      // Đặt giá trị cho các trường form dựa trên thông tin người dùng
+      form.setFieldsValue({
+        username: user.username,
+        email: user.email,
+        gender: user.gender || undefined,
+        firstName: user.firstName || undefined,
+        lastName: user.lastName || undefined,
+        phone: user.phone || undefined,
+        birthDate: user.birthDate ? moment(user.birthDate) : undefined,
+        role: user.role,
+      });
+      // Đặt fileList cho trường image nếu có
+      if (user.image_url) {
+        setFileList([
+          {
+            uid: "-1",
+            name: "image.png",
+            status: "done",
+            url: user.image_url,
+          },
+        ]);
+      } else {
+        setFileList([]);
+      }
     } else {
       form.resetFields();
+      setFileList([]);
     }
   };
 
@@ -233,201 +258,75 @@ const UserManagement = () => {
         title={editingUser ? "Sửa người dùng" : "Thêm người dùng mới"}
         open={isModalVisible}
         onOk={handleOk}
-        onCancel={() => setIsModalVisible(false)}
+        onCancel={() => {
+          setIsModalVisible(false);
+          setEditingUser(null);
+          form.resetFields();
+          setFileList([]);
+        }}
       >
         <i>{notification}</i>
         <Form form={form} layout="vertical" onClick={handleEnterValue}>
-          <Form.Item
-            name="username"
-            label="User Name"
-            rules={[
-              { required: true, message: "Vui lòng nhập tên" },
-              {
-                validator: (_, value) => {
-                  if (!value) {
-                    return Promise.resolve();
-                  }
-                  const userNameRegex = /^[A-Za-z\d@$!%*#?&]{6,}$/;
-
-                  if (!userNameRegex.test(value)) {
-                    return Promise.reject(
-                      new Error(
-                        "Tên đăng nhập phải hơn 6 ký tự , không khoảng trắng (vd :'exam112')",
-                      ),
-                    );
-                  }
-
-                  return Promise.resolve();
-                },
-              },
-            ]}
-          >
-            <Input />
+          <Form.Item name="username" label="User Name">
+            <Input disabled={!!editingUser} />
           </Form.Item>
-          {!editingUser && (
-            <Form.Item
-              name="password"
-              label="Password"
-              rules={[
-                { required: true, message: "Vui lòng nhập mật khẩu " },
-                {
-                  validator: (_, value) => {
-                    if (!value) {
-                      return Promise.resolve();
-                    }
-                    const passwordRegex =
-                      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/;
-
-                    if (!passwordRegex.test(value)) {
-                      return Promise.reject(
-                        new Error("Mật khẩu phải có chữ cái, số, ký tự đặc biệt (vd:example@a)"),
-                      );
-                    }
-
-                    return Promise.resolve();
-                  },
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          )}
           <Form.Item
             name="email"
             label="Email"
-            rules={[
-              { required: true, message: "Vui lòng nhập email" },
-              { type: "email", message: "Email không hợp lệ" },
-              {
-                validator: (_, value) => {
-                  if (value && /^\d/.test(value)) {
-                    return Promise.reject(new Error("Email không được bắt đầu bằng số"));
-                  }
-                  return Promise.resolve();
-                },
-              },
-            ]}
+            rules={
+              [
+                /* ... */
+              ]
+            }
           >
             <Input />
           </Form.Item>
-          {editingUser && (
-            <Form.Item name="gender" label="Gender">
-              <Radio.Group>
-                <Radio value="MALE">Male</Radio>
-                <Radio value="FEMALE">Female</Radio>
-              </Radio.Group>
-            </Form.Item>
-          )}
-          {editingUser && (
-            <Form.Item
-              name="firstName"
-              label="First Name"
-              rules={[
-                {
-                  validator: (_, value) => {
-                    if (!value) {
-                      return Promise.resolve();
-                    }
-                    const firstNameRegex = /^[A-Za-z]+$/;
-                    if (!firstNameRegex.test(value)) {
-                      return Promise.reject(
-                        new Error("Họ chỉ bao gồm chữ cái và không chứa khoảng trắng !"),
-                      );
-                    }
-
-                    return Promise.resolve();
-                  },
-                },
-              ]}
+          <Form.Item name="gender" label="Gender">
+            <Radio.Group>
+              <Radio value="MALE">Nam</Radio>
+              <Radio value="FEMALE">Nữ</Radio>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item name="firstName" label="First Name">
+            <Input />
+          </Form.Item>
+          <Form.Item name="lastName" label="Last Name">
+            <Input />
+          </Form.Item>
+          <Form.Item name="phone" label="Phone Number">
+            <Input />
+          </Form.Item>
+          <Form.Item name="birthDate" label="Birth Date">
+            <DatePicker />
+          </Form.Item>
+          <Form.Item name="role" label="Role">
+            <Radio.Group>
+              <Radio value="ADMIN">Admin</Radio>
+              <Radio value="USER">User</Radio>
+            </Radio.Group>
+          </Form.Item>
+          {/* Trường image */}
+          <Form.Item
+            name="image"
+            label="Image"
+            valuePropName="fileList"
+            getValueFromEvent={(e) => e && e.fileList}
+          >
+            <Upload
+              listType="picture-card"
+              fileList={fileList}
+              onChange={handleChange}
+              beforeUpload={beforeUpload}
+              multiple={false}
             >
-              <Input />
-            </Form.Item>
-          )}
-          {editingUser && (
-            <Form.Item
-              name="lastName"
-              label="Last Name"
-              rules={[
-                {
-                  validator: (_, value) => {
-                    if (!value) {
-                      return Promise.resolve();
-                    }
-                    const lastNameRegex = /^[A-Za-z]+$/;
-                    if (!lastNameRegex.test(value)) {
-                      return Promise.reject(
-                        new Error("Tên chỉ bảo gồm chữ và không chứa khoảng trắng !"),
-                      );
-                    }
-
-                    return Promise.resolve();
-                  },
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          )}
-          {editingUser && (
-            <Form.Item
-              name="phone"
-              label="Phone Number"
-              rules={[
-                {
-                  validator: (_, value) => {
-                    if (!value) {
-                      return Promise.resolve();
-                    }
-                    const phoneRegex = /^\d{10,15}$/;
-                    if (!phoneRegex.test(value)) {
-                      return Promise.reject(
-                        new Error("Tên chỉ bảo gồm chữ và không chứa khoảng trắng !"),
-                      );
-                    }
-
-                    return Promise.resolve();
-                  },
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          )}
-          {editingUser && (
-            <Form.Item name="birthDate" label="Birth Date">
-              <DatePicker />
-            </Form.Item>
-          )}
-          {editingUser && (
-            <Form.Item name="role" label="Role">
-              <Radio.Group>
-                <Radio value="ADMIN">Admin</Radio>
-                <Radio value="USER">user</Radio>
-              </Radio.Group>
-            </Form.Item>
-          )}
-          {editingUser && (
-            <Form.Item
-              name="image"
-              label="Image"
-              valuePropName="fileList"
-              getValueFromEvent={(e) => e && e.fileList}
-            >
-              <Upload
-                listType="picture-card" // Hiển thị ảnh dạng thẻ  // Danh sách file hiện tại
-                onChange={handleChange} // Xử lý sự kiện khi file được upload
-                beforeUpload={beforeUpload} // // Không tải lên tự động, chỉ lưu local
-                multiple={false} // Chỉ cho phép upload 1 file
-              >
-                {fileList.length === 1 ? null : (
-                  <div>
-                    <PlusOutlined />
-                    <div>Upload</div>
-                  </div>
-                )}
-              </Upload>
-            </Form.Item>
-          )}
+              {fileList.length === 1 ? null : (
+                <div>
+                  <PlusOutlined />
+                  <div>Tải lên</div>
+                </div>
+              )}
+            </Upload>
+          </Form.Item>
         </Form>
       </Modal>
       <Modal

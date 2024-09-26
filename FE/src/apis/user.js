@@ -1,20 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "~/utils/constants";
 
-// export const loginUser = async (user, navigate) => {
-//   await axios
-//     .post(`${BASE_URL}/auth/login`, user)
-//     .then((res) => {
-//       localStorage.setItem("userToken", res.data.token);
-//       localStorage.setItem("userRole", res.data.role);
-//       if (res.data.role === "ADMIN") {
-//         navigate("/user-management");
-//       } else {
-//         navigate("/");
-//       }
-//     })
-//     .catch((err) => console.log(err));
-// };
 export const loginUser = async (user, navigate) => {
   try {
     const response = await axios.post(`${BASE_URL}/auth/login`, user);
@@ -31,64 +17,124 @@ export const loginUser = async (user, navigate) => {
     console.log(err);
   }
 };
+export const extractDate = (dateTimeString) => {
+  return dateTimeString.split("T")[0];
+};
 
-export const getAll = async (setUsers) => {
+export const getAll = (callback, page = 0, size = 10) => {
+  const token = localStorage.getItem("userToken");
+  if (!token) {
+    console.error("Không tìm thấy token xác thực");
+    return;
+  }
+
+  axios
+    .get(`${BASE_URL}/api/admin/users`, {
+      params: {
+        page: page,
+        size: size,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      console.log("Phản hồi API:", response.data);
+      callback(response.data);
+    })
+    .catch((error) => {
+      console.error("Lỗi khi gọi API:", error);
+      if (error.response && error.response.status === 401) {
+        console.error("Token không hợp lệ hoặc đã hết hạn");
+        // Có thể thêm xử lý đăng xuất hoặc chuyển hướng đến trang đăng nhập ở đây
+      }
+    });
+};
+
+const isTokenExpired = (token) => {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload.exp < Date.now() / 1000;
+  } catch (error) {
+    return true;
+  }
+};
+
+const checkToken = () => {
+  const token = localStorage.getItem("userToken");
+  if (!token || isTokenExpired(token)) {
+    throw new Error("Token không hợp lệ hoặc đã hết hạn");
+  }
+  return token;
+};
+
+export const registerUser = async (user, navigate) => {
+  try {
+    const token = checkToken();
+
+    const response = await axios.post(`${BASE_URL}/api/users/sign-up`, user, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Đăng ký thành công:", response.data);
+    navigate("/");
+  } catch (error) {
+    if (error.response && error.response.data.code === 1006) {
+      console.error("Lỗi xác thực người dùng:", error.response.data.message);
+      localStorage.removeItem("userToken");
+      navigate("/login");
+    } else {
+      console.error("Lỗi:", error.message);
+    }
+  }
+};
+
+export const registerUserByAdmin = async (user, setNotification) => {
+  console.log("user", user);
   try {
     const token = localStorage.getItem("userToken");
     if (!token) {
       throw new Error("Không tìm thấy token xác thực");
     }
-    const response = await axios.get(`${BASE_URL}/api/admin/users`, {
+    const response = await axios.post(`${BASE_URL}/api/admin/users/sign-up`, user, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    setUsers(response.data.result);
+    let data = response.data.message || "Thêm người dùng thành công";
+    setNotification({ success: true, message: data });
+    return { success: true, user: response.data.result };
   } catch (error) {
-    if (error.response) {
-      if (error.response.data.code === 9999) {
-        console.error("Lỗi không xác định từ server:", error.response.data.message);
-        // Xử lý lỗi cụ thể ở đây, ví dụ:
-        // setError("Đã xảy ra lỗi không xác định. Vui lòng thử lại sau.");
-      } else {
-        console.error("Lỗi server:", error.response.data);
-      }
-      console.error("Mã trạng thái:", error.response.status);
-    } else if (error.request) {
-      console.error("Không nhận được phản hồi từ server:", error.request);
-    } else {
-      console.error("Lỗi:", error.message);
-    }
-    // Có thể thêm xử lý lỗi chung ở đây, ví dụ:
-    // setUsers([]);
-    // setError("Không thể tải danh sách người dùng. Vui lòng thử lại sau.");
+    let messageError = error.response?.data?.message || "Lỗi không xác định khi thêm người dùng";
+    setNotification({ success: false, message: messageError });
+    return { success: false, message: messageError };
   }
-};
-
-export const registerUser = async (user, navigate) => {
-  await axios
-    .post(`${BASE_URL}/api/users/sign-up`, user)
-    .then((res) => res.data)
-    .then(() => {
-      navigate("/");
-    })
-    .catch((err) => console.log(err));
-};
-
-export const registerUserByAdmin = async (user, setNotification) => {
-  await axios
-    .post(`${BASE_URL}/api/admin/users/sign-up`, user)
-    .then((res) => {
-      let data = res?.data?.message || res?.response?.data?.message;
-      setNotification(data);
-    })
-    .catch((err) => {
-      let messageError = err.response?.data?.message || "errror not cat";
-      setNotification(messageError);
-    });
 };
 
 export const logoutUser = (navigate) => {
   localStorage.removeItem("userToken");
   navigate("/login");
+};
+
+export const deleteUser = async (userId, setNotification) => {
+  try {
+    const token = localStorage.getItem("userToken");
+    if (!token) {
+      throw new Error("Không tìm thấy token xác thực");
+    }
+    const response = await axios.delete(`${BASE_URL}/api/admin/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    let data = response.data.message || "Xóa người dùng thành công";
+    setNotification({ success: true, message: data });
+    return { success: true, message: data };
+  } catch (error) {
+    let messageError = error.response?.data?.message || "Lỗi không xác định khi xóa người dùng";
+    setNotification({ success: false, message: messageError });
+    return { success: false, message: messageError };
+  }
 };
