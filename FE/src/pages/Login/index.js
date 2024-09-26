@@ -15,6 +15,7 @@ const cx = classNames.bind(styles);
 function Login() {
   const navigate = useNavigate();
 
+  const [err, setErr] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -31,8 +32,7 @@ function Login() {
 
   const handleClick = () => {
     if (!formData.username || !formData.password) {
-      // Hiển thị thông báo lỗi
-      return;
+      setErr(true);
     }
     User.loginUser(formData, navigate);
   };
@@ -44,11 +44,11 @@ function Login() {
       <div className={cx("wrapper")}>
         <div className={cx("form")}>
           <LogoImage width="250px" height="60px" className={cx("logo")} />
-          <Input type={"text"} handleChage={handleChage} defaultValue={"Enter email"} mb={20} />
+          <Input type={"text"} handleChage={handleChage} defaultValue={"Enter username"} mb={20} />
           <div className={cx("password-wrapper")}>
             <div className={cx("password-inner")}>
               <input
-                className={cx("password-input")}
+                className={cx("password-input", err && "err")}
                 type={visible ? "text" : "password"}
                 placeholder="Enter password"
                 onChange={handleInputPassword}

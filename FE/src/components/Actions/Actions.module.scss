@@ -5,6 +5,12 @@
   gap: 10px;
 }
 
+@media screen and (max-width: 1023px) {
+  .user-avatar {
+    display: none;
+  }
+}
+
 .actions {
   display: flex;
   gap: 15px;
