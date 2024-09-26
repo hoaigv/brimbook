@@ -7,4 +7,9 @@ export const menuItem = [
     name: "Post Story",
     link: "/post-story",
   },
+  {
+    name: "Quản lý người dùng",
+    link: "/user-management",
+    role: "admin",
+  },
 ];

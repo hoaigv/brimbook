@@ -21,45 +21,34 @@ export const extractDate = (dateTimeString) => {
   return dateTimeString.split("T")[0];
 };
 
-export const getAll = async (setUsers) => {
-  try {
-    const token = localStorage.getItem("userToken");
-    console.log("Token:", token);
-    if (!token) {
-      throw new Error("Không tìm thấy token xác thực");
-    }
-    const response = await axios.get(`${BASE_URL}/api/admin/users`, {
+export const getAll = (callback, page = 0, size = 10) => {
+  const token = localStorage.getItem("userToken");
+  if (!token) {
+    console.error("Không tìm thấy token xác thực");
+    return;
+  }
+
+  axios
+    .get(`${BASE_URL}/api/admin/users`, {
+      params: {
+        page: page,
+        size: size,
+      },
       headers: {
         Authorization: `Bearer ${token}`,
       },
+    })
+    .then((response) => {
+      console.log("Phản hồi API:", response.data);
+      callback(response.data);
+    })
+    .catch((error) => {
+      console.error("Lỗi khi gọi API:", error);
+      if (error.response && error.response.status === 401) {
+        console.error("Token không hợp lệ hoặc đã hết hạn");
+        // Có thể thêm xử lý đăng xuất hoặc chuyển hướng đến trang đăng nhập ở đây
+      }
     });
-    if (response.data && response.data.result) {
-      // Xử lý ngày tháng cho mỗi người dùng trước khi cập nhật state
-      const processedUsers = response.data.result.map((user) => ({
-        ...user,
-        createdAt: extractDate(user.createdAt),
-        updatedAt: extractDate(user.updatedAt),
-      }));
-      setUsers(processedUsers);
-    } else {
-      throw new Error("Dữ liệu không hợp lệ từ server");
-    }
-  } catch (error) {
-    console.error("Lỗi khi lấy danh sách người dùng:", error);
-    if (error.response) {
-      console.error("Mã trạng thái:", error.response.status);
-      console.error("Dữ liệu lỗi:", error.response.data);
-    }
-    // Thêm xử lý lỗi cụ thể cho lỗi 400
-    if (error.response && error.response.status === 400) {
-      console.error("Lỗi 400 Bad Request: Yêu cầu không hợp lệ");
-      // Có thể thêm xử lý đặc biệt cho lỗi 400 ở đây
-    }
-    // Gọi hàm xử lý lỗi (nếu được cung cấp)
-    // if (typeof setError === 'function') {
-    //   setError("Không thể tải danh sách người dùng. Vui lòng thử lại sau.");
-    // }
-  }
 };
 
 const isTokenExpired = (token) => {
@@ -127,4 +116,25 @@ export const registerUserByAdmin = async (user, setNotification) => {
 export const logoutUser = (navigate) => {
   localStorage.removeItem("userToken");
   navigate("/login");
+};
+
+export const deleteUser = async (userId, setNotification) => {
+  try {
+    const token = localStorage.getItem("userToken");
+    if (!token) {
+      throw new Error("Không tìm thấy token xác thực");
+    }
+    const response = await axios.delete(`${BASE_URL}/api/admin/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    let data = response.data.message || "Xóa người dùng thành công";
+    setNotification({ success: true, message: data });
+    return { success: true, message: data };
+  } catch (error) {
+    let messageError = error.response?.data?.message || "Lỗi không xác định khi xóa người dùng";
+    setNotification({ success: false, message: messageError });
+    return { success: false, message: messageError };
+  }
 };

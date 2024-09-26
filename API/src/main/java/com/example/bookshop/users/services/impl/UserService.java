@@ -46,8 +46,6 @@ public class UserService implements IUserService {
     BookRepository bookRepository;
     LikeRepository likeRepository;
 
-
-
     @Override
     @Transactional(readOnly = true)
     public UserResponse getUserById(Integer id) {
@@ -57,15 +55,11 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<UserEntity> getAllUsers(Pageable pageable, UsersSpecification usersSpecification) {
-        log.info("In method getAllUsers");
-        Page<UserEntity> result;
-        if (usersSpecification != null) {
-            result = userRepository.findAll(usersSpecification, pageable);
-        } else {
-            result = userRepository.findAll(pageable);
-        }
-        return result;
+    public Page<UserEntity> getAllUsers(Pageable pageable, UsersSpecification specification) {
+        // Đảm bảo rằng phương thức này đang sử dụng đúng pageable
+        return (specification != null) 
+        ? userRepository.findAll(specification, pageable) 
+        : userRepository.findAll(pageable);
     }
 
     @Override
@@ -85,7 +79,6 @@ public class UserService implements IUserService {
         UserEntity user = userMapper.userToUserEntity(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.USER);
-
 
         user.setImage_url("https://stcv4.hnammobile.com/downloads/a/cach-chup-anh-selfie-dep-an-tuong-ban-nhat-dinh-phai-biet-81675319567.jpg");
         try {
@@ -139,10 +132,17 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public void delete(Set<Integer> ids) {
-        log.info("In method delete");
-        var oldUsers = userRepository.findAllById(ids);
-        userRepository.deleteAll(oldUsers);
+    public void deleteUser(Integer userId) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+        
+        // Xóa ảnh của người dùng trên Cloudinary (nếu có)
+        if (user.getImage_url() != null && !user.getImage_url().isEmpty()) {
+            cloudinary.deleteFileAsync(user.getImage_url());
+        }
+        
+        // Xóa người dùng khỏi cơ sở dữ liệu
+        userRepository.delete(user);
     }
 
     @Override
@@ -169,4 +169,11 @@ public class UserService implements IUserService {
         var like = likeRepository.findByBookAndUser(book,user).orElseThrow(()-> new CustomRunTimeException(ErrorCode.LIKE_NOT_FOUND));
         likeRepository.delete(like);
     }
+
+    @Override
+    public void delete(Set<Integer> ids) {
+        userRepository.deleteAllById(ids);
+        log.info("Đã xóa {} người dùng", ids.size());
+    }
+    
 }

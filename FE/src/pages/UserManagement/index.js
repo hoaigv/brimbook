@@ -13,6 +13,12 @@ const UserManagement = () => {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const [notification, setNotification] = useState();
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+    totalPages: 1,
+  });
 
   const [fileList, setFileList] = useState([]);
 
@@ -26,9 +32,31 @@ const UserManagement = () => {
     setFileList(newFileList);
   };
 
+  const fetchUsers = (page, pageSize) => {
+    console.log(`Đang fetch users với page=${page} và pageSize=${pageSize}`);
+    USERAPI.getAll(
+      (data) => {
+        console.log("Dữ liệu nhận được từ API:", data);
+        if (data && data.result) {
+          setUsers(data.result);
+          setPagination({
+            current: data.page,
+            pageSize: data.pageSize,
+            total: data.totalResults,
+            totalPages: data.totalPages,
+          });
+        } else {
+          console.error("Dữ liệu không đúng định dạng:", data);
+        }
+      },
+      page - 1,
+      pageSize,
+    );
+  };
+
   useEffect(() => {
-    USERAPI.getAll(setUsers);
-  }, [notification]);
+    fetchUsers(pagination.current, pagination.pageSize);
+  }, [pagination.current, pagination.pageSize]);
 
   const showModal = (user = null) => {
     setEditingUser(user);
@@ -84,12 +112,16 @@ const UserManagement = () => {
 
   const handleDelete = () => {
     if (userToDelete) {
-      // Giả lập API call để xóa người dùng
-      setTimeout(() => {
-        setUsers(users.filter((user) => user.id !== userToDelete.id));
-        setIsDeleteModalVisible(false);
-        setUserToDelete(null);
-      }, 1000);
+      USERAPI.deleteUser(userToDelete.id, (response) => {
+        if (response.success) {
+          setUsers(users.filter((user) => user.id !== userToDelete.id));
+          setIsDeleteModalVisible(false);
+          setUserToDelete(null);
+          message.success("Người dùng đã được xóa thành công");
+        } else {
+          message.error("Có lỗi xảy ra khi xóa người dùng");
+        }
+      });
     }
   };
 
@@ -98,19 +130,42 @@ const UserManagement = () => {
       title: "Tên",
       dataIndex: "username",
       key: "username",
-      render: (text, record) => record?.username || "N/A",
+      render: (text, record) => (
+        <div
+          style={{
+            maxWidth: 150,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {record?.username || "N/A"}
+        </div>
+      ),
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      render: (text, record) => record?.email || "N/A",
+      render: (text, record) => (
+        <div
+          style={{
+            maxWidth: 200,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {record?.email || "N/A"}
+        </div>
+      ),
     },
     {
       title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
       sorter: (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+      render: (text) => USERAPI.extractDate(text),
     },
     {
       title: "Hành động",
@@ -128,11 +183,14 @@ const UserManagement = () => {
     },
   ];
 
-  const filteredUsers = users.filter(
-    (user) =>
-      user?.username?.toLowerCase().includes(searchText.toLowerCase()) ||
-      user?.email?.toLowerCase().includes(searchText.toLowerCase()),
-  );
+  const filteredUsers = Array.isArray(users)
+    ? users.filter(
+        (user) =>
+          user?.username?.toLowerCase().includes(searchText.toLowerCase()) ||
+          user?.email?.toLowerCase().includes(searchText.toLowerCase()),
+      )
+    : [];
+
   const handleEnterValue = () => {
     if (notification) {
       setNotification();
@@ -157,7 +215,20 @@ const UserManagement = () => {
           Thêm người dùng
         </Button>
       </Space>
-      <Table columns={columns} dataSource={filteredUsers} rowKey="id" />
+      <Table
+        columns={columns}
+        dataSource={filteredUsers}
+        pagination={{
+          ...pagination,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          showTotal: (total, range) =>
+            `${range[0]}-${range[1]} của ${total} người dùng (Tổng ${pagination.totalPages} trang)`,
+          onChange: (page, pageSize) => {
+            fetchUsers(page, pageSize);
+          },
+        }}
+      />
       <Modal
         title={editingUser ? "Sửa người dùng" : "Thêm người dùng mới"}
         open={isModalVisible}

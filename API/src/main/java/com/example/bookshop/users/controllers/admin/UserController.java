@@ -114,4 +114,14 @@ public class UserController {
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Integer userId) {
+        userService.deleteUser(userId);
+        var resp = ApiResponse.<Void>builder()
+                .message("Đã xóa người dùng thành công")
+                .code(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
 }

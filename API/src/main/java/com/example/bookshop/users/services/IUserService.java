@@ -26,4 +26,6 @@ public interface IUserService {
     void  likeBook(Integer bookId);
     void  unLikeBook(Integer bookId);
 //    void  addReadChapter(Integer id);
+
+    void deleteUser(Integer userId);
 }
