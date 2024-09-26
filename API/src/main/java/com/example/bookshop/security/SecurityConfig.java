@@ -21,6 +21,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.security.config.Customizer;
+import org.springframework.web.cors.CorsConfigurationSource;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -49,22 +52,25 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests(request ->
+        httpSecurity
+            .cors(Customizer.withDefaults()) // Thêm dòng này
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(request ->
                 request
-                        .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINT)
-                        .permitAll()
-                        .requestMatchers(HttpMethod.GET,PRIVATE_GET_ENDPOINT)
-                        .hasAnyAuthority(Authentication.ROLE_USER.name(),Authentication.ROLE_ADMIN.name())
-                        .requestMatchers(HttpMethod.PUT,PRIVATE_PUT_ENDPOINT)
-                        .hasAnyAuthority(Authentication.ROLE_USER.name(),Authentication.ROLE_ADMIN.name())
-                        .requestMatchers(PRIVATE_ENDPOINT)
-                        .hasAuthority(Authentication.ROLE_ADMIN.name())
-                        .requestMatchers(SWAGGER_WHITELIST)
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINT)
+                    .permitAll()
+                    .requestMatchers(HttpMethod.GET,PRIVATE_GET_ENDPOINT)
+                    .hasAnyAuthority(Authentication.ROLE_USER.name(),Authentication.ROLE_ADMIN.name())
+                    .requestMatchers(HttpMethod.PUT,PRIVATE_PUT_ENDPOINT)
+                    .hasAnyAuthority(Authentication.ROLE_USER.name(),Authentication.ROLE_ADMIN.name())
+                    .requestMatchers(PRIVATE_ENDPOINT)
+                    .hasAuthority(Authentication.ROLE_ADMIN.name())
+                    .requestMatchers(SWAGGER_WHITELIST)
                 .permitAll()
                         .anyRequest()
-                        .authenticated());
-
-        httpSecurity.oauth2ResourceServer(oauth2 ->
+                        .authenticated())
+            .oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder)
                                         .jwtAuthenticationConverter(jwtAuthenticationConverter()))
                                 .authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
@@ -79,14 +85,14 @@ public class SecurityConfig {
 
     @Bean
     public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*");
-        config.addAllowedMethod("*");
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("*"); // Cân nhắc giới hạn nguồn gốc cho môi trường sản xuất
         config.addAllowedHeader("*");
-        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", config);
-        return new CorsFilter(urlBasedCorsConfigurationSource);
-
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
     @Bean
@@ -98,10 +104,20 @@ public class SecurityConfig {
         return jwtAuthenticationConverter;
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+        configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }

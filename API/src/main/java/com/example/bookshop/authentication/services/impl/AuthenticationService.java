@@ -67,13 +67,12 @@ public class AuthenticationService implements IAuthenticationService {
 
         var token = generateToken(user);
 
-
         return AuthenticationResponse.builder()
                 .authenticated(true)
                 .token(token)
+                .role(user.getRole().toString()) // Thêm vai trò vào phản hồi
                 .build();
     }
-
 
     @Override
     public IntrospectResponse introspect(IntrospectRequest introspectRequest) throws JOSEException, ParseException {
