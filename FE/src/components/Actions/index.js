@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
 
 import classNames from "classnames/bind";
 import styles from "./Actions.module.scss";
 
-import { BellIcon } from "~/components/Icons";
 import images from "~/assets/Image";
 import Image from "~/components/Image";
 import Button from "~/components/Button";
@@ -32,17 +30,9 @@ function Actions() {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("actions")}>
-        <NavLink
-          className={(nav) => cx("action-btn", { active: nav.isActive })}
-          to={"/notifications"}
-        >
-          <BellIcon width="18px" height="18px" />
-        </NavLink>
-      </div>
       <div className={cx("dropdown")}>
         <div>
-          <DropDown name={userMe.result.username}>
+          <DropDown name={userMe.result.username} sx={{ maxWidth: "130px" }}>
             {menuItem.map((item, index) => (
               <li key={index}>
                 <Button normal sx={{ padding: "5px 25px" }} to={item.link}>

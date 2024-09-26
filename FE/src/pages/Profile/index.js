@@ -32,7 +32,6 @@ function Profile() {
       password: "",
     },
   });
-
   const [formData, setFormData] = useState({
     user: {
       firstName: "",
@@ -43,7 +42,7 @@ function Profile() {
       phone: "",
       birthday: "",
     },
-    image: "",
+    image: null,
   });
 
   const handleClick = () => {
@@ -104,8 +103,6 @@ function Profile() {
     User.update(formData);
   };
 
-  console.log(formData);
-
   return (
     <div className={cx("wrapper")}>
       <title>Profile Page | BrimBook</title>
@@ -139,7 +136,7 @@ function Profile() {
                 <h2 className={cx("username")}>@{userMe.result.username}</h2>
               </div>
             </div>
-            <form className={cx("form")}>
+            <div className={cx("form")}>
               <div className={cx("form-group")}>
                 <label className={cx("label")}>First Name</label>
                 <Input
@@ -210,7 +207,7 @@ function Profile() {
                   handleChage={handleChangeEmail}
                 />
               </div>
-            </form>
+            </div>
             <Button type1 sx={{ marginTop: "50px" }} onClick={handleSaveChanges}>
               Save Changes
             </Button>

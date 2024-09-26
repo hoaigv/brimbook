@@ -54,13 +54,7 @@ function BookDetail() {
                   <p className={cx("text")}>123 Likes</p>
                 </div>
               </div>
-              <div className={cx("book-category")}>
-                {category2.map((item) => (
-                  <Button type2 sx={{ width: "120px", height: "35px" }}>
-                    {item}
-                  </Button>
-                ))}
-              </div>
+              <Button type2 sx={{ width: "120px", height: "35px" }}></Button>
             </div>
             <div className={cx("book-author")}>
               <div className={cx("bookdetail")}>

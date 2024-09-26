@@ -14,5 +14,3 @@ export const category = [
   "Sci-fi",
   "Sport",
 ];
-
-export const category2 = ["Action", "Documentary", "Biography", "Horror"];
