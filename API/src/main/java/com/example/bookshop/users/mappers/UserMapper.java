@@ -8,8 +8,9 @@ import com.example.bookshop.users.models.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring" , nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UserMapper {
 
 
@@ -22,11 +23,11 @@ public interface UserMapper {
 
    @Mapping(target = "image_url", ignore = true)
    @Mapping(target = "password", ignore = true)
-   UserEntity updateUserEntity(@MappingTarget UserEntity userEntity, UserUpdateRequest userUpdateRequest);
+   void  updateUserEntity(@MappingTarget UserEntity userEntity, UserUpdateRequest userUpdateRequest);
 
    @Mapping(target = "image_url", ignore = true)
    @Mapping(target = "password", ignore = true)
-   UserEntity updateUserEntityByAdmin(@MappingTarget UserEntity userEntity, AdminUpdateUserRequest request);
+   void updateUserEntityByAdmin(@MappingTarget UserEntity userEntity, AdminUpdateUserRequest request);
 
 
 
