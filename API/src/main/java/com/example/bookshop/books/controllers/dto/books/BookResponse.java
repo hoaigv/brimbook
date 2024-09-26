@@ -1,6 +1,6 @@
 package com.example.bookshop.books.controllers.dto.books;
 
-import com.example.bookshop.categories.controllers.dto.CategoryResponse1;
+import com.example.bookshop.categories.controllers.dto.CategoryResponse;
 import com.example.bookshop.users.controllers.dto.users.UserResponseBook;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -18,7 +18,7 @@ public class BookResponse {
     String description;
     String image_url;
     Date publishedDate;
-    CategoryResponse1 category;
+    CategoryResponse category;
     UserResponseBook user;
 }
 
