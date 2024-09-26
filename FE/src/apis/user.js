@@ -2,13 +2,15 @@ import axios from "axios";
 import { BASE_URL } from "~/utils/constants";
 
 export const loginUser = async (user, navigate) => {
-  await axios
-    .post(`${BASE_URL}/auth/login`, user)
-    .then((res) => res.data)
-    .then(() => {
+  try {
+    const response = await axios.post(`${BASE_URL}/auth/login`, user);
+    if (response.data && response.data.result.token) {
+      localStorage.setItem("userToken", response.data.result.token);
       navigate("/");
-    })
-    .catch((err) => console.log(err));
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 axios.interceptors.request.use(
@@ -35,20 +37,11 @@ export const registerUser = async (user, navigate) => {
     .post(`${BASE_URL}/api/users/sign-up`, user)
     .then((res) => res.data)
     .then(() => {
-      navigate("/");
+      navigate("/login");
     })
     .catch((err) => console.log(err));
 };
 
-export const registerUserByAdmin = async (user, setNotification) => {
-  await axios
-    .post(`${BASE_URL}/api/admin/users/sign-up`, user)
-    .then((res) => {
-      let data = res?.data?.message || res?.response?.data?.message;
-      setNotification(data);
-    })
-    .catch((err) => {
-      let messageError = err.response?.data?.message || "errror not cat"
-      setNotification(messageError);
-    });
+export const logoutUser = (navigate) => {
+  localStorage.removeItem("userToken");
 };

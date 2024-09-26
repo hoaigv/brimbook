@@ -30,6 +30,10 @@ function Login() {
   };
 
   const handleClick = () => {
+    if (!formData.username || !formData.password) {
+      // Hiển thị thông báo lỗi
+      return;
+    }
     User.loginUser(formData, navigate);
   };
 

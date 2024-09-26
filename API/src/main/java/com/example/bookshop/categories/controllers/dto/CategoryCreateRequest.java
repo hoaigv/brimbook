@@ -10,6 +10,4 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryCreateRequest {
     String categoryName;
-    String categoryDescription;
-    String categoryCode;
 }
