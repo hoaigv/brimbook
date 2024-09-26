@@ -4,6 +4,7 @@ import com.example.bookshop.categories.controllers.dto.CategoryCreateRequest;
 import com.example.bookshop.categories.controllers.dto.CategoryCreateResponse;
 import com.example.bookshop.categories.controllers.dto.CategoryResponse;
 import com.example.bookshop.categories.controllers.dto.CategoryResponse1;
+import com.example.bookshop.categories.mappers.CategoryEntityMapper;
 import com.example.bookshop.categories.models.CategoryEntity;
 import com.example.bookshop.categories.mappers.CategoryMapper;
 import com.example.bookshop.categories.repositories.CategoryRepository;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +31,8 @@ public class CategoryService implements ICategoryService {
 
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    private CategoryEntityMapper categoryEntityMapper;
 
     @Override
     @Transactional
@@ -42,9 +46,9 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public CategoryResponse1 getAllCategories() {
+    public List<CategoryResponse1> getAllCategories() {
         var result = categoryRepository.findAll();
-        return modelMapper.map(result, CategoryResponse1.class);
+        return categoryEntityMapper.requestToEntityList(result);
     }
 
 }

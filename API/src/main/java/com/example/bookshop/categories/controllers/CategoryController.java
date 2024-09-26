@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/categories")
 @RequiredArgsConstructor
@@ -26,9 +28,9 @@ public class CategoryController {
                 .build();
     }
     @GetMapping
-    public ApiResponse<CategoryResponse1> getAll(){
+    public ApiResponse<List<CategoryResponse1>> getAll(){
         var resp = categoryService.getAllCategories();
-        return ApiResponse.<CategoryResponse1>builder()
+        return ApiResponse.<List<CategoryResponse1>>builder()
                 .result(resp)
                 .build();
     }

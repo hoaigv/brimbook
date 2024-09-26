@@ -78,14 +78,14 @@ public class BookController {
 
     }
 
-    @PostMapping()
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<BookResponse>> createBookImage(
-            @RequestPart("data") @Valid BookCreateRequest request,
+            @RequestPart("data") @Valid String data,
             @RequestPart("image") MultipartFile image
     ) {
         try {
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            BookCreateRequest request = objectMapper.readValue(data, BookCreateRequest.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            BookCreateRequest request = objectMapper.readValue(data, BookCreateRequest.class);
 
             System.out.println("Hi 1");
             String fileName = image.getOriginalFilename();
@@ -109,15 +109,15 @@ public class BookController {
         }
     }
 
-    @PutMapping( value = "/{bookId}")
+    @PutMapping( value = "/{bookId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<BookResponse>> updateBook(
-            @RequestPart("data") @Valid BookUpdateRequest request,
+            @RequestPart("data") @Valid String data,
             @RequestPart(value = "image", required = false) MultipartFile image,
             @PathVariable("bookId") Integer bookId
     ) {
         try {
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            BookUpdateRequest request = objectMapper.readValue(data, BookUpdateRequest.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            BookUpdateRequest request = objectMapper.readValue(data, BookUpdateRequest.class);
 
             System.out.println("test 1");
             var resp = ApiResponse.<BookResponse>builder()
