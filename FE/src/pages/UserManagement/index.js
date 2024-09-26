@@ -3,6 +3,7 @@ import { Table, Button, Modal, Form, Input, Space, DatePicker, Upload, message }
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import * as USERAPI from "~/apis/user";
 import Radio from "antd/es/radio/radio";
+
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -11,7 +12,7 @@ const UserManagement = () => {
   const [form] = Form.useForm();
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
-  const [notification, setNotification] = useState()
+  const [notification, setNotification] = useState();
 
   const [fileList, setFileList] = useState([]);
 
@@ -19,19 +20,15 @@ const UserManagement = () => {
   const handleChange = ({ fileList: newFileList }) => {
     // Chỉ giữ lại file cuối cùng nếu có nhiều hơn 1 file
     if (newFileList.length > 1) {
-      message.error('You can only upload one image!');
+      message.error("You can only upload one image!");
       return;
     }
     setFileList(newFileList);
   };
 
-
-
-
   useEffect(() => {
     USERAPI.getAll(setUsers);
-  }, [notification])
-
+  }, [notification]);
 
   const showModal = (user = null) => {
     setEditingUser(user);
@@ -44,19 +41,40 @@ const UserManagement = () => {
   };
 
   const handleOk = () => {
-    form.validateFields().then((values) => {
-      if (editingUser) {
-        setUsers(
-          users.map((user) => (user.id === editingUser.id ? { ...user, ...values } : user)),
-        );
-        setIsModalVisible(false);
-
-      } else {
-        USERAPI.registerUserByAdmin(values, setNotification)
-      }
-    }).catch((error) => {
-
-    });;
+    form
+      .validateFields()
+      .then((values) => {
+        if (editingUser) {
+          // Xử lý chỉnh sửa người dùng
+          setUsers(
+            users.map((user) => (user.id === editingUser.id ? { ...user, ...values } : user)),
+          );
+          setIsModalVisible(false);
+        } else {
+          // Xử lý thêm người dùng mới
+          USERAPI.registerUserByAdmin(values, (notificationData) => {
+            setNotification(notificationData.message);
+            if (notificationData.success) {
+              // Thêm người dùng mới vào danh sách
+              if (notificationData.user) {
+                setUsers((prevUsers) => [...prevUsers, notificationData.user]);
+              }
+              // Đóng modal
+              setIsModalVisible(false);
+              // Reset form
+              form.resetFields();
+              // Hiển thị thông báo thành công
+              message.success("Tạo người dùng thành công");
+            } else {
+              // Hiển thị thông báo lỗi
+              message.error(notificationData.message || "Có lỗi xảy ra khi tạo người dùng");
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Validation failed:", error);
+      });
   };
 
   const showDeleteModal = (user) => {
@@ -80,11 +98,13 @@ const UserManagement = () => {
       title: "Tên",
       dataIndex: "username",
       key: "username",
+      render: (text, record) => record?.username || "N/A",
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      render: (text, record) => record?.email || "N/A",
     },
     {
       title: "Ngày tạo",
@@ -110,18 +130,18 @@ const UserManagement = () => {
 
   const filteredUsers = users.filter(
     (user) =>
-      user.username.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchText.toLowerCase()),
+      user?.username?.toLowerCase().includes(searchText.toLowerCase()) ||
+      user?.email?.toLowerCase().includes(searchText.toLowerCase()),
   );
   const handleEnterValue = () => {
     if (notification) {
-      setNotification()
+      setNotification();
     }
-  }
+  };
   const beforeUpload = (file) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
-      message.error('You can only upload JPG/PNG file!');
+      message.error("You can only upload JPG/PNG file!");
     }
     return isJpgOrPng || Upload.LIST_IGNORE; // Nếu không đúng định dạng, ngăn việc upload file
   };
@@ -160,31 +180,9 @@ const UserManagement = () => {
 
                   if (!userNameRegex.test(value)) {
                     return Promise.reject(
-                      new Error("Tên đăng nhập phải hơn 6 ký tự , không khoảng trắng (vd :'exam112')")
-                    );
-                  }
-
-                  return Promise.resolve();
-                },
-              },]}
-          >
-            <Input />
-          </Form.Item>
-          {!editingUser && <Form.Item
-            name="password"
-            label="Password"
-            rules={[
-              { required: true, message: "Vui lòng nhập mật khẩu " },
-              {
-                validator: (_, value) => {
-                  if (!value) {
-                    return Promise.resolve();
-                  }
-                  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/;
-
-                  if (!passwordRegex.test(value)) {
-                    return Promise.reject(
-                      new Error("Mật khẩu phải có chữ cái, số, ký tự đặc biệt (vd:example@a)")
+                      new Error(
+                        "Tên đăng nhập phải hơn 6 ký tự , không khoảng trắng (vd :'exam112')",
+                      ),
                     );
                   }
 
@@ -194,7 +192,35 @@ const UserManagement = () => {
             ]}
           >
             <Input />
-          </Form.Item>}
+          </Form.Item>
+          {!editingUser && (
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[
+                { required: true, message: "Vui lòng nhập mật khẩu " },
+                {
+                  validator: (_, value) => {
+                    if (!value) {
+                      return Promise.resolve();
+                    }
+                    const passwordRegex =
+                      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/;
+
+                    if (!passwordRegex.test(value)) {
+                      return Promise.reject(
+                        new Error("Mật khẩu phải có chữ cái, số, ký tự đặc biệt (vd:example@a)"),
+                      );
+                    }
+
+                    return Promise.resolve();
+                  },
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          )}
           <Form.Item
             name="email"
             label="Email"
@@ -213,18 +239,15 @@ const UserManagement = () => {
           >
             <Input />
           </Form.Item>
-          {editingUser &&
-            <Form.Item
-              name="gender"
-              label="Gender"
-            >
+          {editingUser && (
+            <Form.Item name="gender" label="Gender">
               <Radio.Group>
                 <Radio value="MALE">Male</Radio>
                 <Radio value="FEMALE">Female</Radio>
               </Radio.Group>
             </Form.Item>
-          }
-          {editingUser &&
+          )}
+          {editingUser && (
             <Form.Item
               name="firstName"
               label="First Name"
@@ -237,7 +260,7 @@ const UserManagement = () => {
                     const firstNameRegex = /^[A-Za-z]+$/;
                     if (!firstNameRegex.test(value)) {
                       return Promise.reject(
-                        new Error("Họ chỉ bao gồm chữ cái và không chứa khoảng trắng !")
+                        new Error("Họ chỉ bao gồm chữ cái và không chứa khoảng trắng !"),
                       );
                     }
 
@@ -248,8 +271,8 @@ const UserManagement = () => {
             >
               <Input />
             </Form.Item>
-          }
-          {editingUser &&
+          )}
+          {editingUser && (
             <Form.Item
               name="lastName"
               label="Last Name"
@@ -262,7 +285,7 @@ const UserManagement = () => {
                     const lastNameRegex = /^[A-Za-z]+$/;
                     if (!lastNameRegex.test(value)) {
                       return Promise.reject(
-                        new Error("Tên chỉ bảo gồm chữ và không chứa khoảng trắng !")
+                        new Error("Tên chỉ bảo gồm chữ và không chứa khoảng trắng !"),
                       );
                     }
 
@@ -273,8 +296,8 @@ const UserManagement = () => {
             >
               <Input />
             </Form.Item>
-          }
-          {editingUser &&
+          )}
+          {editingUser && (
             <Form.Item
               name="phone"
               label="Phone Number"
@@ -287,7 +310,7 @@ const UserManagement = () => {
                     const phoneRegex = /^\d{10,15}$/;
                     if (!phoneRegex.test(value)) {
                       return Promise.reject(
-                        new Error("Tên chỉ bảo gồm chữ và không chứa khoảng trắng !")
+                        new Error("Tên chỉ bảo gồm chữ và không chứa khoảng trắng !"),
                       );
                     }
 
@@ -298,27 +321,21 @@ const UserManagement = () => {
             >
               <Input />
             </Form.Item>
-          }
-          {editingUser &&
-            <Form.Item
-              name="birthDate"
-              label="Birth Date"
-            >
+          )}
+          {editingUser && (
+            <Form.Item name="birthDate" label="Birth Date">
               <DatePicker />
             </Form.Item>
-          }
-          {editingUser &&
-            <Form.Item
-              name="role"
-              label="Role"
-            >
+          )}
+          {editingUser && (
+            <Form.Item name="role" label="Role">
               <Radio.Group>
                 <Radio value="ADMIN">Admin</Radio>
                 <Radio value="USER">user</Radio>
               </Radio.Group>
             </Form.Item>
-          }
-          {editingUser &&
+          )}
+          {editingUser && (
             <Form.Item
               name="image"
               label="Image"
@@ -326,16 +343,20 @@ const UserManagement = () => {
               getValueFromEvent={(e) => e && e.fileList}
             >
               <Upload
-                listType="picture-card"   // Hiển thị ảnh dạng thẻ  // Danh sách file hiện tại
-                onChange={handleChange}    // Xử lý sự kiện khi file được upload
-                beforeUpload={beforeUpload}// // Không tải lên tự động, chỉ lưu local
-                multiple={false}           // Chỉ cho phép upload 1 file
+                listType="picture-card" // Hiển thị ảnh dạng thẻ  // Danh sách file hiện tại
+                onChange={handleChange} // Xử lý sự kiện khi file được upload
+                beforeUpload={beforeUpload} // // Không tải lên tự động, chỉ lưu local
+                multiple={false} // Chỉ cho phép upload 1 file
               >
-                {fileList.length === 1 ? null : <div><PlusOutlined /><div>Upload</div></div>}
+                {fileList.length === 1 ? null : (
+                  <div>
+                    <PlusOutlined />
+                    <div>Upload</div>
+                  </div>
+                )}
               </Upload>
             </Form.Item>
-          }
-
+          )}
         </Form>
       </Modal>
       <Modal

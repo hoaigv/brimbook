@@ -14,6 +14,7 @@ const routers = [
   { path: "/login", component: Login, layout: null },
   { path: "/register", component: Register, layout: null },
   { path: "/", component: Home },
+
   { path: "/search", component: Search, protected: true },
   { path: "/setting", component: Setting, protected: true },
   { path: "/profile", component: Profile, protected: true },
