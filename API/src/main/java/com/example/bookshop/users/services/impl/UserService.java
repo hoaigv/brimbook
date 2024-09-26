@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -152,7 +153,12 @@ public class UserService implements IUserService {
         if(likeRepository.existsByBookAndUser(book,user)){
             throw new  CustomRunTimeException(ErrorCode.LIKE_EXISTED);
         }
-        likeRepository.save(LikeEntity.builder().book(book).user(user).build());
+        LikeEntity likeEntity = LikeEntity.builder()
+        .book(book)
+        .user(user)
+        .createdAt(LocalDateTime.now()) // Thêm trường createdAt
+        .build();
+        likeRepository.save(likeEntity);
     }
 
     @Override
