@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryCreateResponse {
-    int id;
-    String categoryName;
+public class CategoryResponse1 {
+    private int id;
+    private String categoryName;
 }

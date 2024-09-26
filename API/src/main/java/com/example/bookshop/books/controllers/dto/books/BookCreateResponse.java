@@ -1,4 +1,4 @@
-package com.example.bookshop.categories.controllers.dto;
+package com.example.bookshop.books.controllers.dto.books;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryCreateResponse {
-    int id;
-    String categoryName;
+public class BookCreateResponse {
+    Integer id;
+    String title;
 }
