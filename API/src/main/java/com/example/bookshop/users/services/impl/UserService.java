@@ -1,6 +1,6 @@
 package com.example.bookshop.users.services.impl;
 
-import com.example.bookshop.books.respositories.BookRepository;
+import com.example.bookshop.books.repositories.BookRepository;
 import com.example.bookshop.users.controllers.dto.users.AdminUpdateUserRequest;
 import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
 import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;

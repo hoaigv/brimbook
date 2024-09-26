@@ -74,9 +74,21 @@ public class UserController {
 
     @PostMapping("/like/{bookId}")
     public ResponseEntity<ApiResponse<Void>> likeUser(@PathVariable Integer bookId) {
-        userService.likeBook(bookId);
-        var resp = ApiResponse.<Void>builder().code(HttpStatus.OK.value()).build();
-        return ResponseEntity.status(HttpStatus.OK).body(resp);
+        try {
+            userService.likeBook(bookId);
+            var resp = ApiResponse.<Void>builder()
+                    .message("Đã thêm sách vào danh sách yêu thích thành công")
+                    .code(HttpStatus.OK.value())
+                    .build();
+            return ResponseEntity.status(HttpStatus.OK).body(resp);
+        } catch (Exception e) {
+            log.error("Lỗi khi thêm sách vào danh sách yêu thích: ", e);
+            var errorResp = ApiResponse.<Void>builder()
+                    .message("Không thể thêm sách vào danh sách yêu thích: " + e.getMessage())
+                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResp);
+        }
     }
 
     @DeleteMapping("/like/{bookId}")
