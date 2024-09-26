@@ -13,6 +13,5 @@ import lombok.experimental.FieldDefaults;
 public class AdminUpdateUserRequest extends UserUpdateRequest{
 
     @Pattern(regexp = "ADMIN|USER", message = "Role must be either ADMIN or USER")
-    @NotNull(message = "user role must be not null")
     String role;
 }

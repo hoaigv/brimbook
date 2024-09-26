@@ -101,40 +101,39 @@ public class UserService implements IUserService {
     @Transactional
     public void updateUser(UserUpdateRequest request, MultipartFile image) {
         UserEntity oldUser = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
-        var user = userMapper.updateUserEntity(oldUser, request);
-        user.setPassword(oldUser.getPassword());
-        if (image.isEmpty()) {
-            throw new IllegalArgumentException("File have not data");
+         userMapper.updateUserEntity(oldUser, request);
+        oldUser.setPassword(oldUser.getPassword());
+        if (image!= null && !image.isEmpty()) {
+            cloudinary.deleteFileAsync(oldUser.getImage_url());
+            String link ;
+            try {
+                link = cloudinary.uploadFileAsync(image).get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new CustomRunTimeException(ErrorCode.SET_IMAGE_NOT_SUCCESS);
+            }
+            oldUser.setImage_url(link);
         }
-        cloudinary.deleteFileAsync(oldUser.getImage_url());
-        String link ;
-        try {
-            link = cloudinary.uploadFileAsync(image).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new CustomRunTimeException(ErrorCode.SET_IMAGE_NOT_SUCCESS);
-        }
-       user.setImage_url(link);
-        userRepository.save(user);
+
+        userRepository.save(oldUser);
     }
 
     @Override
     @Transactional
     public void adminUpdateUser(MultipartFile image, AdminUpdateUserRequest request, Integer userId) {
         var oldUser = userRepository.findById(userId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
-        var updateUser = userMapper.updateUserEntityByAdmin(oldUser, request);
-        updateUser.setPassword(oldUser.getPassword());
-        if (image.isEmpty()) {
-            throw new IllegalArgumentException("File have not data");
+        userMapper.updateUserEntityByAdmin(oldUser, request);
+        oldUser.setPassword(oldUser.getPassword());
+        if (image != null) {
+            cloudinary.deleteFileAsync(oldUser.getImage_url());
+            String link ;
+            try {
+                link = cloudinary.uploadFileAsync(image).get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new CustomRunTimeException(ErrorCode.SET_IMAGE_NOT_SUCCESS);
+            }
+            oldUser.setImage_url(link);
         }
-        cloudinary.deleteFileAsync(oldUser.getImage_url());
-        String link ;
-        try {
-            link = cloudinary.uploadFileAsync(image).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new CustomRunTimeException(ErrorCode.SET_IMAGE_NOT_SUCCESS);
-        }
-        updateUser.setImage_url(link);
-        userRepository.save(updateUser);
+        userRepository.save(oldUser);
     }
 
     @Override
