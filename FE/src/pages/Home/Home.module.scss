@@ -6,16 +6,24 @@
 
 .inner {
   width: 100%;
-  max-width: 1600px;
+  max-width: 1790px;
   display: flex;
   flex-direction: column;
   gap: 100px;
 }
 
+@media screen and (max-width: 1023px) {
+  .introduce-items {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 50px;
+  }
+}
+
 .commit-items {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  grid-template-columns: repeat(4, 333px);
+  gap: 50px;
 }
 
 .commit-item {
@@ -54,7 +62,9 @@
 
   .books-list {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
+    gap: 50px;
   }
 }
 
@@ -76,12 +86,14 @@
 
   .books-list {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-evenly;
+    gap: 50px;
   }
 }
 
 .introduce-items {
-  margin: 50px 0 150px 0;
+  margin: 50px 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   color: var(--primary-purple);

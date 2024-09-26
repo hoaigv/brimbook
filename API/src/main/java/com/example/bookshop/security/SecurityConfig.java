@@ -21,9 +21,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.security.config.Customizer;
-import org.springframework.web.cors.CorsConfigurationSource;
-import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -52,25 +49,22 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-            .cors(Customizer.withDefaults()) // Thêm dòng này
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(request ->
+        httpSecurity.authorizeHttpRequests(request ->
                 request
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINT)
-                    .permitAll()
-                    .requestMatchers(HttpMethod.GET,PRIVATE_GET_ENDPOINT)
-                    .hasAnyAuthority(Authentication.ROLE_USER.name(),Authentication.ROLE_ADMIN.name())
-                    .requestMatchers(HttpMethod.PUT,PRIVATE_PUT_ENDPOINT)
-                    .hasAnyAuthority(Authentication.ROLE_USER.name(),Authentication.ROLE_ADMIN.name())
-                    .requestMatchers(PRIVATE_ENDPOINT)
-                    .hasAuthority(Authentication.ROLE_ADMIN.name())
-                    .requestMatchers(SWAGGER_WHITELIST)
+                        .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINT)
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET,PRIVATE_GET_ENDPOINT)
+                        .hasAnyAuthority(Authentication.ROLE_USER.name(),Authentication.ROLE_ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT,PRIVATE_PUT_ENDPOINT)
+                        .hasAnyAuthority(Authentication.ROLE_USER.name(),Authentication.ROLE_ADMIN.name())
+                        .requestMatchers(PRIVATE_ENDPOINT)
+                        .hasAuthority(Authentication.ROLE_ADMIN.name())
+                        .requestMatchers(SWAGGER_WHITELIST)
                 .permitAll()
                         .anyRequest()
-                        .authenticated())
-            .oauth2ResourceServer(oauth2 ->
+                        .authenticated());
+
+        httpSecurity.oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder)
                                         .jwtAuthenticationConverter(jwtAuthenticationConverter()))
                                 .authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
@@ -105,10 +99,9 @@ public class SecurityConfig {
         return jwtAuthenticationConverter;
     }
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
-
-
 }

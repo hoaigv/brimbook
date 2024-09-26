@@ -71,19 +71,6 @@ function Home() {
             ))}
           </div>
         </div>
-        <div className={cx("special-offers")}>
-          <h3>Special Selection</h3>
-          <h4>
-            Lorem ipsum dolor sit amet, consectetus adipiscing elit, sed do eiusmod tempro
-            <br />
-            incididunt ut labore et dolore magna aliqua
-          </h4>
-          <div className={cx("books-list")}>
-            {searchResult.slice(4, 7).map((books) => (
-              <BookItem2 key={books.isbn13} result={books} />
-            ))}
-          </div>
-        </div>
         <div className={cx("introduce-items")}>
           <div className={cx("introduce-item")}>
             <GroupIcon width="95px" height="95px" />
@@ -104,6 +91,19 @@ function Home() {
             <PenIcon width="95px" height="95px" />
             <h3>457</h3>
             <p>Famous Writers</p>
+          </div>
+        </div>
+        <div className={cx("special-offers")}>
+          <h3>Special Selection</h3>
+          <h4>
+            Lorem ipsum dolor sit amet, consectetus adipiscing elit, sed do eiusmod tempro
+            <br />
+            incididunt ut labore et dolore magna aliqua
+          </h4>
+          <div className={cx("books-list")}>
+            {searchResult.slice(4, 7).map((books) => (
+              <BookItem2 key={books.isbn13} result={books} />
+            ))}
           </div>
         </div>
       </div>

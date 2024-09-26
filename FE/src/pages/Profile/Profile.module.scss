@@ -1,31 +1,179 @@
 .inner {
-  height: 100%;
+  height: 850px;
+  display: flex;
   border: 2px solid var(--g0);
   border-radius: 25px;
+}
+
+@media screen and (max-width: 1023px) {
+  .inner {
+    height: auto;
+  }
+
+  .form {
+    display: block !important;
+  }
 }
 
 /* ----- Menu ----- */
 .menu {
   width: 300px;
-  height: 100vh;
   padding: 25px 0;
   color: white;
   background-color: var(--primary-purple);
-  border-right: 2px solid var(--g1);
-  border-radius: 25px 0 0 25px;
+  border-radius: 23px 0 0 23px;
 
   .menu-list {
-    li {
+    /* ----- List ----- */
+    .list {
       list-style: none;
-      padding: 8px 0;
-      display: flex;
-      justify-content: center;
+      padding: 15px 25px;
       font-size: 2rem;
       font-weight: 600;
       cursor: pointer;
 
       &:hover {
-        background-color: var(--nerual-purple);
+        color: var(--primary-purple);
+        background-color: var(--white);
+        transition: all 0.1s ease-in-out;
+      }
+    }
+
+    .active-list {
+      color: var(--primary-purple);
+      background-color: var(--white);
+    }
+  }
+}
+
+/* ----- Content ----- */
+.content-wrapper {
+  width: 100%;
+  height: 100%;
+
+  .content {
+    margin: 50px;
+    display: block;
+
+    /* ----- Profile ----- */
+    .user-profile {
+      margin-bottom: 50px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      /* ----- Avatar ----- */
+      .image-input {
+        position: relative;
+
+        .avatar {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .edit-image {
+          width: 30px;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--white);
+          background-color: var(--primary-purple);
+          border-radius: 50%;
+          cursor: pointer;
+          position: absolute;
+          bottom: 10px;
+          right: 0;
+        }
+
+        .input {
+          display: none;
+        }
+      }
+
+      /* ----- Infomation ----- */
+      .name {
+        color: var(--primary-purple);
+        font-size: 4rem;
+        font-weight: 700;
+        line-height: 4rem;
+      }
+
+      .username {
+        font-size: 2.8rem;
+        font-weight: 700;
+      }
+    }
+
+    /* ----- Form ----- */
+    .form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 50px;
+      row-gap: 20px;
+      background-color: #fff;
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        .label {
+          margin-bottom: 5px;
+          color: #7d8eb4;
+          font-size: 2.4rem;
+        }
+
+        /* ----- Select ----- */
+        .select {
+          width: calc(100% - 53px);
+          padding: 12px 26px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border: 2px solid var(--g1);
+          border-radius: 10px;
+          cursor: pointer;
+
+          .value {
+            font-size: 2rem;
+          }
+        }
+
+        /* ----- Select List ----- */
+        .select-list {
+          width: 100%;
+          list-style: none;
+          padding: 6px 0;
+          display: none;
+          background-color: var(--white);
+          border: 2px solid var(--g1);
+          border-radius: 10px;
+          position: absolute;
+          top: 95px;
+          z-index: 10;
+
+          .item {
+            padding: 6px 26px;
+            font-size: 2rem;
+            cursor: pointer;
+
+            &:hover {
+              background-color: var(--g1);
+              transition: all 0.1s ease-in-out;
+            }
+          }
+        }
+
+        .active {
+          display: block;
+        }
+      }
+
+      .email {
+        grid-column: 1 / 3;
       }
     }
   }

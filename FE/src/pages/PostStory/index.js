@@ -1,38 +1,77 @@
 import { useRef, useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import styles from "./PostStory.module.scss";
-import { Editor } from "@tinymce/tinymce-react";
 
+import { ArrowDown } from "~/components/Icons";
 import Image from "~/components/Image";
 import Input from "~/components/Input";
 import Button from "~/components/Button";
+import { Editor } from "@tinymce/tinymce-react";
+import * as Category from "~/apis/category";
+import * as Book from "~/apis/book";
 
 const cx = classNames.bind(styles);
 
 function PostStory() {
+  const resultRef = useRef(null);
   const inputRef = useRef(null);
-  const [image, setImage] = useState();
-  const [value, setValue] = useState("");
   const editorRef = useRef(null);
-
-  // Xóa useEffect này vì nó không cần thiết khi sử dụng TinyMCE
-  // useEffect(() => {
-  //   editorRef.current.style.height = "auto";
-  //   if (value !== "") {
-  //     editorRef.current.style.height = editorRef.current.scrollHeight + "px";
-  //   }
-  // }, [value]);
 
   const handleClick = () => {
     inputRef.current.click();
   };
 
+  const [toggle, setToggle] = useState(false);
+  const [category, setCategory] = useState([]);
+  const [image, setImage] = useState();
+
+  const [formData, setFormData] = useState("");
+  const [categ, setCateg] = useState();
+
   const handleImageChage = (e) => {
     setImage(e.target.files[0]);
   };
 
+  const handleTitleChange = (e) => {
+    setFormData({ ...formData, title: e.target.value });
+  };
+
+  const handleCategoryChange = (id, name) => {
+    setFormData({ ...formData, categoriesID: id });
+    setCateg(name);
+    setToggle(!toggle);
+  };
+
   const handleEditorChange = (content, editor) => {
-    setValue(content);
+    setFormData({ ...formData, description: content });
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (resultRef.current && !resultRef.current.contains(event.target)) {
+        setToggle(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    Category.getAll(setCategory);
+  }, []);
+
+  const data = JSON.stringify(formData);
+
+  const handleSubmit = () => {
+    const formDatas = new FormData();
+    formDatas.append("image", image);
+    formDatas.append("data", data);
+
+    Book.update(formDatas);
   };
 
   return (
@@ -48,7 +87,26 @@ function PostStory() {
           <input type={"file"} className={cx("input")} onChange={handleImageChage} ref={inputRef} />
         </div>
         <div className={cx("content")}>
-          <Input type="text" defaultValue={"Title"} />
+          <Input type="text" defaultValue={"Title"} handleChage={handleTitleChange} />
+          <div className={cx("group")} ref={resultRef}>
+            <div className={cx("select")} onClick={() => setToggle(!toggle)}>
+              <span className={cx("value")}>{categ ? categ : "Category"}</span>
+              <ArrowDown />
+            </div>
+            <ul className={cx("select-list", { active: toggle })}>
+              {category.map((item) => {
+                return (
+                  <li
+                    key={item.id}
+                    className={cx("item")}
+                    onClick={() => handleCategoryChange(item.id, item.categoryName)}
+                  >
+                    {item.categoryName}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
           <Editor
             apiKey="avak5tehp8k9meap6nlbw1ngvn4lup3fxpjfglmzq6ayaoyd"
             onInit={(evt, editor) => (editorRef.current = editor)}
@@ -70,7 +128,7 @@ function PostStory() {
             }}
             onEditorChange={handleEditorChange}
           />
-          <Button type1 sx={{ maxWidth: "200px" }}>
+          <Button type1 sx={{ maxWidth: "200px" }} onClick={handleSubmit}>
             Submit
           </Button>
         </div>
