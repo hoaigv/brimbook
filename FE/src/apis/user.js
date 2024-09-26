@@ -12,19 +12,6 @@ export const loginUser = async (formData, navigate) => {
   }
 };
 
-axios.interceptors.request.use(
-  (config) => {
-    const token =
-      "eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJib29rc2hvcC5jb20iLCJzdWIiOiJhZG1pbjEyMyIsImV4cCI6MTcyNzU1MzI4OCwiaWF0IjoxNzI3MTkzMjg4LCJqdGkiOiI5NGUyZjU1MS02ODI5LTRiNWQtYmI1NC0zZThjOGMwMDkyY2YiLCJzY29wZSI6IlJPTEVfQURNSU4ifQ._1wyhwpMDZMUR6bEa_ehv4UV8xeyf2Mo7LlygDVdBMRZ2eq3oI4-KjLwgFeIjkTl8C1HYIgfyp-0kv6_-gy9fw";
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (err) => {
-    return Promise.reject(err);
-  },
-);
 export const getAll = async (setUsers) => {
   await axios
     .get(`api/admin/users`)
