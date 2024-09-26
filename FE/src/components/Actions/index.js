@@ -9,12 +9,18 @@ import Image from "~/components/Image";
 import Button from "~/components/Button";
 import DropDown from "../DropDown";
 import { menuItem } from "~/_mock/menu";
-
 import { login } from "~/_mock/login";
+import { useNavigate } from "react-router-dom";
+import * as User from "~/apis/user";
 
 const cx = classNames.bind(styles);
 
 function Actions() {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    User.logoutUser(navigate);
+  };
+
   return (
     <div className={cx("wrapper")}>
       {login ? (
@@ -46,6 +52,7 @@ function Actions() {
                     fontSize: "1.6rem",
                     fontWidth: 600,
                   }}
+                  onClick={handleClick}
                 >
                   Log Out
                 </Button>
