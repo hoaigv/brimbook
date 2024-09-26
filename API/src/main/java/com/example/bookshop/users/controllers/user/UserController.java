@@ -6,13 +6,17 @@ import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
 
 import com.example.bookshop.users.services.IUserService;
-import com.example.bookshop.utils.validators.ValidImage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,23 +42,27 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resp);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<ApiResponse<Void>> updateUser(
-            @RequestPart("user") @Valid UserUpdateRequest request,
-             @RequestPart("image")  MultipartFile image) {
-        String fileName = image.getOriginalFilename();
-        if (fileName != null && !(fileName.endsWith(".jpg") || fileName.endsWith(".png"))) {
-            return ResponseEntity.badRequest().body(ApiResponse.<Void>builder().code(400).message("Invalid file format. Only JPG or PNG are allowed.").build());
-        }
-        userService.updateUser(request , image);
-        var resp = ApiResponse.<Void>builder()
-                .result(null)
-                .message("Successfully updated user")
-                .code(HttpStatus.OK.value())
-                .build();
-        return ResponseEntity.status(HttpStatus.OK).body(resp);
-    }
 
+    @PutMapping(value = "/upload")
+    public ResponseEntity<ApiResponse<Void>> updateUser(
+            @RequestPart("user") UserUpdateRequest request,
+            @RequestPart("image") MultipartFile image) {
+        try {
+            String fileName = image.getOriginalFilename();
+            if (fileName != null && !(fileName.endsWith(".jpg") || fileName.endsWith(".png"))) {
+                return ResponseEntity.badRequest().body(ApiResponse.<Void>builder().code(400).message("Invalid file format. Only JPG or PNG are allowed.").build());
+            }
+            userService.updateUser(request, image);
+            var resp = ApiResponse.<Void>builder()
+                    .message("Successfully updated user")
+                    .code(HttpStatus.OK.value())
+                    .build();
+            return ResponseEntity.status(HttpStatus.OK).body(resp);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiResponse.<Void>builder()
+                    .code(400).message("Invalid user data").build());
+        }
+    }
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserResponse>> getMyInfo() {
@@ -64,27 +72,19 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 
-//    @PutMapping("/favorite/{bookId}")
-//    public ResponseEntity<ApiResponse<Void>> addFavorite(@PathVariable int bookId, @RequestBody String token) {
-//        userService.addFavouriteBook(bookId, token);
-//        var resp = ApiResponse.<Void>builder()
-//                .result(null)
-//                .message("Successfully updated user")
-//                .code(HttpStatus.OK.value())
-//                .build();
-//        return ResponseEntity.status(HttpStatus.OK).body(resp);
-//    }
+    @PostMapping("/like/{bookId}")
+    public ResponseEntity<ApiResponse<Void>> likeUser(@PathVariable Integer bookId) {
+        userService.likeBook(bookId);
+        var resp = ApiResponse.<Void>builder().code(HttpStatus.OK.value()).build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
 
-//    @PutMapping("/read-chapter/{chapterId}")
-//    public ResponseEntity<ApiResponse<Void>> addReadChapter(@PathVariable int chapterId) {
-//        userService.addReadChapter(chapterId);
-//        var resp = ApiResponse.<Void>builder()
-//                .result(null)
-//                .message("Successfully updated user")
-//                .code(HttpStatus.OK.value())
-//                .build();
-//        return ResponseEntity.status(HttpStatus.OK).body(resp);
-//    }
+    @DeleteMapping("/like/{bookId}")
+    public ResponseEntity<ApiResponse<Void>> unlikeUser(@PathVariable Integer bookId) {
+        userService.unLikeBook(bookId);
+        var resp = ApiResponse.<Void>builder().code(HttpStatus.OK.value()).build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
 
 
 }

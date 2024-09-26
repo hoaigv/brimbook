@@ -41,7 +41,7 @@ public class ApplicationInitConfig {
                         .password(passwordEncoder.encode(ADMIN_PASSWORD))
                         .role(Role.ADMIN)
                         .image_url("https://stcv4.hnammobile.com/downloads/a/cach-chup-anh-selfie-dep-an-tuong-ban-nhat-dinh-phai-biet-81675319567.jpg")
-                        .email("admin@gmail.com")
+                        .email("admin12@gmail.com")
                         .build();
 
                 user.setCreatedAt(LocalDateTime.now());
