@@ -12,6 +12,8 @@ import { menuItem } from "~/_mock/menu";
 
 const cx = classNames.bind(styles);
 
+const user = localStorage.getItem("userToken");
+
 function Actions() {
   const navigate = useNavigate();
   const [userMe, setUserMe] = useState({
@@ -31,40 +33,53 @@ function Actions() {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("dropdown")}>
-        <div>
-          <DropDown name={userMe.result.username} sx={{ maxWidth: "130px" }}>
-            {menuItem.map((item, index) => (
-              <li key={index}>
-                <Button normal sx={{ padding: "5px 25px" }} to={item.link}>
-                  {item.name}
+      {user ? (
+        <>
+          <div className={cx("dropdown")}>
+            <div>
+              <DropDown name={userMe.result.username} sx={{ maxWidth: "130px" }}>
+                {menuItem.map((item, index) => (
+                  <li key={index}>
+                    <Button normal sx={{ padding: "5px 25px" }} to={item.link}>
+                      {item.name}
+                    </Button>
+                  </li>
+                ))}
+                <Button
+                  logOut
+                  sx={{
+                    padding: "5px 25px",
+                    justifyContent: "flex-start",
+                    color: "var(--red)",
+                    fontSize: "1.6rem",
+                    fontWidth: 600,
+                  }}
+                  onClick={handleLogout}
+                >
+                  Log Out
                 </Button>
-              </li>
-            ))}
-            <Button
-              logOut
-              sx={{
-                padding: "5px 25px",
-                justifyContent: "flex-start",
-                color: "var(--red)",
-                fontSize: "1.6rem",
-                fontWidth: 600,
-              }}
-              onClick={handleLogout}
-            >
-              Log Out
-            </Button>
-          </DropDown>
-        </div>
-      </div>
-      <div className={cx("user-avatar")}>
-        <Image
-          className={cx("user-avatar")}
-          src={userMe.result.image_url}
-          fallback={images.placeholderPerson}
-          alt="avatar"
-        />
-      </div>
+              </DropDown>
+            </div>
+          </div>
+          <div className={cx("user-avatar")}>
+            <Image
+              className={cx("user-avatar")}
+              src={userMe.result.image_url}
+              fallback={images.placeholderPerson}
+              alt="avatar"
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <Button type2 to="/login" sx={{ width: "150px" }}>
+            Login
+          </Button>
+          <Button type1 to="/register" sx={{ width: "180px" }}>
+            Register
+          </Button>
+        </>
+      )}
     </div>
   );
 }

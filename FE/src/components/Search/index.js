@@ -8,12 +8,15 @@ import styles from "./Search.module.scss";
 import { XmarkIcon, SearchIcon } from "~/components/Icons";
 import Image from "~/components/Image";
 import { useDebounce } from "~/hooks";
+import * as BookAPI from "~/apis/book";
 
 const cx = classNames.bind(styles);
 
 export default function Search() {
   const [searchValue, setSearchValue] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
+  const [searchResult, setSearchResult] = useState({
+    result: [],
+  });
   const [showResult, setShowResult] = useState(false);
   const navigate = useNavigate();
 
@@ -23,13 +26,7 @@ export default function Search() {
     if (!debounced) {
       return;
     }
-
-    fetch(`https://api.itbook.store/1.0/search/${encodeURIComponent(debounced)}`)
-      .then((res) => res.json())
-      .then((res) => {
-        setSearchResult(res.books);
-      })
-      .catch((err) => console.log("Not Found ", err));
+    BookAPI.getAll(debounced, 0, setSearchResult);
   }, [debounced]);
 
   const searchRef = useRef(null);
@@ -92,7 +89,7 @@ export default function Search() {
       </div>
       {showResult && (
         <div className={cx("book-result")} onBlur={(e) => setShowResult(false)}>
-          {searchResult.slice(0, 5).map((book) => (
+          {searchResult.result.slice(0, 5).map((book) => (
             <BookResult key={book.isbn13} result={book} />
           ))}
         </div>
@@ -108,11 +105,11 @@ function BookResult({ result }) {
     <Link className={cx("book-item")} to={`/books/${result.isbn13}`}>
       <div className={cx("container")}>
         <div className={cx("book-img")}>
-          <Image src={result.image} alt="Book" width={50} height={70} />
+          <Image src={result.image_url} alt="Book" width={50} height={70} />
         </div>
         <div className={cx("info")}>
           <p className={cx("title")}>{result.title}</p>
-          <p className={cx("author")}>{result.subtitle}</p>
+          <p className={cx("author")}>{result.user.username}</p>
         </div>
       </div>
     </Link>
