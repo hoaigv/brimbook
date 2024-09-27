@@ -58,7 +58,7 @@ public class UserController {
         if(image != null){
             fileName = image.getOriginalFilename();
         }
-        if (fileName != null && !(fileName.endsWith(".jpg") || fileName.endsWith(".png")||fileName.endsWith(".PNG")||fileName.endsWith(".JPG"))) {
+        if (fileName != null && !(fileName.endsWith(".jpg") || fileName.endsWith(".png")||fileName.endsWith(".PNG")||fileName.endsWith(".JPG")||fileName.endsWith(".webp"))) {
                 return ResponseEntity.badRequest().body(ApiResponse.<Void>builder().code(400).message("Invalid file format. Only JPG or PNG are allowed.").build());
             }
             ObjectMapper objectMapper = new ObjectMapper();

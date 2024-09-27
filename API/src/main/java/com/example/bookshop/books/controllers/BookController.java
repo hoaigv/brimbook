@@ -91,10 +91,10 @@ public class BookController {
             String fileName = image.getOriginalFilename();
             System.out.println("Hi 2");
 
-            if (image.isEmpty() || !Objects.requireNonNull(fileName).endsWith(".jpg") && !fileName.endsWith(".png")) {
+            if (image.isEmpty() || !Objects.requireNonNull(fileName).endsWith(".jpg") && !fileName.endsWith(".webp")) {
                 var resp = ApiResponse.<BookResponse>builder()
                         .code(400)
-                        .message("you need choose file img (.jsp or .png) ")
+                        .message("you need choose file img (.jsp or .png or .webp) ")
                         .build();
                 return ResponseEntity.status(HttpStatus.OK).body(resp);
             }else {

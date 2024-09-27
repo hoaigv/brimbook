@@ -102,8 +102,8 @@ public class UserController {
         if(image != null){
             fileName = image.getOriginalFilename();
         }
-        if (fileName != null && !(fileName.endsWith(".jpg") || fileName.endsWith(".png"))) {
-            return ResponseEntity.badRequest().body(ApiResponse.<Void>builder().code(400).message("Invalid file format. Only .jpg or .png are allowed.").build());
+        if (fileName != null && !(fileName.endsWith(".jpg") || fileName.endsWith(".png") || fileName.endsWith(".webp"))) {
+            return ResponseEntity.badRequest().body(ApiResponse.<Void>builder().code(400).message("Invalid file format. Only .jpg or .png or .webp are allowed.").build());
         }
         ObjectMapper objectMapper = new ObjectMapper();
         AdminUpdateUserRequest request = null;
