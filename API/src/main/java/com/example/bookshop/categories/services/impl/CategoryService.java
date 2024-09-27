@@ -1,9 +1,7 @@
 package com.example.bookshop.categories.services.impl;
 
 import com.example.bookshop.categories.controllers.dto.CategoryCreateRequest;
-import com.example.bookshop.categories.controllers.dto.CategoryCreateResponse;
 import com.example.bookshop.categories.controllers.dto.CategoryResponse;
-import com.example.bookshop.categories.controllers.dto.CategoryResponse1;
 import com.example.bookshop.categories.mappers.CategoryEntityMapper;
 import com.example.bookshop.categories.models.CategoryEntity;
 import com.example.bookshop.categories.mappers.CategoryMapper;
@@ -19,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -36,17 +34,17 @@ public class CategoryService implements ICategoryService {
 
     @Override
     @Transactional
-    public CategoryResponse1 createCategory(CategoryCreateRequest request) {
-        if (request.getCategoryName() == null || request.getCategoryName().isEmpty()) {
+    public CategoryResponse createCategory(CategoryCreateRequest request) {
+        if (request.getName() == null || request.getName().isEmpty()) {
             throw new IllegalArgumentException("Category name cannot be null or empty");
         }
         var newCategory = modelMapper.map(request, CategoryEntity.class);
         var category = categoryRepository.save(newCategory);
-        return modelMapper.map(category, CategoryResponse1.class);
+        return modelMapper.map(category, CategoryResponse.class);
     }
 
     @Override
-    public List<CategoryResponse1> getAllCategories() {
+    public List<CategoryResponse> getAllCategories() {
         var result = categoryRepository.findAll();
         return categoryEntityMapper.requestToEntityList(result);
     }
