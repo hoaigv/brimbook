@@ -1,16 +1,19 @@
 package com.example.bookshop.users.services.impl;
 
+import com.example.bookshop.books.models.BookEntity;
 import com.example.bookshop.books.repositories.BookRepository;
 import com.example.bookshop.users.controllers.dto.users.AdminUpdateUserRequest;
 import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
 import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
 import com.example.bookshop.users.models.LikeEntity;
+import com.example.bookshop.users.models.ReadBooksEntity;
 import com.example.bookshop.users.models.UserEntity;
 import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
 import com.example.bookshop.exceptionHandlers.ErrorCode;
 import com.example.bookshop.users.mappers.UserMapper;
 import com.example.bookshop.users.repositories.LikeRepository;
+import com.example.bookshop.users.repositories.ReadBookRepository;
 import com.example.bookshop.users.repositories.UserRepository;
 import com.example.bookshop.users.services.IUserService;
 import com.example.bookshop.utils.AuthUtils;
@@ -31,7 +34,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +47,7 @@ public class UserService implements IUserService {
     CloudUtils cloudinary;
     BookRepository bookRepository;
     LikeRepository likeRepository;
+    ReadBookRepository readBookRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -152,10 +155,9 @@ public class UserService implements IUserService {
         if(likeRepository.existsByBookAndUser(book,user)){
             throw new  CustomRunTimeException(ErrorCode.LIKE_EXISTED);
         }
-        LikeEntity likeEntity = LikeEntity.builder()
+        var likeEntity = LikeEntity.builder()
         .book(book)
         .user(user)
-        .createdAt(LocalDateTime.now()) // Thêm trường createdAt
         .build();
         likeRepository.save(likeEntity);
     }
@@ -175,4 +177,41 @@ public class UserService implements IUserService {
         log.info("Đã xóa {} người dùng", ids.size());
     }
     
+
+    public boolean getLikeBook(Integer bookId) {
+        var user = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+        var book = bookRepository.findById(bookId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.BOOK_NOT_FOUND));
+     return  likeRepository.existsByBookAndUser(book,user);
+    }
+
+    @Override
+    public Page<BookEntity> getAllLikeBook(Pageable pageable) {
+        var user = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+        return userRepository.findLikedBooksByUsername(user.getUsername(), pageable);
+    }
+
+    @Override
+    @Transactional
+    public void readBook(Integer bookId) {
+        var user = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+        var book = bookRepository.findById(bookId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.BOOK_NOT_FOUND));
+        var readBook = ReadBooksEntity.builder().book(book).user(user).build();
+        readBookRepository.save(readBook);
+    }
+
+    @Override
+    @Transactional
+    public void deleteReadBook(Integer bookId) {
+        var user = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+        var book = bookRepository.findById(bookId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.BOOK_NOT_FOUND));
+        var readBook = readBookRepository.findByBookAndUser(book,user).orElseThrow(()-> new CustomRunTimeException(ErrorCode.LIKE_NOT_FOUND));
+        readBookRepository.delete(readBook);
+    }
+
+    @Override
+    public Page<BookEntity> getAllReadBook(Pageable pageable) {
+        var user = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+        return userRepository.findReadBooksByUsername(user.getUsername(), pageable);
+    }
+
 }

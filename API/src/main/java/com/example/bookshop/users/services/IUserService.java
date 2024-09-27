@@ -1,5 +1,6 @@
 package com.example.bookshop.users.services;
 
+import com.example.bookshop.books.models.BookEntity;
 import com.example.bookshop.users.controllers.dto.users.AdminUpdateUserRequest;
 import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
 import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;
@@ -15,7 +16,10 @@ import java.util.Set;
 public interface IUserService {
     UserResponse getUserById(Integer id) ;
     Page<UserEntity> getAllUsers(Pageable pageable , UsersSpecification usersSpecification);
+    Page<BookEntity> getAllLikeBook(Pageable pageable);
+    Page<BookEntity> getAllReadBook(Pageable pageable);
     UserResponse getMyInfo();
+    boolean getLikeBook(Integer bookId);
 
     UserResponse createUser(UserCreationRequest request );
     void updateUser(UserUpdateRequest request , MultipartFile image);
@@ -25,7 +29,12 @@ public interface IUserService {
 
     void  likeBook(Integer bookId);
     void  unLikeBook(Integer bookId);
-//    void  addReadChapter(Integer id);
+
 
     void deleteUser(Integer userId);
+
+    void readBook(Integer bookId);
+    void deleteReadBook(Integer bookId);
+
+
 }

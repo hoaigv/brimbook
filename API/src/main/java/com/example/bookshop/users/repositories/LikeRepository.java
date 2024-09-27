@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,4 +18,6 @@ public interface LikeRepository extends JpaRepository<LikeEntity, Integer> {
 
   @Query("SELECT COUNT(l) FROM likes l WHERE l.book.id = :bookId")
   Integer countLikesByBookId(@Param("bookId") Integer bookId);
+  List<LikeEntity> findByUser(UserEntity userEntity);
+
 }

@@ -1,6 +1,8 @@
 package com.example.bookshop.books.services.impl;
 
-import com.example.bookshop.books.controllers.dto.books.*;
+import com.example.bookshop.books.controllers.dto.books.BookCreateRequest;
+import com.example.bookshop.books.controllers.dto.books.BookResponse;
+import com.example.bookshop.books.controllers.dto.books.BookUpdateRequest;
 import com.example.bookshop.books.mappers.BookEntityMapper;
 import com.example.bookshop.books.models.BookEntity;
 import com.example.bookshop.books.repositories.BookRepository;
@@ -45,6 +47,8 @@ public class BookService implements IBookService {
     CategoryRepository categoryRepository;
     CloudUtils cloudinary;
 
+
+
     @Autowired
     BookEntityMapper bookEntityMapper;
     @Autowired
@@ -55,6 +59,7 @@ public class BookService implements IBookService {
     private LikeRepository likeRepository;
     @Autowired
     private ReadBookRepository readBookRepository;
+
 
     @Override
     public List<BookResponse> getAllBooks1(Pageable pageable, BookSpecification filter) {
@@ -90,9 +95,9 @@ public class BookService implements IBookService {
     @Override
     @Transactional
     public BookResponse createBookImg(BookCreateRequest request, MultipartFile image) {
-        System.out.println(request.getCategoriesID());
+
         var bookEntity = modelMapper.map(request, BookEntity.class);
-        System.out.println(request.getCategoriesID());
+
 
         CategoryEntity categoryEntity = categoryRepository.findById(request.getCategoriesID()).orElseThrow(()->new CustomRunTimeException(ErrorCode.CATEGORY_NOT_FOUND));
         bookEntity.setCategory(categoryEntity);
@@ -100,24 +105,20 @@ public class BookService implements IBookService {
         var user = userRepository.findByUsername(AuthUtils.getUserCurrent())
                 .orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
 
-        UserEntity userEntity = userRepository.findById(user.getId()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
-        System.out.println("User +"+userEntity.getUsername());
+        UserEntity userEntity = userRepository.findById(user.getId()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));System.out.println("User +"+userEntity.getUsername());
         bookEntity.setUser(userEntity);
-        System.out.println("User2 +"+userEntity.getUsername());
-
         if (image.isEmpty()) {
             throw new IllegalArgumentException("File have not data");
         }
-        System.out.println("User3 +"+userEntity.getUsername());
         String link;
         try {
             link = cloudinary.uploadFileAsync(image).get();
         } catch (InterruptedException | ExecutionException e) {
             throw new CustomRunTimeException(ErrorCode.SET_IMAGE_NOT_SUCCESS);
         }
-        System.out.println("User4 +"+userEntity.getUsername());
+
         bookEntity.setImage_url(link);
-        System.out.println("User5 +"+userEntity.getUsername());
+
 
         bookEntity.setPublishedDate(new java.sql.Date(System.currentTimeMillis()));
         var result = bookRepository.save(bookEntity);
@@ -127,7 +128,7 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public BookResponse updateBook(BookUpdateRequest request,MultipartFile image, Integer id) {
+    public BookResponse updateBook(BookUpdateRequest request, MultipartFile image, Integer id) {
         try {
             System.out.println("Hi 1");
             System.out.println("Category "+request.getCategories_ID());
@@ -181,4 +182,9 @@ public class BookService implements IBookService {
         return bookMap;
     }
 
+    @Override
+    public List<BookResponse> getTopBookLike() {
+      var listBook  =  bookRepository.findTopBooksByLikes();
+      return BookEntityMapper.toBookDTOList(listBook);
+    }
 }

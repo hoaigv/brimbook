@@ -17,6 +17,7 @@ public class CommentEntityMapper {
             commentDTO.setId(comment.getId());
             commentDTO.setCommentText(comment.getCommentText());
             commentDTO.setIsVisible(comment.getIsVisible());
+            commentDTO.setCreatedAt(comment.getCreatedAt());
 
             BookResponse bookDTO = new BookResponse();
             bookDTO.setId(comment.getBook().getId());

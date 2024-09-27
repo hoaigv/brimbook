@@ -21,8 +21,8 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryEntity extends BaseEntity {
 
-
     @NotNull(message = "category name  must not be null")
+
     String name;
 
     @OneToMany(mappedBy = "category" , fetch = FetchType.LAZY)

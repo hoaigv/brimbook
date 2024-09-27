@@ -4,7 +4,6 @@ import com.example.bookshop.categories.controllers.dto.CategoryCreateRequest;
 import com.example.bookshop.categories.controllers.dto.CategoryResponse;
 import com.example.bookshop.categories.mappers.CategoryEntityMapper;
 import com.example.bookshop.categories.models.CategoryEntity;
-import com.example.bookshop.categories.mappers.CategoryMapper;
 import com.example.bookshop.categories.repositories.CategoryRepository;
 import com.example.bookshop.categories.services.ICategoryService;
 import lombok.AccessLevel;
@@ -25,7 +24,7 @@ import java.util.List;
 @Slf4j
 public class CategoryService implements ICategoryService {
     CategoryRepository categoryRepository;
-    CategoryMapper categoryMapper;
+
 
     @Autowired
     ModelMapper modelMapper;
@@ -42,11 +41,11 @@ public class CategoryService implements ICategoryService {
         var category = categoryRepository.save(newCategory);
         return modelMapper.map(category, CategoryResponse.class);
     }
-
     @Override
     public List<CategoryResponse> getAllCategories() {
         var result = categoryRepository.findAll();
         return categoryEntityMapper.requestToEntityList(result);
     }
+
 
 }

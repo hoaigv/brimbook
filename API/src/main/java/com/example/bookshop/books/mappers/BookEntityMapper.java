@@ -24,6 +24,7 @@ public class BookEntityMapper {
             CategoryResponse categoryDTO = new CategoryResponse();
             categoryDTO.setId(book.getCategory().getId());
             categoryDTO.setName(book.getCategory().getName());
+
             bookDTO.setCategory(categoryDTO);
 
             UserResponseBook userDTO = new UserResponseBook();

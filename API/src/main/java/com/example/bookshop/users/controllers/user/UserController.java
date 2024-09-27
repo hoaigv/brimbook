@@ -1,6 +1,9 @@
 package com.example.bookshop.users.controllers.user;
 
+import com.example.bookshop.books.controllers.dto.books.BookResponse;
+import com.example.bookshop.books.models.BookEntity;
 import com.example.bookshop.users.controllers.dto.users.UserUpdateRequest;
+import com.example.bookshop.users.models.UserEntity;
 import com.example.bookshop.utils.ApiResponse;
 import com.example.bookshop.users.controllers.dto.users.UserCreationRequest;
 import com.example.bookshop.users.controllers.dto.users.UserResponse;
@@ -8,10 +11,6 @@ import com.example.bookshop.users.controllers.dto.users.UserResponse;
 import com.example.bookshop.users.services.IUserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
 import jakarta.validation.Validation;
@@ -19,14 +18,21 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 @RestController("WebUserController")
 @RequestMapping("/api/users")
@@ -35,6 +41,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserController {
     IUserService userService;
+    private final static String DEFAULT_FILTER_PAGE = "0";
+    private final static String DEFAULT_FILTER_SIZE = "10";
+    private final static Sort DEFAULT_FILTER_SORT = Sort.by(Sort.Direction.DESC, "createdAt");
+
+
 
     @PostMapping("/sign-up")
     public ResponseEntity<ApiResponse<UserResponse>> createUser(
@@ -48,8 +59,6 @@ public class UserController {
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED).body(resp);
     }
-
-
     @PutMapping(value = "/update" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<Void>> updateUser(
             @RequestPart(value = "data")  String data,
@@ -99,21 +108,12 @@ public class UserController {
 
     @PostMapping("/like/{bookId}")
     public ResponseEntity<ApiResponse<Void>> likeUser(@PathVariable Integer bookId) {
-        try {
             userService.likeBook(bookId);
             var resp = ApiResponse.<Void>builder()
-                    .message("Đã thêm sách vào danh sách yêu thích thành công")
+                    .message("Add book in like list successfully")
                     .code(HttpStatus.OK.value())
                     .build();
             return ResponseEntity.status(HttpStatus.OK).body(resp);
-        } catch (Exception e) {
-            log.error("Lỗi khi thêm sách vào danh sách yêu thích: ", e);
-            var errorResp = ApiResponse.<Void>builder()
-                    .message("Không thể thêm sách vào danh sách yêu thích: " + e.getMessage())
-                    .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                    .build();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResp);
-        }
     }
 
     @DeleteMapping("/like/{bookId}")
@@ -123,5 +123,77 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 
+
+    @GetMapping("/like/{bookId}")
+    public ResponseEntity<ApiResponse<Boolean>> getLikeBook(@PathVariable  Integer bookId) {
+        var result = userService.getLikeBook(bookId);
+        var resp = ApiResponse.<Boolean>builder().result(result).build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
+
+
+    @PostMapping("/read/{bookId}")
+    public ResponseEntity<ApiResponse<Void>> readBook(@PathVariable Integer bookId) {
+        userService.readBook(bookId);
+        var resp = ApiResponse.<Void>builder().code(HttpStatus.OK.value()).build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
+    @DeleteMapping("/read/{bookId}")
+    public ResponseEntity<ApiResponse<Void>> deleteBook(@PathVariable Integer bookId) {
+        userService.deleteReadBook(bookId);
+        var resp = ApiResponse.<Void>builder().message("Delete history read book successfully !").code(HttpStatus.OK.value()).build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
+
+    @GetMapping("/list-book-like")
+    public ResponseEntity<ApiResponse<List<BookEntity>>> getListBookLike(
+            @RequestParam(required = false, defaultValue = DEFAULT_FILTER_PAGE) String page,
+            @RequestParam(required = false, defaultValue = DEFAULT_FILTER_SIZE) String size
+
+    ){
+        if (!isNumeric(page) || !isNumeric(size)) {
+            var resp = ApiResponse.<List<BookEntity>>builder()
+                    .result(null)
+                    .message("Page and size must be numeric")
+                    .code(400)
+                    .build();
+            return ResponseEntity.badRequest().body(resp);
+        }
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), Integer.parseInt(size), DEFAULT_FILTER_SORT);
+        var result = userService.getAllLikeBook(pageable);
+        var resp = ApiResponse.<List<BookEntity>>builder()
+                .result(result.getContent())
+                .totalResults(result.getTotalElements())
+                .page(result.getNumber() + 1)
+                .pageSize(result.getSize())
+                .totalPages(result.getTotalPages())
+                .build();
+        return  ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
+    @GetMapping("/list-book-read")
+    public ResponseEntity<ApiResponse<List<BookEntity>>> getListBookRead(
+            @RequestParam(required = false, defaultValue = DEFAULT_FILTER_PAGE) String page,
+            @RequestParam(required = false, defaultValue = DEFAULT_FILTER_SIZE) String size
+
+    ){
+        if (!isNumeric(page) || !isNumeric(size)) {
+            var resp = ApiResponse.<List<BookEntity>>builder()
+                    .result(null)
+                    .message("Page and size must be numeric")
+                    .code(400)
+                    .build();
+            return ResponseEntity.badRequest().body(resp);
+        }
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), Integer.parseInt(size), DEFAULT_FILTER_SORT);
+        var result = userService.getAllReadBook(pageable);
+        var resp = ApiResponse.<List<BookEntity>>builder()
+                .result(result.getContent())
+                .totalResults(result.getTotalElements())
+                .page(result.getNumber() + 1)
+                .pageSize(result.getSize())
+                .totalPages(result.getTotalPages())
+                .build();
+        return  ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
 
 }
