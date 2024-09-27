@@ -12,15 +12,14 @@ function SearchBookItem({ result }) {
     <div className={cx("search-book-item")}>
       <Link to={`/books/${result.id}`} className={cx("book-title")}>
         <Image
-          //   src={result.image}
-          src=""
+          src={result.image_url}
           alt="BookImage"
           width={200}
           height={270}
           className={cx("image")}
         />
-        {/* <p className={cx("title")}>{result.title }</p> */}
-        <p className={cx("categories")}>BIOGRAPHY</p>
+        <p className={cx("title")}>{result.title}</p>
+        <p className={cx("categories")}>{result.publishedDate}</p>
       </Link>
     </div>
   );

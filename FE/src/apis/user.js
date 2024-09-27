@@ -1,5 +1,5 @@
-import axios from "axios";
 import { BASE_URL } from "~/utils/constants";
+import { axios } from "./http";
 
 export const loginUser = async (user) => {
   try {
@@ -209,5 +209,61 @@ export const getUserById = async (userId, setUser, setNotification) => {
       error.response?.data?.message || "Lỗi không xác định khi lấy thông tin người dùng";
     setNotification({ success: false, message: messageError });
     return { success: false, message: messageError };
+  }
+};
+
+export const getLike = async (param) => {
+  try {
+    const result = await axios.get(`api/users/like/${param}`);
+
+    return result.data.result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const like = async (param) => {
+  try {
+    await axios.post(`api/users/like/${param}`);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const unlike = async (param) => {
+  try {
+    await axios.delete(`api/users/like/${param}`);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const listBookLike = async (page, size, setBook) => {
+  try {
+    await axios.get(`api/users/list-book-like?page=${page}&size=${size}`).then((res) => {
+      setBook(res.data.result);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const listBookRead = async (page, size, setBook) => {
+  try {
+    await axios.get(`api/users/list-book-read?page=${page}&size=${size}`).then((res) => {
+      setBook(res.data.result);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const readBook = async (param, setBook) => {
+  try {
+    await axios.get(`api/users/read/${param}`).then((res) => {
+      setBook(res.data.result);
+    });
+  } catch (err) {
+    console.log(err);
   }
 };

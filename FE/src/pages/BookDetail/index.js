@@ -9,6 +9,7 @@ import Image from "~/components/Image";
 import Comment from "~/components/Comment";
 import Button from "~/components/Button";
 import CommentInput from "~/components/CommentInput";
+import * as UserAPI from "~/apis/user";
 import * as BookAPI from "~/apis/book";
 import * as Comments from "~/apis/comment";
 
@@ -17,6 +18,8 @@ const cx = classNames.bind(styles);
 function BookDetail() {
   const param = useParams();
   const [toggleState, setToggleState] = useState(1);
+  const [isSetFetchComment, setIsFetchComment] = useState(false);
+  const [isLike, setIsLike] = useState(false);
   const [book, setBook] = useState({
     result: {
       category: {
@@ -47,13 +50,26 @@ function BookDetail() {
 
   useEffect(() => {
     BookAPI.getOne(param.id, setBook);
-  }, [param]);
+  }, [param, isLike]);
+
+  useEffect(() => {
+    UserAPI.getLike(param.id).then((res) => {
+      setIsLike(res);
+    });
+  }, []);
 
   useEffect(() => {
     Comments.getAll(param.id, setComments);
-  }, [param]);
+  }, [param, isSetFetchComment]);
 
-  console.log(comments);
+  const handleLike = () => {
+    if (isLike) {
+      UserAPI.unlike(param.id);
+    } else {
+      UserAPI.like(param.id);
+    }
+    setIsLike(!isLike);
+  };
 
   useEffect(() => {
     const loadVoices = () => {
@@ -123,6 +139,32 @@ function BookDetail() {
     console.log("Gọi hàm speak");
     speechSynthesis.current.speak(utterance);
   };
+
+  useEffect(() => {
+    const loadVoices = () => {
+      const availableVoices = speechSynthesis.current.getVoices();
+      setVoices(availableVoices.filter((voice) => voice.lang.startsWith("vi")));
+    };
+
+    loadVoices();
+    if (speechSynthesis.current.onvoiceschanged !== undefined) {
+      speechSynthesis.current.onvoiceschanged = loadVoices;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (voices.length > 0) {
+      setSelectedVoice(voices[0]);
+    }
+  }, [voices]);
+
+  useEffect(() => {
+    return () => {
+      if (speechSynthesis.current.speaking) {
+        speechSynthesis.current.cancel();
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -203,7 +245,17 @@ function BookDetail() {
                   </Button>
                 </div>
                 <div className={cx("like-btn")}>
-                  <Button outline sx={{ width: 52, height: 52 }} startIcon={<LikeIcon />} />
+                  <Button
+                    outline
+                    sx={{
+                      width: 52,
+                      height: 52,
+                      color: isLike ? "var(--white)" : "var(--primary-purple)",
+                      backgroundColor: isLike ? "var(--primary-purple)" : "var(--white)",
+                    }}
+                    startIcon={<LikeIcon />}
+                    onClick={handleLike}
+                  />
                 </div>
               </div>
             </div>
@@ -249,7 +301,7 @@ function BookDetail() {
                     ))}
                   </div>
                   <div className={cx("comment-input")}>
-                    <CommentInput />
+                    <CommentInput param={param.id} isSetSendComment={setIsFetchComment} />
                   </div>
                 </div>
               </div>

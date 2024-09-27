@@ -7,21 +7,31 @@ import images from "~/assets/Image";
 import Button from "~/components/Button";
 import Image from "~/components/Image";
 
+import * as Comment from "~/apis/comment";
+
 const cx = classNames.bind(styles);
 
-function CommentInput() {
+function CommentInput({ param, isSetSendComment }) {
   const textareaRef = useRef(null);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState();
 
   useEffect(() => {
     textareaRef.current.style.height = "auto";
-    if (value !== "") {
+    if (value !== "" && value !== undefined) {
       textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
     }
   }, [value]);
 
   const handleChange = (e) => {
     setValue(e.target.value);
+  };
+
+  console.log(value);
+
+  const handleSubmit = () => {
+    Comment.comment(param, value).then(() => {
+      isSetSendComment((pre) => !pre);
+    });
   };
 
   return (
@@ -44,7 +54,7 @@ function CommentInput() {
           onChange={handleChange}
           ref={textareaRef}
         ></textarea>
-        <Button type1 width={"100%"}>
+        <Button type1 width={"100%"} onClick={handleSubmit}>
           Submit
         </Button>
       </div>
