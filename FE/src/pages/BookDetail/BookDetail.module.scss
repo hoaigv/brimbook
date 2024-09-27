@@ -23,6 +23,8 @@
 }
 
 .book {
+  width: 100%;
+
   /* ----- Title ----- */
   .book-title {
     max-width: 1150px;
@@ -130,11 +132,18 @@
     /* ----- Content tabs ----- */
     .content-tabs {
       .content {
+        width: 100%;
         display: none;
       }
 
       .active-content {
         display: block;
+
+        .description {
+          font-size: 3rem;
+          font-weight: 400;
+          letter-spacing: -0.8px;
+        }
 
         .comments {
           .text {

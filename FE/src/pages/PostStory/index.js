@@ -101,7 +101,7 @@ function PostStory() {
                     className={cx("item")}
                     onClick={() => handleCategoryChange(item.id, item.categoryName)}
                   >
-                    {item.categoryName}
+                    {item.name}
                   </li>
                 );
               })}

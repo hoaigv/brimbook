@@ -20,10 +20,10 @@
 }
 
 .commit-items {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  justify-content: center;
   gap: 50px;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .commit-item {
@@ -64,7 +64,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 50px;
+    gap: 40px;
   }
 }
 
@@ -88,7 +88,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    gap: 50px;
   }
 }
 

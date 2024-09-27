@@ -2,12 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import classNames from "classnames/bind";
 import styles from "./Profile.module.scss";
 
-import { ArrowDown, PenIcon } from "~/components/Icons";
+import { PenIcon } from "~/components/Icons";
 import Image from "~/components/Image";
 import Input from "~/components/Input";
 import Button from "~/components/Button";
 
-import { genderOption } from "~/_mock/genderOption";
 import * as User from "~/apis/user";
 import images from "~/assets/Image";
 // import images from "~/assets/Image";
@@ -17,7 +16,6 @@ const cx = classNames.bind(styles);
 function Profile() {
   const inputRef = useRef(null);
   const resultRef = useRef();
-  const [toggle, setToggle] = useState(false);
 
   const [userMe, setUserMe] = useState({
     result: {
@@ -32,74 +30,50 @@ function Profile() {
       password: "",
     },
   });
-  const [formData, setFormData] = useState({
-    user: {
-      firstName: "",
-      lastName: "",
-      username: "",
-      email: "",
-      gender: "",
-      phone: "",
-      birthday: "",
-    },
-    image: null,
-  });
+  const [formData, setFormData] = useState({});
+  const [image, setImage] = useState(null);
 
   const handleClick = () => {
     inputRef.current.click();
   };
 
   const handleImageChage = (e) => {
-    setFormData({ ...formData, image: e.target.files[0] });
+    setImage(e.target.files[0]);
   };
 
   const handleChangeFirstName = (e) => {
-    setFormData({ ...formData, user: { ...formData.user, firstName: e.target.value } });
+    setFormData({ ...formData, firstName: e.target.value });
   };
 
   const handleChangeLastName = (e) => {
-    setFormData({ ...formData, user: { ...formData.user, lastName: e.target.value } });
-  };
-
-  const handleChangeUserName = (e) => {
-    setFormData({ ...formData, user: { ...formData.user, username: e.target.value } });
+    setFormData({ ...formData, lastName: e.target.value });
   };
 
   const handleChangePhone = (e) => {
-    setFormData({ ...formData, user: { ...formData.user, phone: e.target.value } });
+    setFormData({ ...formData, phone: e.target.value });
   };
   const handleChangeBirthday = (e) => {
-    setFormData({ ...formData, user: { ...formData.user, birthday: e.target.value } });
+    setFormData({ ...formData, birthDate: e.target.value });
   };
 
   const handleChangeEmail = (e) => {
-    setFormData({ ...formData, user: { ...formData.user, email: e.target.value } });
+    setFormData({ ...formData, email: e.target.value });
   };
 
-  const handleChangeGender = (item) => {
-    setFormData({ ...formData, user: { ...formData.user, gender: item } });
-    setToggle(!toggle);
+  const handleChangeGender = (e) => {
+    setFormData({ ...formData, gender: e.target.value });
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (resultRef.current && !resultRef.current.contains(event.target)) {
-        setToggle(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   useEffect(() => {
     User.getUser(setUserMe);
   }, []);
 
+  const data = JSON.stringify(formData);
+
   const handleSaveChanges = () => {
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("data", data);
     User.update(formData);
   };
 
@@ -112,9 +86,7 @@ function Profile() {
             <div className={cx("user-profile")}>
               <div className={cx("image-input")}>
                 <Image
-                  src={
-                    formData.image ? URL.createObjectURL(formData.image) : userMe.result.image_url
-                  }
+                  src={image ? URL.createObjectURL(image) : userMe.result.image_url}
                   fallback={images.placeholderPerson}
                   alt="PostStory"
                   className={cx("avatar")}
@@ -153,14 +125,7 @@ function Profile() {
                   handleChage={handleChangeLastName}
                 />
               </div>
-              <div className={cx("form-group")}>
-                <label className={cx("label")}>Username</label>
-                <Input
-                  type="text"
-                  defaultValue={userMe.result.username}
-                  handleChage={handleChangeUserName}
-                />
-              </div>
+
               <div className={cx("form-group")}>
                 <label className={cx("label")}>Phone</label>
                 <Input
@@ -171,25 +136,14 @@ function Profile() {
               </div>
               <div className={cx("form-group")} ref={resultRef}>
                 <label className={cx("label")}>Gender</label>
-                <div className={cx("select")} onClick={() => setToggle(!toggle)}>
-                  <span className={cx("value")}>
-                    {formData.user.gender ? formData.user.gender : userMe.result.gender}
-                  </span>
-                  <ArrowDown />
-                </div>
-                <ul className={cx("select-list", { active: toggle })}>
-                  {genderOption.map((item) => {
-                    return (
-                      <li
-                        key={item}
-                        className={cx("item")}
-                        onClick={() => handleChangeGender(item)}
-                      >
-                        {item}
-                      </li>
-                    );
-                  })}
-                </ul>
+                <select className={cx("select-list")}>
+                  <option className={cx("item")} value={"Male"} onClick={handleChangeGender}>
+                    Male
+                  </option>
+                  <option className={cx("item")} value={"Female"} onClick={handleChangeGender}>
+                    Female
+                  </option>
+                </select>
               </div>
               <div className={cx("form-group")}>
                 <label className={cx("label")}>Birthday</label>

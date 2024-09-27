@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
 import styles from "./Actions.module.scss";
 
@@ -13,6 +13,7 @@ import { menuItem } from "~/_mock/menu";
 const cx = classNames.bind(styles);
 
 function Actions() {
+  const navigate = useNavigate();
   const [userMe, setUserMe] = useState({
     result: {
       username: "",
@@ -24,8 +25,8 @@ function Actions() {
     User.getUser(setUserMe);
   }, []);
 
-  const handleClick = () => {
-    User.logoutUser();
+  const handleLogout = () => {
+    User.logoutUser(navigate);
   };
 
   return (
@@ -49,7 +50,7 @@ function Actions() {
                 fontSize: "1.6rem",
                 fontWidth: 600,
               }}
-              onClick={handleClick}
+              onClick={handleLogout}
             >
               Log Out
             </Button>

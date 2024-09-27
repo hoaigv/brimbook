@@ -12,4 +12,12 @@ export const menuItem = [
     link: "/user-management",
     role: "admin",
   },
+  {
+    name: "Recent",
+    link: "/recent",
+  },
+  {
+    name: "Favorite",
+    link: "/favorite",
+  },
 ];

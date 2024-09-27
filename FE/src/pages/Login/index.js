@@ -1,20 +1,16 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import classNames from "classnames/bind";
 import styles from "./Login.module.scss";
 
 import { EyeIcon, EyeOffIcon, LogoImage } from "~/components/Icons";
 import Button from "~/components/Button";
-import Checkbox from "~/components/Checkbox";
 import * as User from "~/apis/user";
 import Input from "~/components/Input";
 
 const cx = classNames.bind(styles);
 
 function Login() {
-  const navigate = useNavigate();
-
   const [err, setErr] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
@@ -34,7 +30,7 @@ function Login() {
     if (!formData.username || !formData.password) {
       setErr(true);
     }
-    User.loginUser(formData, navigate);
+    User.loginUser(formData);
   };
 
   return (
@@ -67,16 +63,7 @@ function Login() {
               </div>
             </div>
           </div>
-          <div className={cx("checkbox-wrapper")}>
-            <Checkbox type1>Remember me</Checkbox>
-            <Button
-              noline
-              // to={}
-              sx={{ width: "123px", color: "var(--primary-purple)" }}
-            >
-              Forgot password?
-            </Button>
-          </div>
+
           <div className={cx("register-btn")}>
             <h5>Do you have any account? |</h5>
             <Button noline to={"/register"} sx={{ width: "60px", color: "var(--primary-purple)" }}>

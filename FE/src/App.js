@@ -21,9 +21,9 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
   return (
     <Router>

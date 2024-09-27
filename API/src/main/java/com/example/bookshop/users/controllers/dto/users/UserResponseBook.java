@@ -1,5 +1,10 @@
 package com.example.bookshop.users.controllers.dto.users;
 
+import java.sql.Date;
+
+import com.example.bookshop.utils.enums.Gender;
+import com.example.bookshop.utils.enums.Role;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,4 +25,14 @@ public class UserResponseBook {
     String firstName;
 
     String lastName;
+
+    String image_url;
+
+    Date birthDate;
+
+    Gender gender;
+
+    Role role;
+
+    
 }

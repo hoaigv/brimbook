@@ -31,6 +31,7 @@ public class SecurityConfig {
     String[] PRIVATE_PUT_ENDPOINT = {"/api/users/update","/api/users/update/image"};
     String[] PRIVATE_ENDPOINT= {"/api/admin/**"};
     String[] PRIVATE_GET_ENDPOINT = {"/api/users/me"};
+    String[] PUBLIC_GET_ENDPOINT = {"/api/books/getAll"};
     CustomJwtDecoder jwtDecoder;
     RestAccessDeniedHandler restAccessDeniedHandler;
      static  String[] SWAGGER_WHITELIST = {
@@ -52,6 +53,8 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(request ->
                 request
                         .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINT)
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET,PUBLIC_GET_ENDPOINT)
                         .permitAll()
                         .requestMatchers(HttpMethod.GET,PRIVATE_GET_ENDPOINT)
                         .hasAnyAuthority(Authentication.ROLE_USER.name(),Authentication.ROLE_ADMIN.name())
@@ -89,7 +92,6 @@ public class SecurityConfig {
 
     }
 
-
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
@@ -104,4 +106,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
+
 }
