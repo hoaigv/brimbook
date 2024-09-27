@@ -10,6 +10,8 @@ import com.example.bookshop.categories.repositories.CategoryRepository;
 import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
 import com.example.bookshop.exceptionHandlers.ErrorCode;
 import com.example.bookshop.users.models.UserEntity;
+import com.example.bookshop.users.repositories.LikeRepository;
+import com.example.bookshop.users.repositories.ReadBookRepository;
 import com.example.bookshop.users.repositories.UserRepository;
 import com.example.bookshop.utils.AuthUtils;
 import com.example.bookshop.utils.CloudUtils;
@@ -49,13 +51,24 @@ public class BookService implements IBookService {
     ModelMapper modelMapper;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private LikeRepository likeRepository;
+    @Autowired
+    private ReadBookRepository readBookRepository;
 
     @Override
     public List<BookResponse> getAllBooks1(Pageable pageable, BookSpecification filter) {
         System.out.println("Day la getAllBooks1 va filter: "+filter.toString()+" va "+pageable.toString());
         var result = bookRepository.findAll(filter, pageable);
         System.out.println("Day la tap sau:"+result);
-        return BookEntityMapper.toBookDTOList(result.getContent());
+        var bookMap = BookEntityMapper.toBookDTOList(result.getContent());
+        for(BookResponse bookEntity : bookMap) {
+            Integer likeTotal = likeRepository.countLikesByBookId(bookEntity.getId());
+            Integer readBooksTotal = readBookRepository.countReadBooksByBookId(bookEntity.getId());
+            bookEntity.setTotal_likes(likeTotal);
+            bookEntity.setTotal_reads(readBooksTotal);
+        }
+        return bookMap;
     }
 
     @Override
@@ -64,7 +77,14 @@ public class BookService implements IBookService {
         System.out.println("Hi "+user.get().getUsername());
         var book = bookRepository.findAllByUserId(user.get().getId());
         System.out.println("Hi "+book.stream().toList());
-        return BookEntityMapper.toBookDTOList(book.stream().toList());
+        var bookMap = BookEntityMapper.toBookDTOList(book);
+        for(BookResponse bookEntity : bookMap) {
+            Integer likeTotal = likeRepository.countLikesByBookId(bookEntity.getId());
+            Integer readBooksTotal = readBookRepository.countReadBooksByBookId(bookEntity.getId());
+            bookEntity.setTotal_likes(likeTotal);
+            bookEntity.setTotal_reads(readBooksTotal);
+        }
+        return bookMap.stream().toList();
     }
 
     @Override
@@ -141,13 +161,23 @@ public class BookService implements IBookService {
     public BookResponse getBooksUserById(Integer bookId){
         var user = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
         var books = bookRepository.findByUserIdAndBookId(user.getId(),bookId).orElseThrow(()->new CustomRunTimeException(ErrorCode.BOOK_NOT_FOUND));
-        return modelMapper.map(books, BookResponse.class);
+        Integer likeTotal = likeRepository.countLikesByBookId(books.getId());
+        Integer readBooksTotal = readBookRepository.countReadBooksByBookId(books.getId());
+        var bookMap = modelMapper.map(books, BookResponse.class);
+        bookMap.setTotal_likes(likeTotal);
+        bookMap.setTotal_reads(readBooksTotal);
+        return bookMap;
     }
 
     @Override
     public BookResponse getBookById(Integer bookId){
         var book = bookRepository.findById(bookId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.BOOK_NOT_FOUND));
-        return modelMapper.map(book, BookResponse.class);
+        Integer likeTotal = likeRepository.countLikesByBookId(book.getId());
+        Integer readBooksTotal = readBookRepository.countReadBooksByBookId(book.getId());
+        var bookMap = modelMapper.map(book, BookResponse.class);
+        bookMap.setTotal_likes(likeTotal);
+        bookMap.setTotal_reads(readBooksTotal);
+        return bookMap;
     }
 
 }
