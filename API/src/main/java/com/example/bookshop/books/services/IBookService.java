@@ -18,4 +18,5 @@ public interface IBookService {
     BookResponse createBookImg(BookCreateRequest request, MultipartFile image);
     BookResponse getBooksUserById(Integer id);
     BookResponse getBookById(Integer id);
+    List<BookResponse> getTopBookLike();
 }

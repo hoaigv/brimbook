@@ -17,6 +17,7 @@ public class BookCreateRequest {
     String title;
 
     Date publishedDate;
+
     @NotBlank
     String description;
 

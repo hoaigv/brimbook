@@ -9,7 +9,9 @@ import com.example.bookshop.utils.SortUtils;
 import com.example.bookshop.utils.componentUtils.spec.BookSpecification;
 import com.example.bookshop.utils.constants.FieldSort;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
+import jakarta.validation.Validation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController()
 @RequestMapping("/api/books")
@@ -86,18 +90,26 @@ public class BookController {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             BookCreateRequest request = objectMapper.readValue(data, BookCreateRequest.class);
-
-            System.out.println("Hi 1");
-            String fileName = image.getOriginalFilename();
-            System.out.println("Hi 2");
-
-            if (image.isEmpty() || !Objects.requireNonNull(fileName).endsWith(".jpg") && !fileName.endsWith(".png")) {
+            String fileName = null;
+           if(image != null) {
+               fileName = image.getOriginalFilename();
+           }
+            if (!Objects.requireNonNull(fileName).endsWith(".jpg") && !fileName.endsWith(".png")) {
                 var resp = ApiResponse.<BookResponse>builder()
                         .code(400)
                         .message("you need choose file img (.jsp or .png) ")
                         .build();
                 return ResponseEntity.status(HttpStatus.OK).body(resp);
             }else {
+                Set<ConstraintViolation<BookCreateRequest>> violations = Validation.buildDefaultValidatorFactory()
+                        .getValidator().validate(request);
+                if (!violations.isEmpty()) {
+                    String errorMessage = violations.stream()
+                            .map(ConstraintViolation::getMessage)
+                            .collect(Collectors.joining(", "));
+                    return ResponseEntity.badRequest()
+                            .body(ApiResponse.<BookResponse>builder().code(400).message(errorMessage).build());
+                }
                 var resp = ApiResponse.<BookResponse>builder()
                         .result(bookService.createBookImg(request, image))
                         .message("Successfully created book")
@@ -118,13 +130,11 @@ public class BookController {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             BookUpdateRequest request = objectMapper.readValue(data, BookUpdateRequest.class);
-
             System.out.println("test 1");
             var resp = ApiResponse.<BookResponse>builder()
                     .result(bookService.updateBook(request,image, bookId))
                     .message("Successfully updated book")
                     .build();
-            System.out.println("test 2");
             return  ResponseEntity.status(HttpStatus.OK).body(resp);
         }catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -151,6 +161,19 @@ public class BookController {
                 .build();
         return ResponseEntity.ok(resp);
     }
+
+    @GetMapping("/top-book-like")
+    public ResponseEntity<ApiResponse<List<BookResponse>>> getTopBookLike(
+    ){
+        var resp = ApiResponse.<List<BookResponse>>builder()
+                .result(bookService.getTopBookLike())
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
+
+
+
+
 
 
 }
