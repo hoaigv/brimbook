@@ -2,7 +2,7 @@ package com.example.bookshop.books.mappers;
 
 import com.example.bookshop.books.controllers.dto.books.BookResponse;
 import com.example.bookshop.books.models.BookEntity;
-import com.example.bookshop.categories.controllers.dto.CategoryResponse1;
+import com.example.bookshop.categories.controllers.dto.CategoryResponse;
 import com.example.bookshop.users.controllers.dto.users.UserResponseBook;
 import org.mapstruct.Mapper;
 
@@ -21,9 +21,9 @@ public class BookEntityMapper {
             bookDTO.setImage_url(book.getImage_url());
             bookDTO.setPublishedDate(book.getPublishedDate());
 
-            CategoryResponse1 categoryDTO = new CategoryResponse1();
+            CategoryResponse categoryDTO = new CategoryResponse();
             categoryDTO.setId(book.getCategory().getId());
-            categoryDTO.setCategoryName(book.getCategory().getCategoryName());
+            categoryDTO.setName(book.getCategory().getName());
             bookDTO.setCategory(categoryDTO);
 
             UserResponseBook userDTO = new UserResponseBook();

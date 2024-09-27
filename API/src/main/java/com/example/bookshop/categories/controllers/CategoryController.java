@@ -1,10 +1,8 @@
 package com.example.bookshop.categories.controllers;
 
-import com.example.bookshop.categories.controllers.dto.CategoryResponse1;
+import com.example.bookshop.categories.controllers.dto.CategoryResponse;
 import com.example.bookshop.utils.ApiResponse;
 import com.example.bookshop.categories.controllers.dto.CategoryCreateRequest;
-import com.example.bookshop.categories.controllers.dto.CategoryCreateResponse;
-import com.example.bookshop.categories.controllers.dto.CategoryResponse;
 import com.example.bookshop.categories.services.ICategoryService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -21,17 +19,18 @@ import java.util.List;
 public class CategoryController {
     ICategoryService categoryService;
     @PostMapping
-    public ApiResponse<CategoryResponse1> create(@RequestBody @Valid CategoryCreateRequest request) {
+    public ApiResponse<CategoryResponse> create(@RequestBody @Valid CategoryCreateRequest request) {
         var resp = categoryService.createCategory(request);
-        return ApiResponse.<CategoryResponse1>builder()
+        return ApiResponse.<CategoryResponse>builder()
                 .result(resp)
                 .build();
     }
     @GetMapping
-    public ApiResponse<List<CategoryResponse1>> getAll(){
+    public ApiResponse<List<CategoryResponse>> getAll(){
         var resp = categoryService.getAllCategories();
-        return ApiResponse.<List<CategoryResponse1>>builder()
+        return ApiResponse.<List<CategoryResponse>>builder()
                 .result(resp)
                 .build();
     }
+
 }
