@@ -11,7 +11,7 @@ import * as Comment from "~/apis/comment";
 
 const cx = classNames.bind(styles);
 
-function CommentInput({ param }) {
+function CommentInput({ param, isSetSendComment }) {
   const textareaRef = useRef(null);
   const [value, setValue] = useState();
 
@@ -29,7 +29,9 @@ function CommentInput({ param }) {
   console.log(value);
 
   const handleSubmit = () => {
-    Comment.comment(param, value);
+    Comment.comment(param, value).then(() => {
+      isSetSendComment((pre) => !pre);
+    });
   };
 
   return (

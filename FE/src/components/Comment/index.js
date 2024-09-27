@@ -24,7 +24,7 @@ function Comment({ comments, width }) {
               <TimeConverter
                 sx={{ color: " var(--g0)", fontSize: "1.6rem", fontWeight: 700 }}
                 timestamp={comments.createdAt}
-              ></TimeConverter>
+              />
             </p>
           </div>
           <p className={cx("comment-text")}>{comments.commentText}</p>

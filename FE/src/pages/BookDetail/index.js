@@ -9,6 +9,7 @@ import Image from "~/components/Image";
 import Comment from "~/components/Comment";
 import Button from "~/components/Button";
 import CommentInput from "~/components/CommentInput";
+import * as UserAPI from "~/apis/user";
 import * as BookAPI from "~/apis/book";
 import * as Comments from "~/apis/comment";
 
@@ -17,6 +18,8 @@ const cx = classNames.bind(styles);
 function BookDetail() {
   const param = useParams();
   const [toggleState, setToggleState] = useState(1);
+  const [isSetFetchComment, setIsFetchComment] = useState(false);
+  const [isLike, setIsLike] = useState(false);
   const [book, setBook] = useState({
     result: {
       category: {
@@ -43,11 +46,26 @@ function BookDetail() {
 
   useEffect(() => {
     BookAPI.getOne(param.id, setBook);
-  }, [param]);
+  }, [param, isLike]);
+
+  useEffect(() => {
+    UserAPI.getLike(param.id).then((res) => {
+      setIsLike(res);
+    });
+  }, []);
 
   useEffect(() => {
     Comments.getAll(param.id, setComments);
-  }, [param]);
+  }, [param, isSetFetchComment]);
+
+  const handleLike = () => {
+    if (isLike) {
+      UserAPI.unlike(param.id);
+    } else {
+      UserAPI.like(param.id);
+    }
+    setIsLike(!isLike);
+  };
 
   return (
     <>
@@ -105,7 +123,17 @@ function BookDetail() {
                 </div>
               </div>
               <div className={cx("like-btn")}>
-                <Button outline sx={{ width: 52, height: 52 }} startIcon={<LikeIcon />} />
+                <Button
+                  outline
+                  sx={{
+                    width: 52,
+                    height: 52,
+                    color: isLike ? "var(--white)" : "var(--primary-purple)",
+                    backgroundColor: isLike ? "var(--primary-purple)" : "var(--white)",
+                  }}
+                  startIcon={<LikeIcon />}
+                  onClick={handleLike}
+                />
               </div>
             </div>
             <div className={cx("book-review")}>
@@ -138,7 +166,7 @@ function BookDetail() {
                     ))}
                   </div>
                   <div className={cx("comment-input")}>
-                    <CommentInput param={param.id} />
+                    <CommentInput param={param.id} isSetSendComment={setIsFetchComment} />
                   </div>
                 </div>
               </div>
