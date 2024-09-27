@@ -14,7 +14,7 @@ import {
   PenIcon,
 } from "~/components/Icons";
 import BookItem1, { BookItem2 } from "~/components/BookItem";
-import SlideAds from "~/components/SildeShow";
+import SliderHome from "~/components/SliderHome";
 
 const cx = classNames.bind(styles);
 
@@ -27,40 +27,45 @@ function Home() {
       .then((res) => res.json())
       .then((res) => setSearchResult(res.books));
   }, []);
-
+  const commitItems = [
+    {
+      icon: <ThunderIcon width="40px" height="40px" className={cx("icons")} />,
+      title: "100% tỷ lệ chấp nhận!",
+      description: ""
+    },
+    {
+      icon: <ShieldIcon width="40px" height="40px" className={cx("icons")} />,
+      title: "Không có phí trễ hạn hoặc phí ẩn.",
+      description: ""
+    },
+    {
+      icon: <LikeIcon width="40px" height="40px" className={cx("icons")} />,
+      title: "Thanh toán sau ở bất kỳ đâu với lãi suất 0% với Pay in 30 hoặc Pay in 3.",
+      description: ""
+    },
+    {
+      icon: <StarIcon width="40px" height="40px" className={cx("icons")} />,
+      title: "Không bao giờ rơi vào nợ nần với tính năng mới của chúng tôi gọi là auto PayPlan.",
+      description: ""
+    }
+  ];
   return (
     <div className={cx("wrapper")}>
       <title>Home Page | BrimBook</title>
       <div className={cx("inner")}>
-        <SlideAds />
-        <div className={cx("commit-items")}>
-          <div className={cx("commit-item")}>
-            <ThunderIcon width="27px" height="27px" className={cx("icons")} />
-            <div>
-              <h2>Quick Delivery</h2>
-              <span>Delivery to anywhere in the world</span>
-            </div>
-          </div>
-          <div className={cx("commit-item")}>
-            <ShieldIcon width="27px" height="27px" className={cx("icons")} />
-            <div>
-              <h2>Secure Payment</h2>
-              <span>Lorem ipsum dolor sit amet. consectetur</span>
-            </div>
-          </div>
-          <div className={cx("commit-item")}>
-            <LikeIcon width="27px" height="27px" className={cx("icons")} />
-            <div>
-              <h2>Best Quality</h2>
-              <span>Lorem ipsum dolor sit amet. consectetur</span>
-            </div>
-          </div>
-          <div className={cx("commit-item")}>
-            <StarIcon width="27px" height="27px" className={cx("icons")} />
-            <div>
-              <h2>Return Guarantee</h2>
-              <span>Lorem ipsum dolor sit amet. consectetur</span>
-            </div>
+        <SliderHome />
+        <div className={cx("commit-section")}>
+          <div className={cx("commit-items")}>
+            {commitItems.map((item, index) => (
+              <div key={index} className={cx("commit-item")}>
+                <div className={cx("icon-wrapper")}>
+                  {item.icon}
+                </div>
+                <div className={cx("content")}>
+                  <p>{item.title}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
         <div className={cx("top-list")}>
@@ -68,19 +73,6 @@ function Home() {
           <div className={cx("books-list")}>
             {searchResult.slice(0, 6).map((books) => (
               <BookItem1 key={books.isbn13} result={books} />
-            ))}
-          </div>
-        </div>
-        <div className={cx("special-offers")}>
-          <h3>Special Selection</h3>
-          <h4>
-            Lorem ipsum dolor sit amet, consectetus adipiscing elit, sed do eiusmod tempro
-            <br />
-            incididunt ut labore et dolore magna aliqua
-          </h4>
-          <div className={cx("books-list")}>
-            {searchResult.slice(4, 7).map((books) => (
-              <BookItem2 key={books.isbn13} result={books} />
             ))}
           </div>
         </div>
@@ -104,6 +96,19 @@ function Home() {
             <PenIcon width="95px" height="95px" />
             <h3>457</h3>
             <p>Famous Writers</p>
+          </div>
+        </div>
+        <div className={cx("special-offers")}>
+          <h3>Special Selection</h3>
+          <h4>
+            Lorem ipsum dolor sit amet, consectetus adipiscing elit, sed do eiusmod tempro
+            <br />
+            incididunt ut labore et dolore magna aliqua
+          </h4>
+          <div className={cx("books-list")}>
+            {searchResult.slice(4, 7).map((books) => (
+              <BookItem2 key={books.isbn13} result={books} />
+            ))}
           </div>
         </div>
       </div>

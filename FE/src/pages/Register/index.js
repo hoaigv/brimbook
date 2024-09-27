@@ -21,7 +21,7 @@ function Register() {
   });
   const [visible, setVisible] = useState(false);
 
-  const handleInputName = (e) => {
+  const handleInputUsername = (e) => {
     setFormData((curr) => ({ ...curr, username: e.target.value }));
   };
 
@@ -44,12 +44,12 @@ function Register() {
       <div className={cx("wrapper")}>
         <div className={cx("form")}>
           <LogoImage width="250px" height="60px" className={cx("logo")} />
-          <Input type={"text"} handleChage={handleInputName} defaultValue={"Enter Name"} mb={20} />
+          <Input type={"text"} handleChage={handleInputEmail} defaultValue={"Enter email"} />
           <Input
             type={"text"}
-            handleChage={handleInputEmail}
-            defaultValue={"Enter email"}
-            mb={20}
+            handleChage={handleInputUsername}
+            sx={{ margin: "20px 0" }}
+            defaultValue={"Enter username"}
           />
           <div className={cx("password-wrapper")}>
             <div className={cx("password-inner")}>

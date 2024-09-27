@@ -31,7 +31,7 @@ function Footer() {
           </div>
           <span className={cx("copyright")}>BrimBook Store Website - 2024 All Rights Reserved</span>
         </div>
-        <div className={cx("link")}>
+        <div className={cx("link", "footer-content")}>
           <span className={cx("text")}>Category</span>
           <div className={cx("list")}>
             {category.slice(0, 12).map((item) => (
@@ -45,7 +45,7 @@ function Footer() {
             </Button>
           </div>
         </div>
-        <div className={cx("link")}>
+        <div className={cx("link", "footer-content")}>
           <span className={cx("text")}>Quick Links</span>
           <div className={cx("list")}>
             <Link className={cx("name-wrapper")}>About us</Link>
@@ -57,7 +57,7 @@ function Footer() {
             <Link className={cx("name-wrapper")}>Shipment</Link>
           </div>
         </div>
-        <div className={cx("content")}>
+        <div className={cx("content", "footer-content")}>
           <span className={cx("text")}>Our Store</span>
           <div className={cx("map")}>
             <iframe

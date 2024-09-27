@@ -13,7 +13,11 @@ import com.example.bookshop.utils.SortUtils;
 import com.example.bookshop.utils.componentUtils.spec.UsersSpecification;
 import com.example.bookshop.utils.validators.SortList;
 import com.example.bookshop.utils.validators.ValidImage;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
+import jakarta.validation.Validation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,12 +26,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
@@ -48,7 +55,7 @@ public class UserController {
             UsersSpecification userSpecification,
             @RequestParam(required = false, defaultValue = DEFAULT_FILTER_PAGE) String page,
             @RequestParam(required = false, defaultValue = DEFAULT_FILTER_SiZE) String size,
-            @RequestParam(required = false, defaultValue = "0") String sortParam
+            @RequestParam(required = false) String sortParam
     ) {
         if (!isNumeric(page) || !isNumeric(size)) {
             var resp = ApiResponse.<List<UserEntity>>builder()
@@ -71,9 +78,8 @@ public class UserController {
                 .pageSize(result.getSize())
                 .totalPages(result.getTotalPages())
                 .build();
-        return ResponseEntity.status(HttpStatus.OK).body(resp);
+        return ResponseEntity.ok(resp);
     }
-
     @PostMapping("/sign-up")
     public ResponseEntity<ApiResponse<UserResponse>> createUser(
             @RequestBody @Valid UserCreationRequest request) {
@@ -87,22 +93,44 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resp);
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<ApiResponse<Void>> AdminUpdateUser(
-            @PathVariable Integer userId,
-            @RequestPart("user") @Valid AdminUpdateUserRequest request,
-            @RequestPart("image") @ValidImage MultipartFile image) {
-        String fileName = image.getOriginalFilename();
-        if (fileName != null && !(fileName.endsWith(".jpg") || fileName.endsWith(".png"))) {
-            return ResponseEntity.badRequest().body(ApiResponse.<Void>builder().code(400).message("Invalid file format. Only JPG or PNG are allowed.").build());
+    @PutMapping(value = "/{userId}" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<Void>> updateUserByAdmin(
+            @RequestPart("data")  @Valid String data,
+            @RequestPart(value = "image",required = false) MultipartFile image,
+            @PathVariable Integer userId) {
+        String fileName = null;
+        if(image != null){
+            fileName = image.getOriginalFilename();
         }
-        userService.adminUpdateUser(image,request, userId);
+        if (fileName != null && !(fileName.endsWith(".jpg") || fileName.endsWith(".png"))) {
+            return ResponseEntity.badRequest().body(ApiResponse.<Void>builder().code(400).message("Invalid file format. Only .jpg or .png are allowed.").build());
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        AdminUpdateUserRequest request = null;
+        try {
+            request = objectMapper.readValue(data, AdminUpdateUserRequest.class);
+        } catch (JsonProcessingException e) {
+            var errorMessage = e.getMessage();
+            int index = errorMessage.indexOf("(");
+            errorMessage = errorMessage.substring(0, index);
+        return   ResponseEntity.<Void>badRequest().body(ApiResponse.<Void>builder().code(400).message(errorMessage).build());
+        }
+        Set<ConstraintViolation<AdminUpdateUserRequest>> violations = Validation.buildDefaultValidatorFactory()
+                .getValidator().validate(request);
+        if (!violations.isEmpty()) {
+            String errorMessage = violations.stream()
+                    .map(ConstraintViolation::getMessage)
+                    .collect(Collectors.joining(", "));
+            return ResponseEntity.badRequest()
+                    .body(ApiResponse.<Void>builder().code(400).message(errorMessage).build());
+        }
+        userService.adminUpdateUser(image,request,userId);
         var resp = ApiResponse.<Void>builder()
-                .result(null)
                 .message("Successfully updated user")
                 .code(HttpStatus.OK.value())
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(resp);
+
     }
 
     @GetMapping("/{userId}")

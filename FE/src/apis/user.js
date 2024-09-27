@@ -138,3 +138,16 @@ export const deleteUser = async (userId, setNotification) => {
     return { success: false, message: messageError };
   }
 };
+
+export const getUser = async (setUser) => {
+  await axios
+    .get(`api/users/me`)
+    .then((res) => {
+      setUser(res.data);
+    })
+    .catch((err) => console.log(err));
+};
+
+export const update = async (formData) => {
+  await axios.put(`api/users/update`, formData).catch((err) => console.log(err));
+};

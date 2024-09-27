@@ -49,22 +49,6 @@
   margin-bottom: 40px;
 }
 
-//Email-input
-.input {
-  width: 346px;
-  height: 26px;
-  margin-bottom: 20px;
-  padding: 16px 26px;
-  color: var(--primary-purple);
-  font-size: 2rem;
-  border: 2px solid var(--g1);
-  border-radius: 10px;
-
-  &:focus {
-    border: 2px solid var(--primary-purple);
-  }
-}
-
 /*----- PasswordInput ----- */
 .password-wrapper {
   width: 100%;
