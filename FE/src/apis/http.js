@@ -10,7 +10,11 @@ export const axios = Axios.create({
 
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem("userToken");
-  if (!config.url.includes("api/users/sign-up") && !config.url.includes("auth/login")) {
+  if (
+    !config.url.includes("api/users/sign-up") &&
+    !config.url.includes("auth/login") &&
+    !config.url.includes("api/books/getAll")
+  ) {
     config.headers = { ...config.headers, Authorization: `Bearer ${token}` };
   }
 
