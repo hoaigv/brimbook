@@ -63,9 +63,9 @@ public class BookService implements IBookService {
 
     @Override
     public List<BookResponse> getAllBooks1(Pageable pageable, BookSpecification filter) {
-        System.out.println("Day la getAllBooks1 va filter: "+filter.toString()+" va "+pageable.toString());
+
         var result = bookRepository.findAll(filter, pageable);
-        System.out.println("Day la tap sau:"+result);
+
         var bookMap = BookEntityMapper.toBookDTOList(result.getContent());
         for(BookResponse bookEntity : bookMap) {
             Integer likeTotal = likeRepository.countLikesByBookId(bookEntity.getId());
