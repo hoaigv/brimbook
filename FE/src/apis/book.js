@@ -3,9 +3,10 @@ import { BASE_URL } from "~/utils/constants";
 
 export const getAll = async (query, currentButton, setSearchResult) => {
   await axios
-    .get(`https://api.itbook.store/1.0/search/${query}/${currentButton}`)
+    .get(`api/books/getAll?title=${query}&page=${currentButton}`)
     .then((res) => {
-      setSearchResult(res.data.books);
+      setSearchResult(res.data);
+      console.log(res.data);
     })
     .catch((err) => console.log(err));
 };
