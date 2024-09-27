@@ -102,7 +102,7 @@ export default function Search() {
 
 function BookResult({ result }) {
   return (
-    <Link className={cx("book-item")} to={`/books/${result.isbn13}`}>
+    <Link className={cx("book-item")} to={`/books/${result.id}`}>
       <div className={cx("container")}>
         <div className={cx("book-img")}>
           <Image src={result.image_url} alt="Book" width={50} height={70} />
