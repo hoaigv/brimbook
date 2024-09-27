@@ -94,7 +94,7 @@ public class BookController {
            if(image != null) {
                fileName = image.getOriginalFilename();
            }
-            if (!Objects.requireNonNull(fileName).endsWith(".jpg") && !fileName.endsWith(".png")) {
+            if (!Objects.requireNonNull(fileName).endsWith(".jpg") && !fileName.endsWith(".png")&&!fileName.endsWith(".webp")) {
                 var resp = ApiResponse.<BookResponse>builder()
                         .code(400)
                         .message("you need choose file img (.jsp or .png) ")

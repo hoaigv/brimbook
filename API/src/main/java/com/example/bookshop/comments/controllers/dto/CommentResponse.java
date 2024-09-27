@@ -5,6 +5,8 @@ import com.example.bookshop.users.controllers.dto.users.UserResponseBook;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,6 +16,7 @@ public class CommentResponse {
     int id;
     Boolean isVisible;
     String commentText;
+    LocalDateTime createdAt;
     UserResponseBook user;
     BookResponse book;
 }
