@@ -83,7 +83,7 @@ function Footer() {
 
           <div className={cx("container")}>
             <MapPinIcon className={cx("icon")} />
-            <span className={cx("text")}>381 Trần Hưng Đạo, Sơn Trà, Đà Nẵng, Vietnam</span>
+            <span className={cx("text")}>381 Tran Hung Dao, Son Tra, Da Nang, Vietnam</span>
           </div>
           <div className={cx("container")}>
             <PhoneIcon className={cx("icon")} />

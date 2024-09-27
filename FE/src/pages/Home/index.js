@@ -92,7 +92,7 @@ function Home() {
           </div>
         </div> */}
         <div className={cx("top-list")}>
-          <h3 className={cx("book-title")}>Sách Được Yêu Thích Nhất</h3>
+          <h3 className={cx("book-title")}>Most Favorite Book</h3>
           <div className={cx("books-list")}>
             {topBooks.length > 0 ? (
               topBooks.map((book) => <BookItem1 key={book.id} result={book} />)
@@ -124,8 +124,8 @@ function Home() {
           </div>
         </div>
         <div className={cx("special-offers")}>
-          <h3>Sách được đọc nhiều nhất</h3>
-          <h4>Khám phá những cuốn sách được độc giả yêu thích nhất của chúng tôi</h4>
+          <h3>Most read books</h3>
+          <h4>Explore our readers' favorite books</h4>
           <div className={cx("books-list")}>
             {topReadBooks.map((book) => (
               <BookItem2 key={book.isbn13} result={book} />
