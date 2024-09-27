@@ -14,4 +14,5 @@ public interface LikeRepository extends JpaRepository<LikeEntity, Integer> {
   Optional<LikeEntity> findByBookAndUser(BookEntity book, UserEntity user);
   boolean existsByBookAndUser(BookEntity book, UserEntity user);
   List<LikeEntity> findByUser(UserEntity userEntity);
+
 }

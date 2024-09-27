@@ -172,6 +172,13 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public boolean getLikeBook(Integer bookId) {
+        var user = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+        var book = bookRepository.findById(bookId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.BOOK_NOT_FOUND));
+     return  likeRepository.existsByBookAndUser(book,user);
+    }
+
+    @Override
     public Page<BookEntity> getAllLikeBook(Pageable pageable) {
         var user = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
         return userRepository.findLikedBooksByUsername(user.getUsername(), pageable);

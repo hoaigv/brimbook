@@ -19,6 +19,7 @@ public interface IUserService {
     Page<BookEntity> getAllLikeBook(Pageable pageable);
     Page<BookEntity> getAllReadBook(Pageable pageable);
     UserResponse getMyInfo();
+    boolean getLikeBook(Integer bookId);
 
     UserResponse createUser(UserCreationRequest request );
     void updateUser(UserUpdateRequest request , MultipartFile image);

@@ -30,6 +30,10 @@ public class SortUtils {
             if(!listSearch.contains(sortPair[0])) {
                 return Sort.unsorted();
             }
+        if (sortPair.length == 2) {
+            Sort.Direction direction = Sort.Direction.fromString(sortPair[1]);
+            orders.add(new Sort.Order(direction, sortPair[0]).nullsLast());
+        }
         return Sort.by(orders);
 
     }
