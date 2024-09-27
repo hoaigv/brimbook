@@ -127,12 +127,14 @@
         }
 
         /* ----- Select ----- */
-        .select {
-          width: calc(100% - 53px);
+        select {
+          width: 100%;
           padding: 12px 26px;
           display: flex;
           align-items: center;
           justify-content: space-between;
+          font-size: 2rem;
+          color: var(--primary-purple);
           border: 2px solid var(--g1);
           border-radius: 10px;
           cursor: pointer;
