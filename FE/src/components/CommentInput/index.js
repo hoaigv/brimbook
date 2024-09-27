@@ -43,8 +43,6 @@ function CommentInput({ param, isSetSendComment }) {
     User.getUser(setUserMe);
   }, []);
 
-  console.log(userMe);
-
   return (
     <div className={cx("comment-input")}>
       <div className={cx("comment-user-info")}>
