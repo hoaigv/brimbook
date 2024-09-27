@@ -25,7 +25,11 @@ function PostStory() {
   const [category, setCategory] = useState([]);
   const [image, setImage] = useState();
 
-  const [formData, setFormData] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    categoriesID: "",
+    description: "",
+  });
   const [categ, setCateg] = useState();
 
   const handleImageChage = (e) => {
@@ -71,7 +75,13 @@ function PostStory() {
     formDatas.append("image", image);
     formDatas.append("data", data);
 
-    Book.update(formDatas);
+    Book.update(formDatas).then(() => {
+      setFormData({
+        title: "",
+        categoriesID: "",
+        description: "",
+      });
+    });
   };
 
   return (
@@ -87,7 +97,12 @@ function PostStory() {
           <input type={"file"} className={cx("input")} onChange={handleImageChage} ref={inputRef} />
         </div>
         <div className={cx("content")}>
-          <Input type="text" defaultValue={"Title"} handleChage={handleTitleChange} />
+          <Input
+            value={formData.title}
+            type="text"
+            defaultValue={"Title"}
+            handleChage={handleTitleChange}
+          />
           <div className={cx("group")} ref={resultRef}>
             <div className={cx("select")} onClick={() => setToggle(!toggle)}>
               <span className={cx("value")}>{categ ? categ : "Category"}</span>
@@ -99,7 +114,7 @@ function PostStory() {
                   <li
                     key={item.id}
                     className={cx("item")}
-                    onClick={() => handleCategoryChange(item.id, item.categoryName)}
+                    onClick={() => handleCategoryChange(item.id, item.name)}
                   >
                     {item.name}
                   </li>
@@ -108,6 +123,7 @@ function PostStory() {
             </ul>
           </div>
           <Editor
+            value={formData.description}
             apiKey="avak5tehp8k9meap6nlbw1ngvn4lup3fxpjfglmzq6ayaoyd"
             onInit={(evt, editor) => (editorRef.current = editor)}
             initialValue=""
@@ -129,7 +145,7 @@ function PostStory() {
             onEditorChange={handleEditorChange}
           />
           <Button type1 sx={{ maxWidth: "200px" }} onClick={handleSubmit}>
-            Submit
+            Post
           </Button>
         </div>
       </div>

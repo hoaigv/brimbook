@@ -49,8 +49,6 @@ function BookDetail() {
     Comments.getAll(param.id, setComments);
   }, [param]);
 
-  console.log(comments);
-
   return (
     <>
       <title>{book.result.title} | BrimBook</title>
@@ -137,7 +135,7 @@ function BookDetail() {
                     ))}
                   </div>
                   <div className={cx("comment-input")}>
-                    <CommentInput />
+                    <CommentInput param={param.id} />
                   </div>
                 </div>
               </div>
