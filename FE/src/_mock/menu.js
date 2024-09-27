@@ -7,4 +7,12 @@ export const menuItem = [
     name: "Post Story",
     link: "/post-story",
   },
+  {
+    name: "Recent",
+    link: "/recent",
+  },
+  {
+    name: "Favorite",
+    link: "/favorite",
+  },
 ];

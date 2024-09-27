@@ -1,15 +1,24 @@
+import { useState, useEffect } from "react";
+
 import classNames from "classnames/bind";
 import styles from "./Footer.module.scss";
 
 import { ArrowRight, LogoIcon, MapPinIcon, MailIcon, PhoneIcon } from "~/components/Icons";
-import Button from "~/components/Button";
-import { category } from "~/_mock/category";
-import { name } from "~/_mock/user";
 import { Link } from "react-router-dom";
+import Button from "~/components/Button";
+import { name } from "~/_mock/user";
+
+import * as Category from "~/apis/category";
 
 const cx = classNames.bind(styles);
 
 function Footer() {
+  const [category, setCategory] = useState([]);
+
+  useEffect(() => {
+    Category.getAll(setCategory);
+  }, []);
+
   return (
     <footer className={cx("wrapper")}>
       <div className={cx("inner")}>
@@ -35,8 +44,8 @@ function Footer() {
           <span className={cx("text")}>Category</span>
           <div className={cx("list")}>
             {category.slice(0, 12).map((item) => (
-              <Link key={item} className={cx("name-wrapper")} color={"var(--g0)"}>
-                {item}
+              <Link key={item.id} className={cx("name-wrapper")} color={"var(--g0)"}>
+                {item.name}
               </Link>
             ))}
             <Button noline sx={{ maxWidth: "90px", color: "var(--primary-purple)" }}>

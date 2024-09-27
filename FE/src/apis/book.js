@@ -11,7 +11,7 @@ export const getAll = async (query, currentButton, setSearchResult) => {
 
 export const getOne = async (param, setBook) => {
   await axios
-    .get(`https://api.itbook.store/1.0/books/${param}`)
+    .get(`api/books/${param}`)
     .then((res) => {
       setBook(res.data);
     })

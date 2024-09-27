@@ -136,44 +136,7 @@
           border: 2px solid var(--g1);
           border-radius: 10px;
           cursor: pointer;
-
-          .value {
-            font-size: 2rem;
-          }
         }
-
-        /* ----- Select List ----- */
-        .select-list {
-          width: 100%;
-          list-style: none;
-          padding: 6px 0;
-          display: none;
-          background-color: var(--white);
-          border: 2px solid var(--g1);
-          border-radius: 10px;
-          position: absolute;
-          top: 95px;
-          z-index: 10;
-
-          .item {
-            padding: 6px 26px;
-            font-size: 2rem;
-            cursor: pointer;
-
-            &:hover {
-              background-color: var(--g1);
-              transition: all 0.1s ease-in-out;
-            }
-          }
-        }
-
-        .active {
-          display: block;
-        }
-      }
-
-      .email {
-        grid-column: 1 / 3;
       }
     }
   }

@@ -1,6 +1,6 @@
 import { axios } from "./http";
 
-export const loginUser = async (formData, navigate) => {
+export const loginUser = async (formData) => {
   try {
     const response = await axios.post(`/auth/login`, formData);
     if (response.data && response.data.result.token) {
@@ -19,9 +19,9 @@ export const getAll = async (setUsers) => {
     .catch((err) => console.log(err));
 };
 
-export const registerUser = async (user, navigate) => {
+export const registerUser = async (formData, navigate) => {
   await axios
-    .post(`api/users/sign-up`, user)
+    .post(`api/users/sign-up`, formData)
     .then((res) => res.data)
     .then(() => {
       navigate("/login");
@@ -42,8 +42,9 @@ export const registerUserByAdmin = async (user, setNotification) => {
     });
 };
 
-export const logoutUser = (navigate) => {
+export const logoutUser = () => {
   localStorage.removeItem("userToken");
+  window.location.replace("/login");
 };
 
 export const getUser = async (setUser) => {
@@ -56,5 +57,11 @@ export const getUser = async (setUser) => {
 };
 
 export const update = async (formData) => {
-  await axios.put(`api/users/update`, formData).catch((err) => console.log(err));
+  await axios
+    .put(`api/users/update`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .catch((err) => console.log(err));
 };
