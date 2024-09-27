@@ -35,7 +35,7 @@ function BookItem1({ result }) {
           >
             <div className="card-content">
               <h1>{result.title}</h1>
-              <p>{result.description}</p>
+              {/* <p>{result.description}</p> */}
               <div class="date">{result.publishedDate}</div>
               <div class="tags">
                 <div class="tag">{result.category.name}</div>

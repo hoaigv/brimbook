@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ImageValidator.class)
 public @interface ValidImage {
 
-    String message() default "Invalid file format. Only JPG or PNG are allowed.";
+    String message() default "Invalid file format. Only JPG or PNG or webp are allowed.";
 
     Class<?>[] groups() default {};
 

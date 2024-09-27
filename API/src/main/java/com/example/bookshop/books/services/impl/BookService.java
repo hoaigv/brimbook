@@ -29,10 +29,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
+import java.util.concurrent.ExecutionException;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -119,6 +119,7 @@ public class BookService implements IBookService {
         bookEntity.setImage_url(link);
         System.out.println("User5 +"+userEntity.getUsername());
 
+        bookEntity.setPublishedDate(new java.sql.Date(System.currentTimeMillis()));
         var result = bookRepository.save(bookEntity);
 
         return modelMapper.map(result, BookResponse.class);

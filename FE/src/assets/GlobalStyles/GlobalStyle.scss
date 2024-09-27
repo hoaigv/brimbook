@@ -163,6 +163,11 @@ img {
     h1 {
       margin: 0;
       font-size: 1.2em;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     p {
@@ -170,6 +175,11 @@ img {
       font-family: "Open Sans";
       margin-top: 0.5em;
       line-height: 2em;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .tags {

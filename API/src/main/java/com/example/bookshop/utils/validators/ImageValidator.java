@@ -29,9 +29,9 @@ public class ImageValidator implements ConstraintValidator<ValidImage, Multipart
         }
 
 
-        if (!(fileName.endsWith(".jpg") || fileName.endsWith(".png"))) {
+        if (!(fileName.endsWith(".jpg") || fileName.endsWith(".png") || fileName.endsWith(".webp"))) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("Invalid file format. Only JPG or PNG are allowed.").addConstraintViolation();
+            context.buildConstraintViolationWithTemplate("Invalid file format. Only JPG or PNG or webp are allowed.").addConstraintViolation();
             return false;
         }
 

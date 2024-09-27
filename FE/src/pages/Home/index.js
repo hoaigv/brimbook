@@ -79,7 +79,7 @@ function Home() {
       <title>Home Page | BrimBook</title>
       <div className={cx("inner")}>
         <SliderHome />
-        <div className={cx("commit-section")}>
+        {/* <div className={cx("commit-section")}>
           <div className={cx("commit-items")}>
             {commitItems.map((item, index) => (
               <div key={index} className={cx("commit-item")}>
@@ -90,7 +90,7 @@ function Home() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
         <div className={cx("top-list")}>
           <h3 className={cx("book-title")}>Sách Được Yêu Thích Nhất</h3>
           <div className={cx("books-list")}>
