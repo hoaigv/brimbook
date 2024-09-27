@@ -123,6 +123,15 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
 
+
+    @GetMapping("/like/{bookId}")
+    public ResponseEntity<ApiResponse<Boolean>> getLikeBook(@PathVariable  Integer bookId) {
+        var result = userService.getLikeBook(bookId);
+        var resp = ApiResponse.<Boolean>builder().result(result).build();
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
+    }
+
+
     @PostMapping("/read/{bookId}")
     public ResponseEntity<ApiResponse<Void>> readBook(@PathVariable Integer bookId) {
         userService.readBook(bookId);

@@ -1,8 +1,7 @@
 package com.example.bookshop.categories.controllers.admin;
 
 import com.example.bookshop.categories.controllers.dto.CategoryCreateRequest;
-import com.example.bookshop.categories.controllers.dto.CategoryCreateResponse;
-import com.example.bookshop.categories.controllers.dto.CategoryResponse1;
+import com.example.bookshop.categories.controllers.dto.CategoryResponse;
 import com.example.bookshop.categories.services.ICategoryService;
 import com.example.bookshop.utils.ApiResponse;
 import jakarta.validation.Valid;
@@ -11,9 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController(value = "AdminCategoryController")
 @RequestMapping("/api/admin/categories")
@@ -22,18 +22,13 @@ import java.util.List;
 public class CategoryController {
     ICategoryService categoryService;
     @PostMapping
-    public ResponseEntity<ApiResponse<CategoryCreateResponse>> create(@RequestBody @Valid CategoryCreateRequest request) {
+    public ResponseEntity<ApiResponse<CategoryResponse>> create(@RequestBody @Valid CategoryCreateRequest request) {
         var category = categoryService.createCategory(request);
-      var resp =  ApiResponse.<CategoryCreateResponse>builder()
+      var resp =  ApiResponse.<CategoryResponse>builder()
                 .result(category)
                 .build();
       return  ResponseEntity.status(HttpStatus.CREATED).body(resp);
     }
-    @GetMapping
-    public ApiResponse<List<CategoryResponse1>> getAll(){
-        var resp = categoryService.getAllCategories();
-        return ApiResponse.<List<CategoryResponse1>>builder()
-                .result(resp)
-                .build();
-    }
+
+
 }

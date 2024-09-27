@@ -15,11 +15,9 @@ import java.util.Optional;
 public interface LikeRepository extends JpaRepository<LikeEntity, Integer> {
   Optional<LikeEntity> findByBookAndUser(BookEntity book, UserEntity user);
   boolean existsByBookAndUser(BookEntity book, UserEntity user);
-<<<<<<< HEAD
 
   @Query("SELECT COUNT(l) FROM likes l WHERE l.book.id = :bookId")
   Integer countLikesByBookId(@Param("bookId") Integer bookId);
-=======
   List<LikeEntity> findByUser(UserEntity userEntity);
->>>>>>> 38ed30754afb63e5e553e545501c1fdd5730b868
+
 }

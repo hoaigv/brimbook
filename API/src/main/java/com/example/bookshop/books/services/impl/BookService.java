@@ -1,6 +1,8 @@
 package com.example.bookshop.books.services.impl;
 
-import com.example.bookshop.books.controllers.dto.books.*;
+import com.example.bookshop.books.controllers.dto.books.BookCreateRequest;
+import com.example.bookshop.books.controllers.dto.books.BookResponse;
+import com.example.bookshop.books.controllers.dto.books.BookUpdateRequest;
 import com.example.bookshop.books.mappers.BookEntityMapper;
 import com.example.bookshop.books.models.BookEntity;
 import com.example.bookshop.books.repositories.BookRepository;
@@ -11,10 +13,7 @@ import com.example.bookshop.exceptionHandlers.CustomRunTimeException;
 import com.example.bookshop.exceptionHandlers.ErrorCode;
 import com.example.bookshop.users.models.UserEntity;
 import com.example.bookshop.users.repositories.LikeRepository;
-<<<<<<< HEAD
 import com.example.bookshop.users.repositories.ReadBookRepository;
-=======
->>>>>>> 38ed30754afb63e5e553e545501c1fdd5730b868
 import com.example.bookshop.users.repositories.UserRepository;
 import com.example.bookshop.utils.AuthUtils;
 import com.example.bookshop.utils.CloudUtils;
@@ -58,11 +57,9 @@ public class BookService implements IBookService {
     private UserRepository userRepository;
     @Autowired
     private LikeRepository likeRepository;
-<<<<<<< HEAD
     @Autowired
     private ReadBookRepository readBookRepository;
-=======
->>>>>>> 38ed30754afb63e5e553e545501c1fdd5730b868
+
 
     @Override
     public List<BookResponse> getAllBooks1(Pageable pageable, BookSpecification filter) {
@@ -130,7 +127,7 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public BookResponse updateBook(BookUpdateRequest request,MultipartFile image, Integer id) {
+    public BookResponse updateBook(BookUpdateRequest request, MultipartFile image, Integer id) {
         try {
             System.out.println("Hi 1");
             System.out.println("Category "+request.getCategories_ID());

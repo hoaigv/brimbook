@@ -46,4 +46,6 @@ public class CategoryService implements ICategoryService {
         var result = categoryRepository.findAll();
         return categoryEntityMapper.requestToEntityList(result);
     }
+
+
 }

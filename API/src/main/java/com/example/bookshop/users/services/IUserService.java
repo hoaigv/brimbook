@@ -19,6 +19,7 @@ public interface IUserService {
     Page<BookEntity> getAllLikeBook(Pageable pageable);
     Page<BookEntity> getAllReadBook(Pageable pageable);
     UserResponse getMyInfo();
+    boolean getLikeBook(Integer bookId);
 
     UserResponse createUser(UserCreationRequest request );
     void updateUser(UserUpdateRequest request , MultipartFile image);
@@ -28,13 +29,12 @@ public interface IUserService {
 
     void  likeBook(Integer bookId);
     void  unLikeBook(Integer bookId);
-<<<<<<< HEAD
-//    void  addReadChapter(Integer id);
+
 
     void deleteUser(Integer userId);
-=======
+
     void readBook(Integer bookId);
     void deleteReadBook(Integer bookId);
 
->>>>>>> 38ed30754afb63e5e553e545501c1fdd5730b868
+
 }

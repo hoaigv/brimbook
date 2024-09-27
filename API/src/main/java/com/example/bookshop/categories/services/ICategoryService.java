@@ -9,4 +9,5 @@ public interface ICategoryService {
 
    CategoryResponse createCategory(CategoryCreateRequest request);
    List<CategoryResponse> getAllCategories();
+
 }

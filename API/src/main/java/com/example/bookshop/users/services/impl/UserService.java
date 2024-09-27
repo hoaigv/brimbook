@@ -172,13 +172,19 @@ public class UserService implements IUserService {
     }
 
     @Override
-<<<<<<< HEAD
     public void delete(Set<Integer> ids) {
         userRepository.deleteAllById(ids);
         log.info("Đã xóa {} người dùng", ids.size());
     }
     
-=======
+
+    public boolean getLikeBook(Integer bookId) {
+        var user = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
+        var book = bookRepository.findById(bookId).orElseThrow(() -> new CustomRunTimeException(ErrorCode.BOOK_NOT_FOUND));
+     return  likeRepository.existsByBookAndUser(book,user);
+    }
+
+    @Override
     public Page<BookEntity> getAllLikeBook(Pageable pageable) {
         var user = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
         return userRepository.findLikedBooksByUsername(user.getUsername(), pageable);
@@ -207,5 +213,5 @@ public class UserService implements IUserService {
         var user = userRepository.findByUsername(AuthUtils.getUserCurrent()).orElseThrow(() -> new CustomRunTimeException(ErrorCode.USER_NOT_FOUND));
         return userRepository.findReadBooksByUsername(user.getUsername(), pageable);
     }
->>>>>>> 38ed30754afb63e5e553e545501c1fdd5730b868
+
 }

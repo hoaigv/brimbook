@@ -23,11 +23,8 @@ public class BookEntityMapper {
 
             CategoryResponse categoryDTO = new CategoryResponse();
             categoryDTO.setId(book.getCategory().getId());
-<<<<<<< HEAD
             categoryDTO.setName(book.getCategory().getName());
-=======
-            categoryDTO.setCategoryName(book.getCategory().getName());
->>>>>>> 38ed30754afb63e5e553e545501c1fdd5730b868
+
             bookDTO.setCategory(categoryDTO);
 
             UserResponseBook userDTO = new UserResponseBook();
