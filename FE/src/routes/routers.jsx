@@ -13,7 +13,7 @@ import Recent from "~/pages/Recent";
 const routers = [
   { path: "/login", component: Login, layout: null },
   { path: "/register", component: Register, layout: null },
-  { path: "/", component: Home, protected: true },
+  { path: "/", component: Home },
   { path: "/search", component: Search, protected: true },
   { path: "/profile", component: Profile, protected: true },
   { path: "/books/:id", component: BookDetail, protected: true },

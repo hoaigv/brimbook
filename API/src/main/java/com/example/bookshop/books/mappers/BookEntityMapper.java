@@ -32,7 +32,11 @@ public class BookEntityMapper {
             userDTO.setLastName(book.getUser().getLastName());
             userDTO.setEmail(book.getUser().getEmail());
             userDTO.setPhone(book.getUser().getPhone());
-
+            userDTO.setUsername(book.getUser().getUsername());
+            userDTO.setImage_url(book.getUser().getImage_url());
+            userDTO.setBirthDate(book.getUser().getBirthDate());
+            userDTO.setGender(book.getUser().getGender());
+            userDTO.setRole(book.getUser().getRole());
             bookDTO.setUser(userDTO);
             return bookDTO;
         }

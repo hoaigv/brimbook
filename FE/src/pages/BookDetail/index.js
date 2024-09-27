@@ -125,7 +125,10 @@ function BookDetail() {
               </div>
               <div className={cx("content-tabs")}>
                 <div className={cx("content", toggleState === 1 && "active-content")}>
-                  <div className={cx("description")}>{book.result.description}</div>
+                  <div
+                    className={cx("description")}
+                    dangerouslySetInnerHTML={{ __html: book.result.description }}
+                  />
                 </div>
                 <div className={cx("content", toggleState === 2 && "active-content")}>
                   <div className={cx("comments")}>

@@ -8,6 +8,11 @@ export const menuItem = [
     link: "/post-story",
   },
   {
+    name: "Quản lý người dùng",
+    link: "/user-management",
+    role: "admin",
+  },
+  {
     name: "Recent",
     link: "/recent",
   },

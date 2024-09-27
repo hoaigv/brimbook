@@ -32,8 +32,12 @@ public class CommentEntityMapper {
             userDTO.setLastName(comment.getUser().getLastName());
             userDTO.setEmail(comment.getUser().getEmail());
             userDTO.setPhone(comment.getUser().getPhone());
-
-            bookDTO.setUser(userDTO);
+            userDTO.setUsername(comment.getUser().getUsername());
+            userDTO.setImage_url(comment.getUser().getImage_url());
+            userDTO.setGender(comment.getUser().getGender());
+            userDTO.setRole(comment.getUser().getRole());
+            userDTO.setBirthDate(comment.getUser().getBirthDate());
+            commentDTO.setUser(userDTO);
             return commentDTO;
         }
         catch (Exception e) {

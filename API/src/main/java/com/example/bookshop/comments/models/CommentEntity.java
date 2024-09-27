@@ -25,8 +25,8 @@ public class CommentEntity extends BaseEntity {
     @NotNull(message = "name must not be null")
     String commentText;
 
-    @NotNull(message = "visible of comment must not be null")
-    Boolean isVisible;
+    @Column(columnDefinition = "boolean default true")
+    Boolean isVisible = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn

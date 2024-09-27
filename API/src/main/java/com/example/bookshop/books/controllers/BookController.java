@@ -34,17 +34,17 @@ import java.util.Objects;
 @Slf4j
 public class BookController {
     IBookService bookService;
-    private final static String DEFAULT_FILTER_SIZE = "5";
+    private final static String DEFAULT_FILTER_SIZE = "10";
     private final static String DEFAULT_FILTER_PAGE = "0";
     private final static Sort DEFAULT_FILTER_SORT = Sort.by(Sort.Direction.ASC, "createdAt");
 
     @GetMapping("/getAll")
     public ResponseEntity<ApiResponse<List<BookResponse>>> getListBook(
            BookSpecification filter,
-            @RequestParam(required = false, defaultValue = DEFAULT_FILTER_SIZE) int size,
-            @RequestParam(required = false, defaultValue = DEFAULT_FILTER_PAGE) int page,
-            @RequestParam(required = false) List<String> sortParams,
-            @RequestParam(required = false) String sortParam
+           @RequestParam(required = false, defaultValue = DEFAULT_FILTER_PAGE) int page,
+           @RequestParam(required = false, defaultValue = DEFAULT_FILTER_SIZE) int size,
+           @RequestParam(required = false) List<String> sortParams,
+           @RequestParam(required = false) String sortParam
 
     ) {
         try {
