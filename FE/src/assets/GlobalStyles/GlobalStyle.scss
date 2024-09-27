@@ -157,7 +157,7 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    background: linear-gradient(to top, rgb(0 0 0 / 78%), transparent);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.78), #00000005);
     width: 100%;
     padding: 15px;
     h1 {

@@ -5,13 +5,13 @@ import "./styles.module.scss";
 import "swiper/css";
 import { EffectCoverflow } from "swiper/modules";
 import classNames from "classnames/bind";
-import slide_image_1 from "../../assets/Image/img_1.jpg";
-import slide_image_2 from "../../assets/Image/img_1.jpg";
-import slide_image_3 from "../../assets/Image/img_1.jpg";
-import slide_image_4 from "../../assets/Image/img_1.jpg";
-import slide_image_5 from "../../assets/Image/img_1.jpg";
-import slide_image_6 from "../../assets/Image/img_1.jpg";
-import slide_image_7 from "../../assets/Image/img_1.jpg";
+import slide_image_1 from "../../assets/Image/banner-2.jpeg";
+import slide_image_2 from "../../assets/Image/banner-3.jpg";
+import slide_image_3 from "../../assets/Image/banner-4.jpg";
+import slide_image_4 from "../../assets/Image/banner-5.jpg";
+import slide_image_5 from "../../assets/Image/banner-6.jpg";
+import slide_image_6 from "../../assets/Image/banner-7.jpg";
+import slide_image_7 from "../../assets/Image/banner-4.jpg";
 const cx = classNames.bind(styles);
 function SliderHome() {
   return (

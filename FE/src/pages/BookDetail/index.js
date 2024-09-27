@@ -65,8 +65,22 @@ function BookDetail() {
   const handleLike = () => {
     if (isLike) {
       UserAPI.unlike(param.id);
+      setBook((prevBook) => ({
+        ...prevBook,
+        result: {
+          ...prevBook.result,
+          total_likes: prevBook.result.total_likes - 1,
+        },
+      }));
     } else {
       UserAPI.like(param.id);
+      setBook((prevBook) => ({
+        ...prevBook,
+        result: {
+          ...prevBook.result,
+          total_likes: prevBook.result.total_likes + 1,
+        },
+      }));
     }
     setIsLike(!isLike);
   };
@@ -280,18 +294,6 @@ function BookDetail() {
                     className={cx("description")}
                     dangerouslySetInnerHTML={{ __html: book.result.description }}
                   />
-                  <select
-                    value={selectedVoice ? selectedVoice.name : ""}
-                    onChange={(e) =>
-                      setSelectedVoice(voices.find((voice) => voice.name === e.target.value))
-                    }
-                  >
-                    {voices.map((voice) => (
-                      <option key={voice.name} value={voice.name}>
-                        {voice.name}
-                      </option>
-                    ))}
-                  </select>
                 </div>
                 <div className={cx("content", toggleState === 2 && "active-content")}>
                   <div className={cx("comments")}>

@@ -20,7 +20,7 @@ function Comment({ comments, width }) {
               className={cx("user-img")}
             />
             <p className={cx("name-user")}>
-              {comments.user.firstName} {comments.user.lastName} <br />
+              {comments.user.username} <br />
               <TimeConverter
                 sx={{ color: " var(--g0)", fontSize: "1.6rem", fontWeight: 700 }}
                 timestamp={comments.createdAt}
