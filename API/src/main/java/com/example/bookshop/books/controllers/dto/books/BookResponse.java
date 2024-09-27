@@ -20,5 +20,7 @@ public class BookResponse {
     Date publishedDate;
     CategoryResponse category;
     UserResponseBook user;
+    Integer total_likes;
+    Integer total_reads;
 }
 
