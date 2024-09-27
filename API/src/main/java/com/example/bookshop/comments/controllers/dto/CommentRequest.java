@@ -1,5 +1,8 @@
 package com.example.bookshop.comments.controllers.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,6 +12,8 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentRequest {
+    @NotNull(message = "comment not null")
+    @NotBlank(message = "comment not blank")
     String commentText;
-    Boolean isVisible;
+
 }

@@ -1,5 +1,6 @@
 package com.example.bookshop.comments.controllers;
 
+import com.example.bookshop.books.controllers.dto.books.BookResponse;
 import com.example.bookshop.comments.controllers.dto.CommentRequest;
 import com.example.bookshop.comments.controllers.dto.CommentResponse;
 import com.example.bookshop.comments.services.ICommentService;
@@ -9,6 +10,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import net.kaczmarzyk.spring.data.jpa.domain.True;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,12 +35,14 @@ public class CommentControllers {
 
     @PostMapping("/{bookId}")
 //    @SendTo("/topic/comments")
-    public ResponseEntity<CommentResponse> sendComment(
+    public ResponseEntity<ApiResponse<CommentResponse>> sendComment(
             @RequestBody @Valid CommentRequest comment,
             @PathVariable("bookId") Integer bookId){
-        var resp = ApiResponse.<CommentResponse>builder()
-                .result(commentService.sendComment(comment,bookId))
-                .build();
-        return ResponseEntity.ok(resp.getResult());
+
+            var resp = ApiResponse.<CommentResponse>builder()
+                    .result(commentService.sendComment(comment,bookId))
+                    .build();
+            return ResponseEntity.status(HttpStatus.OK).body(resp);
+
     }
 }
