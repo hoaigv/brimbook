@@ -7,6 +7,6 @@ import com.example.bookshop.categories.controllers.dto.CategoryResponse1;
 import java.util.List;
 
 public interface ICategoryService {
-   CategoryResponse1 createCategory(CategoryCreateRequest request);
+   CategoryCreateResponse createCategory(CategoryCreateRequest request);
    List<CategoryResponse1> getAllCategories();
 }

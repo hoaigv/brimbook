@@ -21,9 +21,9 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryEntity extends BaseEntity {
 
-
     @NotNull(message = "category name  must not be null")
-    String categoryName;
+    @Column(unique = true)
+    String  name;
 
     @OneToMany(mappedBy = "category" , fetch = FetchType.LAZY)
     @JsonManagedReference

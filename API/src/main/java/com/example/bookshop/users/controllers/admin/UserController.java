@@ -78,7 +78,7 @@ public class UserController {
                 .pageSize(result.getSize())
                 .totalPages(result.getTotalPages())
                 .build();
-        return ResponseEntity.ok(resp);
+        return ResponseEntity.status(HttpStatus.OK).body(resp);
     }
     @PostMapping("/sign-up")
     public ResponseEntity<ApiResponse<UserResponse>> createUser(

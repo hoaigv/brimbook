@@ -32,23 +32,24 @@ public class CategoryService implements ICategoryService {
     @Autowired
     ModelMapper modelMapper;
     @Autowired
-    private CategoryEntityMapper categoryEntityMapper;
+    private CategoryMapper categoryEntityMapper;
 
     @Override
     @Transactional
-    public CategoryResponse1 createCategory(CategoryCreateRequest request) {
-        if (request.getCategoryName() == null || request.getCategoryName().isEmpty()) {
-            throw new IllegalArgumentException("Category name cannot be null or empty");
-        }
-        var newCategory = modelMapper.map(request, CategoryEntity.class);
+    public CategoryCreateResponse createCategory(CategoryCreateRequest request) {
+        var newCategory = categoryMapper.requestToEntity(request);
         var category = categoryRepository.save(newCategory);
-        return modelMapper.map(category, CategoryResponse1.class);
+        return categoryMapper.entityToResponse(category);
     }
+
+//    @Override
+//    public List<CategoryResponse1> getAllCategories() {
+//        var result = categoryRepository.findAll();
+//        return categoryEntityMapper.;
+//    }
 
     @Override
     public List<CategoryResponse1> getAllCategories() {
-        var result = categoryRepository.findAll();
-        return categoryEntityMapper.requestToEntityList(result);
+        return List.of();
     }
-
 }

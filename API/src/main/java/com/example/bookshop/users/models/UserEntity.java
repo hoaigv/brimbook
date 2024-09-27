@@ -6,6 +6,7 @@ import com.example.bookshop.comments.models.RateEntity;
 import com.example.bookshop.utils.baseEntities.BaseWithUpdatedByEntity;
 import com.example.bookshop.utils.enums.Gender;
 import com.example.bookshop.utils.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -59,22 +60,27 @@ public class UserEntity extends BaseWithUpdatedByEntity {
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
     @JsonManagedReference
+    @JsonIgnore
     Set<LikeEntity> likes = new HashSet<>();
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
     @JsonManagedReference
+    @JsonIgnore
     Set<ReadBooksEntity> read = new HashSet<>();
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
     @JsonManagedReference
+    @JsonIgnore
     Set<CommentEntity> comments = new HashSet<>();
 
     @OneToMany(mappedBy = "user" ,fetch = FetchType.LAZY)
     @JsonManagedReference
+    @JsonIgnore
     Set<RateEntity> rates = new HashSet<>();
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     @JsonManagedReference
+    @JsonIgnore
     Set<BookEntity> books = new HashSet<>();
 
 }
